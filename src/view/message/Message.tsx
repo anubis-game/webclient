@@ -4,9 +4,11 @@ import { StreamStore } from "../../func/stream/StreamStore";
 import { useShallow } from "zustand/react/shallow";
 
 export const Message = () => {
-  const { connected } = StreamStore(useShallow((state) => ({
-    connected: state.connected,
-  })));
+  const { connected } = StreamStore(
+    useShallow((state) => ({
+      connected: state.connected,
+    })),
+  );
 
   const [messages, setMessages] = React.useState<string[]>([]);
 
@@ -16,7 +18,7 @@ export const Message = () => {
         setMessages((prev) => [...prev, str]);
       });
     }
-  }, [connected])
+  }, [connected]);
 
   return (
     <>
@@ -25,19 +27,13 @@ export const Message = () => {
         type="text"
         onKeyDown={(e) => {
           if (connected && e.key === "Enter") {
-            StreamStore.getState().client?.send((e.target as HTMLInputElement).value);
+            StreamStore.getState().client?.send(
+              (e.target as HTMLInputElement).value,
+            );
           }
         }}
       />
-      {connected ? (
-        <>
-          connected
-        </>
-      ) : (
-        <>
-          connecting
-        </>
-      )}
+      {connected ? <>connected</> : <>connecting</>}
       <ul>
         {messages.map((message, index) => (
           <li key={index}>{message}</li>

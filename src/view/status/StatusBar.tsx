@@ -10,9 +10,11 @@ import { useSignMessage } from "wagmi";
 import { WalletButton } from "../wallet/WalletButton";
 
 export const StatusBar = () => {
-  const { connected } = StreamStore(useShallow((state) => ({
-    connected: state.connected,
-  })));
+  const { connected } = StreamStore(
+    useShallow((state) => ({
+      connected: state.connected,
+    })),
+  );
 
   const { disconnect } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
@@ -26,19 +28,24 @@ export const StatusBar = () => {
       try {
         const mes = `signer-${ctx.address}-${uniSec()}`;
         const sig = await signMessageAsync({ message: mes });
-        const pub = await recoverPublicKey({ hash: hashMessage(mes), signature: sig });
+        const pub = await recoverPublicKey({
+          hash: hashMessage(mes),
+          signature: sig,
+        });
 
-        StreamStore.getState().updateClient(new StreamClient(
-          mes,
-          pub,
-          sig,
-          () => {
-            StreamStore.getState().updateConnected(true);
-          },
-          () => {
-            disconnect();
-          },
-        ));
+        StreamStore.getState().updateClient(
+          new StreamClient(
+            mes,
+            pub,
+            sig,
+            () => {
+              StreamStore.getState().updateConnected(true);
+            },
+            () => {
+              disconnect();
+            },
+          ),
+        );
       } catch (error) {
         disconnect();
       }
@@ -59,5 +66,5 @@ export const StatusBar = () => {
 };
 
 const uniSec = (): string => {
-  return Math.floor(Date.now() / 1000).toString()
+  return Math.floor(Date.now() / 1000).toString();
 };

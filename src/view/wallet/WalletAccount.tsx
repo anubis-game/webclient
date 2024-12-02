@@ -12,24 +12,25 @@ export const WalletAccount = () => {
 
   return (
     <DropdownMenu.Root>
-
       <DropdownMenu.Trigger asChild>
         <div className="button px-4 py-3 min-w-[145px]">
           {address && (
-            <div>
-              {ensName ? ensName : TruncateSeparator(address, "...")}
-            </div>
+            <div>{ensName ? ensName : TruncateSeparator(address, "...")}</div>
           )}
         </div>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="dialog min-w-[145px] p-2" sideOffset={5}>
-
-          <DropdownMenu.Item className="menu item p-2 cursor-pointer outline-none" onClick={() => disconnect()}>
+        <DropdownMenu.Content
+          className="dialog min-w-[145px] p-2"
+          sideOffset={5}
+        >
+          <DropdownMenu.Item
+            className="menu item p-2 cursor-pointer outline-none"
+            onClick={() => disconnect()}
+          >
             Disconnect
           </DropdownMenu.Item>
-
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
     </DropdownMenu.Root>

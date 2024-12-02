@@ -5,17 +5,17 @@ import { Connector } from "wagmi";
 interface Props {
   connector: Connector;
   onClick: () => void;
-};
+}
 
 export const WalletOption = (props: Props) => {
-  const [ready, setReady] = React.useState(false)
+  const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
-    ; (async () => {
-      const provider = await props.connector.getProvider()
-      setReady(!!provider)
-    })()
-  }, [props.connector])
+    (async () => {
+      const provider = await props.connector.getProvider();
+      setReady(!!provider);
+    })();
+  }, [props.connector]);
 
   return (
     <button
