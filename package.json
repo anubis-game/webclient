@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint": "eslint . && ./node_modules/.bin/prettier -c $(find ./src -name '*.ts' -o -name '*.tsx')",
     "preview": "vite preview"
   },
   "dependencies": {

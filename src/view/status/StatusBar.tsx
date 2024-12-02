@@ -46,8 +46,9 @@ export const StatusBar = () => {
             },
           ),
         );
-      } catch (error) {
+      } catch (err) {
         disconnect();
+        console.error(err);
       }
     },
     onDisconnect: () => {
