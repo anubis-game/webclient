@@ -14,7 +14,7 @@ export const Message = () => {
 
   React.useEffect(() => {
     if (connected) {
-      StreamStore.getState().client?.recv((str: string) => {
+      StreamStore.getState().updateReader((str: string) => {
         setMessages((prev) => [...prev, str]);
       });
     }
@@ -27,7 +27,7 @@ export const Message = () => {
         type="text"
         onKeyDown={(e) => {
           if (connected && e.key === "Enter") {
-            StreamStore.getState().client?.send((e.target as HTMLInputElement).value);
+            StreamStore.getState().sendMessage((e.target as HTMLInputElement).value);
           }
         }}
       />

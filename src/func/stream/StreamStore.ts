@@ -1,15 +1,24 @@
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { StreamClient } from "./StreamClient";
 
 export interface StreamMessage {
-  client: StreamClient | null;
+  client: WebSocket | null;
   connected: boolean;
+  ping: number;
+  reader: (str: string) => void;
 }
 
 export const StreamStore = create(
-  combine({} as StreamMessage, (set) => ({
-    updateClient: (c: StreamClient | null) => {
+  combine({} as StreamMessage, (set, get) => ({
+    sendPing: () => {
+      get().client?.send("ping," + Date.now().toString());
+    },
+
+    sendMessage: (str: string) => {
+      get().client?.send(str);
+    },
+
+    updateClient: (c: WebSocket | null) => {
       set((state) => {
         return {
           ...state,
@@ -22,6 +31,22 @@ export const StreamStore = create(
         return {
           ...state,
           connected: c,
+        };
+      });
+    },
+    updatePing: (p: number) => {
+      set((state) => {
+        return {
+          ...state,
+          ping: p,
+        };
+      });
+    },
+    updateReader: (r: (str: string) => void) => {
+      set((state) => {
+        return {
+          ...state,
+          reader: r,
         };
       });
     },
