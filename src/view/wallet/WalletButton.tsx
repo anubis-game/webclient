@@ -25,7 +25,10 @@ export const WalletButton = () => {
           <Dialog.Title className="flex font-medium">
             <div className="flex w-full mb-4">Select Your Wallet</div>
             <Dialog.Close asChild>
-              <div className="group h-full cursor-pointer" aria-label="Close">
+              <div
+                className="group h-full cursor-pointer"
+                aria-label="Close"
+              >
                 <XMarkIcon />
               </div>
             </Dialog.Close>

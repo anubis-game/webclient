@@ -4,4 +4,4 @@ export interface ContractConfig {
   abi: any;
   address: Address;
   latest: boolean;
-};
+}

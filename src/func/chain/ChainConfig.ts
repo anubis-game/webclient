@@ -7,4 +7,4 @@ export interface ChainConfig extends Omit<Chain, "contracts"> {
   contracts: { [key: string]: ContractConfig[] };
   rpcEndpoints: string[];
   tokens: { [key: string]: TokenConfig };
-};
+}

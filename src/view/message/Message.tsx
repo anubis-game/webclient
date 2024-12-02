@@ -27,13 +27,13 @@ export const Message = () => {
         type="text"
         onKeyDown={(e) => {
           if (connected && e.key === "Enter") {
-            StreamStore.getState().client?.send(
-              (e.target as HTMLInputElement).value,
-            );
+            StreamStore.getState().client?.send((e.target as HTMLInputElement).value);
           }
         }}
       />
+
       {connected ? <>connected</> : <>connecting</>}
+
       <ul>
         {messages.map((message, index) => (
           <li key={index}>{message}</li>

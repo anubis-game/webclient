@@ -7,7 +7,10 @@ interface Props {
 // https://fonts.google.com/icons?selected=Material+Symbols+Rounded:more_horiz:FILL@0;wght@300;GRAD@0;opsz@24&icon.size=24&icon.color=%235f6368&icon.style=Rounded&icon.query=more+hori
 export const MenuHorizontalIcon = (props: Props) => {
   return (
-    <BaseIcon className={props.className} viewBox="0 -960 960 960">
+    <BaseIcon
+      className={props.className}
+      viewBox="0 -960 960 960"
+    >
       <g>
         <path
           fill="currentColor"

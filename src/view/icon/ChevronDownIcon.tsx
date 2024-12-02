@@ -7,7 +7,10 @@ interface Props {
 // https://fonts.google.com/icons?selected=Material+Symbols+Rounded:keyboard_arrow_down:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=keyboard+arrow&icon.style=Rounded&icon.size=24&icon.color=%235f6368
 export const ChevronDownIcon = (props: Props) => {
   return (
-    <BaseIcon className={props.className} viewBox="0 -960 960 960">
+    <BaseIcon
+      className={props.className}
+      viewBox="0 -960 960 960"
+    >
       <g>
         <path
           fill="currentColor"

@@ -14,9 +14,7 @@ export const WalletAccount = () => {
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
         <div className="button px-4 py-3 min-w-[145px]">
-          {address && (
-            <div>{ensName ? ensName : TruncateSeparator(address, "...")}</div>
-          )}
+          {address && <div>{ensName ? ensName : TruncateSeparator(address, "...")}</div>}
         </div>
       </DropdownMenu.Trigger>
 

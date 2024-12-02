@@ -5,12 +5,12 @@ import { QueryClient } from "@tanstack/react-query";
 export interface ClaimQueryMessage {
   client: QueryClient;
   refresh: () => void;
-};
+}
 
 const newClaimQueryMessage = (): ClaimQueryMessage => {
   return {
     client: new QueryClient(),
-    refresh: () => { },
+    refresh: () => {},
   };
 };
 
@@ -31,6 +31,6 @@ export const QueryStore = create(
           };
         });
       },
-    })
-  )
+    }),
+  ),
 );

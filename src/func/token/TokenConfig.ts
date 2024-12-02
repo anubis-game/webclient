@@ -5,4 +5,4 @@ export interface TokenConfig {
   address: Address;
   decimals: number;
   precision: number;
-};
+}

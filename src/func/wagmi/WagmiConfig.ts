@@ -9,14 +9,8 @@ import { coinbaseWallet } from "wagmi/connectors";
 import { metaMask } from "wagmi/connectors";
 
 export const WagmiConfig = createConfig({
-  chains: [
-    baseSepolia,
-    localhost,
-  ],
-  connectors: [
-    coinbaseWallet({ appName: "Anubis" }),
-    metaMask(),
-  ],
+  chains: [baseSepolia, localhost],
+  connectors: [coinbaseWallet({ appName: "Anubis" }), metaMask()],
   transports: {
     [baseSepolia.id]: http(BaseSepoliaAlchemyRpcEndpoint),
     [localhost.id]: http(),

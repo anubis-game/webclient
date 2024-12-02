@@ -6,9 +6,17 @@ interface Props {
 
 export const DotIcon = (props: Props) => {
   return (
-    <BaseIcon className={props.className} viewBox="0 0 24 24">
+    <BaseIcon
+      className={props.className}
+      viewBox="0 0 24 24"
+    >
       <g>
-        <circle fill="currentColor" cx="12" cy="12" r="6" />
+        <circle
+          fill="currentColor"
+          cx="12"
+          cy="12"
+          r="6"
+        />
       </g>
     </BaseIcon>
   );
