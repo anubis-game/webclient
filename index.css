@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: white;
+  background-color: black;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+div#root {
+  min-height: 100%;
+}
+
+.dark .button {
+  /* items-center */
+  align-items: center;
+  /* bg-sky-400 */
+  background-color: rgb(56 189 248);
+  /* rounded (4px) */
+  border-radius: 0.25rem;
+  /* text-black */
+  color: black;
+  /* cursor-pointer */
+  cursor: pointer;
+  /* flex */
+  display: flex;
+  /* font-medium */
+  font-weight: 500;
+  /* justify-center */
+  justify-content: center;
+  /* outline-none */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.dark .dialog {
+  /* gray-900 */
+  background-color: rgb(17 24 39);
+  /* border */
+  border-width: 1px;
+  border-color: rgb(55 65 81);
+  /* rounded (4px) */
+  border-radius: 0.25rem;
+  /* outline-none */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.dark .dialog .menu.item[data-highlighted] {
+  /* gray-700 */
+  background-color: rgb(55 65 81);
+  /* rounded (4px) */
+  border-radius: 0.25rem;
+  /* outline-none */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.dark .icon {
+  /* text-white */
+  color: white;
+}
+
+.dark .group:hover .icon {
+  /* text-gray-400 */
+  color: rgb(156 163 175);
+}
