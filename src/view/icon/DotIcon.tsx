@@ -15,7 +15,7 @@ export const DotIcon = (props: Props) => {
           fill="currentColor"
           cx="12"
           cy="12"
-          r="6"
+          r="8"
         />
       </g>
     </BaseIcon>

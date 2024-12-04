@@ -1,22 +1,31 @@
 import * as Dialog from "@radix-ui/react-dialog";
 
-import { useAccount, useConnect } from "wagmi";
-import { WalletOption } from "./WalletOption";
+import { StreamStore } from "../../func/stream/StreamStore";
+import { useConnect } from "wagmi";
+import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
+import { WalletOption } from "./WalletOption";
 import { WalletAccount } from "./WalletAccount";
 
 export const WalletButton = () => {
+  const { connected } = StreamStore(
+    useShallow((state) => ({
+      connected: state.connected,
+    })),
+  );
+
   const { connectors, connect } = useConnect();
 
-  const { isConnected } = useAccount();
-  if (isConnected) {
+  if (connected) {
     return <WalletAccount />;
   }
 
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <div className="button px-4 py-3 min-w-[145px]">Connect Wallet</div>
+        <div className="button px-4 py-3 min-w-[145px]">
+          <div>Connect Wallet</div>
+        </div>
       </Dialog.Trigger>
 
       <Dialog.Portal>

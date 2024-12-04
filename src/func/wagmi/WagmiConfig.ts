@@ -1,18 +1,13 @@
+import { ChainStore } from "../chain/ChainStore";
+import { coinbaseWallet } from "wagmi/connectors";
 import { createConfig } from "wagmi";
 import { http } from "wagmi";
-import { BaseSepoliaAlchemyRpcEndpoint } from "../config/Config";
-
-import { baseSepolia } from "wagmi/chains";
-import { localhost } from "wagmi/chains";
-
-import { coinbaseWallet } from "wagmi/connectors";
 import { metaMask } from "wagmi/connectors";
 
 export const WagmiConfig = createConfig({
-  chains: [baseSepolia, localhost],
+  chains: [ChainStore.getState().getActive().wagmi],
   connectors: [coinbaseWallet({ appName: "Anubis" }), metaMask()],
   transports: {
-    [baseSepolia.id]: http(BaseSepoliaAlchemyRpcEndpoint),
-    [localhost.id]: http(),
+    [ChainStore.getState().getActive().wagmi.id]: http(ChainStore.getState().getActive().alchemyRpcEndpoint),
   },
 });

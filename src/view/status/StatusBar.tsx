@@ -1,13 +1,20 @@
+import { alchemy } from "@account-kit/infra";
+import { ChainStore } from "../../func/chain/ChainStore";
+import { createLightAccount } from "@account-kit/smart-contracts";
+import { EnsureSigner } from "../../func/signer/EnsureSigner";
+import { EnsureStream } from "../../func/stream/EnsureStream";
 import { hashMessage } from "viem";
-import { OnlineTooltipIcon } from "../icon/OnlineTooltipIcon";
+import { Hex } from "viem";
 import { recoverPublicKey } from "viem";
+import { StatusIcon } from "../icon/StatusIcon";
 import { StreamStore } from "../../func/stream/StreamStore";
 import { Tooltip } from "../tooltip/Tooltip";
 import { useAccountEffect } from "wagmi";
 import { useDisconnect } from "wagmi";
 import { useShallow } from "zustand/react/shallow";
-import { useSignMessage } from "wagmi";
 import { WalletButton } from "../wallet/WalletButton";
+import { WalletStore } from "../../func/wallet/WalletStore";
+import { DotIcon } from "../icon/DotIcon";
 
 export const StatusBar = () => {
   const { connected, ping } = StreamStore(
@@ -18,7 +25,6 @@ export const StatusBar = () => {
   );
 
   const { disconnect } = useDisconnect();
-  const { signMessageAsync } = useSignMessage();
 
   useAccountEffect({
     onConnect: async (ctx: any) => {
@@ -26,40 +32,34 @@ export const StatusBar = () => {
         return;
       }
 
+      {
+        WalletStore.getState().updateWallet(ctx.address);
+      }
+
       try {
-        const mes = `signer-${ctx.address}-${uniSec()}`;
-        const sig = await signMessageAsync({ message: mes });
+        const tmp = EnsureSigner();
+        WalletStore.getState().updateSigner(await tmp.getAddress());
+
+        const con = await createLightAccount({
+          chain: ChainStore.getState().getActive().alchemy,
+          signer: tmp,
+          transport: alchemy({ apiKey: ChainStore.getState().getActive().alchemyApiKey }),
+        });
+        WalletStore.getState().updateContract(con.address);
+
+        const mes = `signer-${con.address}-${uniSec()}`;
+        const sig = await con.getSigner().signMessage(mes);
+        console.log("MES", mes);
+        console.log("SIG", sig);
         const pub = await recoverPublicKey({
           hash: hashMessage(mes),
-          signature: sig,
+          signature: sig as Hex,
         });
+        console.log("PUB", pub);
 
-        const cli = new WebSocket("ws://127.0.0.1:7777/anubis", ["personal_sign", mes, pub, sig]);
-
-        StreamStore.getState().updateClient(cli);
-
-        cli.onopen = () => {
-          StreamStore.getState().sendPing();
-          StreamStore.getState().updateConnected(true);
-        };
-
-        cli.onclose = () => {
-          disconnect();
-        };
-
-        cli.onerror = (err) => {
-          console.error("WebSocket error:", err);
-        };
-
-        cli.onmessage = (e) => {
-          const spl = e.data.split(",");
-
-          if (spl[0] === "ping") {
-            StreamStore.getState().updatePing(prsPng(spl));
-          } else {
-            StreamStore.getState().reader(e.data);
-          }
-        };
+        {
+          EnsureStream(mes, pub, sig, disconnect);
+        }
       } catch (err) {
         disconnect();
         console.error(err);
@@ -73,23 +73,16 @@ export const StatusBar = () => {
   });
 
   return (
-    <div className="absolute top-4 right-4 flex gap-4 items-center">
-      <Tooltip
-        content={<>{ping}ms</>}
-        side="left"
-        trigger={<OnlineTooltipIcon className={connected ? "text-green-600" : "text-red-600"} />}
-      />
+    <div className="absolute top-4 left-4 flex gap-4 items-center">
       <WalletButton />
+
+      <Tooltip
+        content={<>{connected ? `${ping}ms` : `not connected`}</>}
+        side="right"
+        trigger={<>{connected ? <DotIcon className="text-green-600" /> : <StatusIcon className="text-red-600" />}</>}
+      />
     </div>
   );
-};
-
-const prsPng = (spl: string[]): number => {
-  if (spl.length == 2) {
-    return Date.now() - parseInt(spl[1], 10);
-  }
-
-  throw "inavlid ping response";
 };
 
 const uniSec = (): string => {

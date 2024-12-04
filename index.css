@@ -45,11 +45,25 @@ div#root {
   outline-offset: 2px;
 }
 
+.dark .button.transparent {
+  /* gray-300 */
+  color: rgb(209 213 219);
+  /* bg-transparent */
+  background-color: transparent;
+  /* justify-start */
+  justify-content: flex-start;
+}
+
+.dark .button.transparent:hover {
+  color: white;
+}
+
 .dark .dialog {
   /* gray-900 */
   background-color: rgb(17 24 39);
   /* border */
   border-width: 1px;
+  /* gray-700 */
   border-color: rgb(55 65 81);
   /* rounded (4px) */
   border-radius: 0.25rem;
@@ -58,7 +72,24 @@ div#root {
   outline-offset: 2px;
 }
 
+.dark .dialog .menu.item {
+  /* gray-300 */
+  color: rgb(209 213 219);
+  /* cursor-pointer */
+  cursor: pointer;
+  /* flex */
+  display: flex;
+  /* items-center */
+  align-items: center;
+  /* justify-between */
+  justify-content: space-between;
+  /* outline-none */
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
 .dark .dialog .menu.item[data-highlighted] {
+  color: white;
   /* gray-700 */
   background-color: rgb(55 65 81);
   /* rounded (4px) */
@@ -66,6 +97,13 @@ div#root {
   /* outline-none */
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.dark .dialog .menu.item[data-disabled] {
+  /* gray-600 */
+  color: rgb(75 85 99);
+  /* cursor-default */
+  cursor: default;
 }
 
 .dark .icon {

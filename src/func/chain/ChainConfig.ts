@@ -2,9 +2,13 @@ import { Chain } from "viem/chains";
 import { ContractConfig } from "../contract/ContractConfig";
 import { TokenConfig } from "../token/TokenConfig";
 
-export interface ChainConfig extends Omit<Chain, "contracts"> {
-  biconomyPaymasterApiKey: string;
+export interface ChainConfig {
+  alchemy: Chain;
+  viem: Chain;
+  wagmi: Chain;
+  alchemyApiKey: string;
+  alchemyGasPolicy: string;
+  alchemyRpcEndpoint: string;
   contracts: { [key: string]: ContractConfig[] };
-  rpcEndpoints: string[];
-  tokens: { [key: string]: TokenConfig };
+  tokens: { [key: string]: TokenConfig[] };
 }
