@@ -1,10 +1,14 @@
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
 
+import { CoinbaseWalletIcon } from "../icon/CoinbaseWalletIcon";
 import { Connector } from "wagmi";
+import { MetaMaskWalletIcon } from "../icon/MetaMaskWalletIcon";
+import { RabbyWalletIcon } from "../icon/RabbyWalletIcon";
 
 interface Props {
   connector: Connector;
-  onClick: () => void;
+  onSelect: () => void;
 }
 
 export const WalletOption = (props: Props) => {
@@ -18,12 +22,16 @@ export const WalletOption = (props: Props) => {
   }, [props.connector]);
 
   return (
-    <button
-      className="button mb-2 px-2 py-2 w-full"
+    <DropdownMenu.Item
+      className="menu item p-2"
       disabled={!ready}
-      onClick={props.onClick}
+      onSelect={props.onSelect}
     >
-      {props.connector.name}
-    </button>
+      <div className="w-[144px]">{props.connector.name}</div>
+
+      {props.connector.id === "coinbaseWalletSDK" && <CoinbaseWalletIcon />}
+      {props.connector.id === "metaMaskSDK" && <MetaMaskWalletIcon />}
+      {props.connector.id === "io.rabby" && <RabbyWalletIcon />}
+    </DropdownMenu.Item>
   );
 };

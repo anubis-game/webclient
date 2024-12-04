@@ -53,7 +53,7 @@ export const WalletAccount = () => {
               className="menu item p-2"
               disabled
             >
-              <div className="w-full">{TruncateSeparator(signer, "...")}</div>
+              <div className="w-[144px]">{TruncateSeparator(signer, "...")}</div>
               <Tooltip
                 content={<>This is the signer controlling your Smart Wallet. It will never leave this device.</>}
                 side="right"
@@ -69,7 +69,7 @@ export const WalletAccount = () => {
               className="menu item p-2"
               onSelect={onSelect}
             >
-              <div className="w-full">{TruncateSeparator(contract, "...")}</div>
+              <div className="w-[144px]">{TruncateSeparator(contract, "...")}</div>
               <Tooltip
                 content={<>This is your Smart Wallet managing the game. It will never hold your funds.</>}
                 side="right"
@@ -83,7 +83,7 @@ export const WalletAccount = () => {
               className="menu item p-2"
               onClick={() => disconnect()}
             >
-              <div className="w-full">Disconnect</div>
+              <div className="w-[144px]">Disconnect</div>
               <LogoutIcon />
             </DropdownMenu.Item>
           )}

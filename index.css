@@ -89,6 +89,11 @@ div#root {
   outline-offset: 2px;
 }
 
+.dark .dialog .menu.item svg {
+  /* gray-300 */
+  color: rgb(209 213 219);
+}
+
 .dark .dialog .menu.item[data-highlighted] {
   /* text-white */
   color: white;
@@ -99,6 +104,11 @@ div#root {
   /* outline-none */
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.dark .dialog .menu.item[data-highlighted] svg {
+  /* text-white */
+  color: white;
 }
 
 .dark .dialog .menu.item[data-disabled] {

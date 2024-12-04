@@ -13,6 +13,7 @@ import { Tooltip } from "../tooltip/Tooltip";
 import { useAccountEffect } from "wagmi";
 import { useDisconnect } from "wagmi";
 import { useShallow } from "zustand/react/shallow";
+import { WalletAccount } from "../wallet/WalletAccount";
 import { WalletButton } from "../wallet/WalletButton";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
@@ -49,13 +50,10 @@ export const StatusBar = () => {
 
         const mes = `signer-${con.address}-${uniSec()}`;
         const sig = await con.getSigner().signMessage(mes);
-        console.log("MES", mes);
-        console.log("SIG", sig);
         const pub = await recoverPublicKey({
           hash: hashMessage(mes),
           signature: sig as Hex,
         });
-        console.log("PUB", pub);
 
         {
           EnsureStream(mes, pub, sig, disconnect);
@@ -74,7 +72,7 @@ export const StatusBar = () => {
 
   return (
     <div className="absolute top-4 left-4 flex gap-4 items-center">
-      <WalletButton />
+      {connected ? <WalletAccount /> : <WalletButton />}
 
       <Tooltip
         content={<>{connected ? `${ping}ms` : `not connected`}</>}
