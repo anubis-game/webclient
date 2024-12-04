@@ -5,7 +5,7 @@ interface Props {
 }
 
 // https://fonts.google.com/icons?selected=Material+Symbols+Rounded:filter_tilt_shift:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=dashed&icon.size=24&icon.color=%23e8eaed&icon.style=Rounded
-export const OnlineTooltipIcon = (props: Props) => {
+export const StatusIcon = (props: Props) => {
   return (
     <BaseIcon
       className={props.className}
