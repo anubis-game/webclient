@@ -1,6 +1,7 @@
 import { generatePrivateKey } from "viem/accounts";
-import { Hex, PrivateKeyAccount } from "viem";
+import { Hex } from "viem";
 import { LocalAccountSigner } from "@aa-sdk/core";
+import { PrivateKeyAccount } from "viem";
 
 const stoKey = "key.anubis.game/private";
 

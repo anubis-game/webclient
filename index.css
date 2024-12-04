@@ -55,6 +55,7 @@ div#root {
 }
 
 .dark .button.transparent:hover {
+  /* text-white */
   color: white;
 }
 
@@ -89,6 +90,7 @@ div#root {
 }
 
 .dark .dialog .menu.item[data-highlighted] {
+  /* text-white */
   color: white;
   /* gray-700 */
   background-color: rgb(55 65 81);

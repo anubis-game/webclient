@@ -1,7 +1,13 @@
+import { GuardianHostPort, GuardianWebsocketProtocol } from "../config/Config";
 import { StreamStore } from "../../func/stream/StreamStore";
 
 export const EnsureStream = (mes: string, pub: string, sig: string, clo: () => void) => {
-  const cli = new WebSocket("ws://127.0.0.1:7777/anubis", ["personal_sign", mes, pub, sig]);
+  const cli = new WebSocket(`${GuardianWebsocketProtocol}://${GuardianHostPort}/anubis`, [
+    "personal_sign",
+    mes,
+    pub,
+    sig,
+  ]);
 
   StreamStore.getState().updateClient(cli);
 
