@@ -106,12 +106,14 @@ div#root {
   outline-offset: 2px;
 }
 
+.dark .dialog .menu.item:hover svg,
 .dark .dialog .menu.item[data-highlighted] svg {
   /* text-white */
   color: white;
 }
 
-.dark .dialog .menu.item[data-disabled] {
+.dark .dialog .menu.item[data-disabled],
+.dark .dialog .menu.item[data-disabled] svg {
   /* gray-600 */
   color: rgb(75 85 99);
   /* cursor-default */
