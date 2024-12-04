@@ -9,7 +9,7 @@ export interface WalletMessage {
 }
 
 export const WalletStore = create(
-  combine({} as WalletMessage, (set, get) => ({
+  combine({} as WalletMessage, (set) => ({
     updateWallet: (w: Hex) => {
       set((state) => {
         return {

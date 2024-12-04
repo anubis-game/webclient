@@ -2,7 +2,7 @@ import * as alchemyChains from "@account-kit/infra";
 import * as viemChains from "viem/chains";
 import * as wagmiChains from "wagmi/chains";
 
-import { ArbitrumSepoliaAlchemyApiKey } from "../config/Config";
+import { ArbitrumSepoliaAlchemyApiKey, ArbitrumSepoliaAlchemyRpcEndpoint } from "../config/Config";
 import { ArbitrumSepoliaAlchemyGasPolicy } from "../config/Config";
 import { ChainConfig } from "./ChainConfig";
 
@@ -13,6 +13,7 @@ export const ChainList: ChainConfig[] = [
     wagmi: wagmiChains.arbitrumSepolia,
     alchemyApiKey: ArbitrumSepoliaAlchemyApiKey,
     alchemyGasPolicy: ArbitrumSepoliaAlchemyGasPolicy,
+    alchemyRpcEndpoint: ArbitrumSepoliaAlchemyRpcEndpoint,
     contracts: {
       FOO: [{ abi: {}, address: "0x1234", latest: true }],
     },
