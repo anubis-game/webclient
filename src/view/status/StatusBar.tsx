@@ -1,6 +1,7 @@
 import { alchemy } from "@account-kit/infra";
 import { ChainStore } from "../../func/chain/ChainStore";
 import { createLightAccount } from "@account-kit/smart-contracts";
+import { DotIcon } from "../icon/DotIcon";
 import { EnsureSigner } from "../../func/signer/EnsureSigner";
 import { EnsureStream } from "../../func/stream/EnsureStream";
 import { hashMessage } from "viem";
@@ -14,7 +15,6 @@ import { useDisconnect } from "wagmi";
 import { useShallow } from "zustand/react/shallow";
 import { WalletButton } from "../wallet/WalletButton";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { DotIcon } from "../icon/DotIcon";
 
 export const StatusBar = () => {
   const { connected, ping } = StreamStore(

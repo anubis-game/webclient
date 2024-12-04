@@ -3,6 +3,8 @@ import { Hex } from "viem";
 import { LocalAccountSigner } from "@aa-sdk/core";
 import { PrivateKeyAccount } from "viem";
 
+// stoKey holds the private key of every user's local signer. This private key
+// is will never leave the device it was generated on.
 const stoKey = "key.anubis.game/private";
 
 export const EnsureSigner = (): LocalAccountSigner<PrivateKeyAccount> => {

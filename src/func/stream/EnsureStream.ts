@@ -1,4 +1,5 @@
-import { GuardianHostPort, GuardianWebsocketProtocol } from "../config/Config";
+import { GuardianHostPort } from "../config/Config";
+import { GuardianWebsocketProtocol } from "../config/Config";
 import { StreamStore } from "../../func/stream/StreamStore";
 
 export const EnsureStream = (mes: string, pub: string, sig: string, clo: () => void) => {
@@ -9,7 +10,9 @@ export const EnsureStream = (mes: string, pub: string, sig: string, clo: () => v
     sig,
   ]);
 
-  StreamStore.getState().updateClient(cli);
+  {
+    StreamStore.getState().updateClient(cli);
+  }
 
   cli.onopen = () => {
     StreamStore.getState().sendPing();
