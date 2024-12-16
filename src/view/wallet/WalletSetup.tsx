@@ -8,6 +8,7 @@ import { StreamStore } from "../../func/stream/StreamStore";
 import { useAccountEffect } from "wagmi";
 import { WalletStore } from "../../func/wallet/WalletStore";
 import { http } from "viem";
+import { TokenStore } from "../../func/token/TokenStore";
 
 export const WalletSetup = () => {
   useAccountEffect({
@@ -72,6 +73,7 @@ export const WalletSetup = () => {
       // Connected
       //
 
+      TokenStore.getState().updateBalance();
       WalletStore.getState().updateConnected(true);
     },
     onDisconnect: () => {

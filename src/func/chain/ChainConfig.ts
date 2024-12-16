@@ -1,7 +1,7 @@
 import { Chain } from "viem/chains";
+import { ChainStore } from "./ChainStore";
 import { ContractConfig } from "../contract/ContractConfig";
 import { TokenConfig } from "../token/TokenConfig";
-import { ChainStore } from "./ChainStore";
 
 export interface ChainConfig {
   alchemy: Chain;

@@ -3,11 +3,11 @@ import { StatusIcon } from "../icon/StatusIcon";
 import { StreamStore } from "../../func/stream/StreamStore";
 import { Tooltip } from "../tooltip/Tooltip";
 import { useShallow } from "zustand/react/shallow";
-import { WalletAccount } from "../wallet/WalletAccount";
-import { WalletButton } from "../wallet/WalletButton";
+import { WalletAccount } from "./WalletAccount";
+import { WalletButton } from "./WalletButton";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
-export const StatusBar = () => {
+export const WalletBar = () => {
   const stream = StreamStore(
     useShallow((state) => ({
       connected: state.connected,
