@@ -12,11 +12,11 @@ import { WalletStore } from "../../func/wallet/WalletStore";
 import { ChainStore } from "../../func/chain/ChainStore";
 
 export const WalletAccount = () => {
-  const { wallet, signer, contract } = WalletStore(
+  const { wallet, signer, player } = WalletStore(
     useShallow((state) => ({
-      wallet: state.wallet,
-      signer: state.signer,
-      contract: state.contract,
+      wallet: state.wallet?.address || "",
+      signer: state.signer?.address || "",
+      player: state.player?.address || "",
     })),
   );
 
@@ -25,7 +25,7 @@ export const WalletAccount = () => {
 
   const onSelect = () => {
     const url = new URL(
-      `/address/${contract}`,
+      `/address/${player}`,
       ChainStore.getState().getActive().viem.blockExplorers?.default.url,
     ).toString();
 
@@ -64,12 +64,12 @@ export const WalletAccount = () => {
 
           <DropdownMenu.Separator className="mt-2 mb-3 h-px bg-gray-600" />
 
-          {contract && (
+          {player && (
             <DropdownMenu.Item
               className="menu item p-2"
               onSelect={onSelect}
             >
-              <div className="w-[144px]">{TruncateSeparator(contract, "...")}</div>
+              <div className="w-[144px]">{TruncateSeparator(player, "...")}</div>
               <Tooltip
                 content={<>This is your Smart Wallet managing the game. It will never hold your funds.</>}
                 side="right"

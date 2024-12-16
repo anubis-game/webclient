@@ -1,14 +1,10 @@
-import { GuardianHostPort } from "../config/Config";
+import { Guardian } from "../../func/stream/StreamStore";
 import { GuardianWebsocketProtocol } from "../config/Config";
+import { Hex } from "viem";
 import { StreamStore } from "../../func/stream/StreamStore";
 
-export const EnsureStream = (mes: string, pub: string, sig: string, clo: () => void) => {
-  const cli = new WebSocket(`${GuardianWebsocketProtocol}://${GuardianHostPort}/anubis`, [
-    "personal_sign",
-    mes,
-    pub,
-    sig,
-  ]);
+export const EnsureStream = (grd: Guardian, txn: Hex, sg2: Hex, clo: () => void) => {
+  const cli = new WebSocket(`${GuardianWebsocketProtocol}://${grd.endpoint}/connect`, ["dual-handshake", txn, sg2]);
 
   {
     StreamStore.getState().updateClient(cli);

@@ -18,15 +18,15 @@ export const RabbyWalletIcon = (props: Props) => {
         />
         <path
           fill="url(#rabby__b)"
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M16.53 8.049c.145-.06.122-.282.082-.456-.091-.402-1.667-2.021-3.148-2.747-2.017-.988-3.502-.937-3.721-.482.41.876 2.315 1.699 4.305 2.558.848.367 1.712.74 2.482 1.127"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
         <path
           fill="url(#rabby__c)"
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M13.97 16.867a12 12 0 0 0-1.392-.446c.559-1.04.676-2.58.148-3.553-.74-1.366-1.67-2.093-3.829-2.093-1.187 0-4.385.416-4.442 3.194q-.01.437.02.804l5.84.044c-.788 1.3-1.525 2.264-2.17 2.997.775.206 1.414.38 2.001.539.557.151 1.067.29 1.601.431a25 25 0 0 0 2.224-1.917"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
         <path
           fill="url(#rabby__d)"
@@ -41,10 +41,10 @@ export const RabbyWalletIcon = (props: Props) => {
             y2="15.472"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#8697FF" />
+            <stop stopColor="#8697FF" />
             <stop
               offset="1"
-              stop-color="#ABB7FF"
+              stopColor="#ABB7FF"
             />
           </linearGradient>
           <linearGradient
@@ -55,11 +55,11 @@ export const RabbyWalletIcon = (props: Props) => {
             y2="1.414"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#8697FF" />
+            <stop stopColor="#8697FF" />
             <stop
               offset="1"
-              stop-color="#5156D8"
-              stop-opacity="0"
+              stopColor="#5156D8"
+              stopOpacity="0"
             />
           </linearGradient>
           <linearGradient
@@ -70,11 +70,11 @@ export const RabbyWalletIcon = (props: Props) => {
             y2="11.832"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#465EED" />
+            <stop stopColor="#465EED" />
             <stop
               offset="1"
-              stop-color="#8697FF"
-              stop-opacity="0"
+              stopColor="#8697FF"
+              stopOpacity="0"
             />
           </linearGradient>
           <linearGradient
@@ -85,10 +85,10 @@ export const RabbyWalletIcon = (props: Props) => {
             y2="19.877"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#8898FF" />
+            <stop stopColor="#8898FF" />
             <stop
               offset=".984"
-              stop-color="#6277F1"
+              stopColor="#6277F1"
             />
           </linearGradient>
         </defs>
