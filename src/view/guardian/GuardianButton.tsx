@@ -6,7 +6,7 @@ import { StreamStore } from "../../func/stream/StreamStore";
 import { useShallow } from "zustand/react/shallow";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 
-export const Test = () => {
+export const GuardianButton = () => {
   const { guardians } = StreamStore(
     useShallow((state) => ({
       guardians: state.guardians,
@@ -24,7 +24,7 @@ export const Test = () => {
   };
 
   return (
-    <div className="mt-8">
+    <div className="mt-32">
       {guardians &&
         Array.from(guardians.entries()).map(([key, val]) => (
           <div

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Address } from "viem";
-import { Guardian } from "../../func/stream/StreamStore";
+import { Guardian } from "../../func/stream/StreamMessage";
 import { GuardianEndpoints } from "../../func/config/Config";
 import { GuardianHypertextProtocol } from "../../func/config/Config";
 import { Sleep } from "../../func/sleep/Sleep";

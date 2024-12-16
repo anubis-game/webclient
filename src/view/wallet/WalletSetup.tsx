@@ -4,10 +4,11 @@ import { createLightAccount } from "@account-kit/smart-contracts";
 import { createPublicClient, custom } from "viem";
 import { createWalletClient } from "viem";
 import { EnsureSigner } from "../../func/signer/EnsureSigner";
+import { http } from "viem";
 import { StreamStore } from "../../func/stream/StreamStore";
+import { TokenStore } from "../../func/token/TokenStore";
 import { useAccountEffect } from "wagmi";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { http } from "viem";
 
 export const WalletSetup = () => {
   useAccountEffect({
@@ -72,6 +73,7 @@ export const WalletSetup = () => {
       // Connected
       //
 
+      TokenStore.getState().updateBalance();
       WalletStore.getState().updateConnected(true);
     },
     onDisconnect: () => {
