@@ -1,9 +1,17 @@
+import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
+
+export interface Guardian {
+  healthy: boolean;
+  endpoint: string;
+  latency: number;
+}
 
 export interface StreamMessage {
   client: WebSocket | null;
   connected: boolean;
+  guardians: Map<Address, Guardian>;
   ping: number;
   reader: (str: string) => void;
 }
@@ -31,6 +39,14 @@ export const StreamStore = create(
         return {
           ...state,
           connected: c,
+        };
+      });
+    },
+    updateGuardians: (g: Map<Address, Guardian>) => {
+      set((state) => {
+        return {
+          ...state,
+          guardians: g,
         };
       });
     },

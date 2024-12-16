@@ -18,9 +18,9 @@ export const CoinbaseWalletIcon = (props: Props) => {
         />
         <path
           fill="#fff"
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M12 19.083a7.083 7.083 0 1 0 0-14.166 7.083 7.083 0 0 0 0 14.166m-.833-9.166c-.69 0-1.25.56-1.25 1.25v1.666c0 .69.56 1.25 1.25 1.25h1.666c.69 0 1.25-.56 1.25-1.25v-1.666c0-.69-.56-1.25-1.25-1.25z"
-          clip-rule="evenodd"
+          clipRule="evenodd"
         />
       </g>
     </BaseIcon>
