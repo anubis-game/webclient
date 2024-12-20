@@ -8,7 +8,7 @@ export interface BalanceMessage {
 }
 
 export const BalanceStore = create(
-  combine({} as BalanceMessage, (set, get) => ({
+  combine({} as BalanceMessage, (set) => ({
     updateDepositAmount: (v: string) => {
       set((state) => {
         return {
@@ -19,12 +19,6 @@ export const BalanceStore = create(
     },
 
     updateDepositDialog: (v: boolean) => {
-      // We lock the dialog so that it can stay in place while we process
-      // transactions.
-      if (get().depositSubmit) {
-        return;
-      }
-
       set((state) => {
         return {
           ...state,

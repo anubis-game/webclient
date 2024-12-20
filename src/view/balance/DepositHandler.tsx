@@ -33,11 +33,8 @@ export class DepositHandler implements FormInterface {
     {
       args.done();
 
-      // We must set the submit state to false before we hide the dialog,
-      // because the dialog is locked to stay in place while we process
-      // transactions.
-      BalanceStore.getState().updateDepositSubmit(false);
       BalanceStore.getState().updateDepositDialog(false);
+      BalanceStore.getState().updateDepositSubmit(false);
     }
 
     {

@@ -18,7 +18,14 @@ export const DepositDialog = () => {
   return (
     <Dialog.Root
       open={depositDialog}
-      onOpenChange={BalanceStore.getState().updateDepositDialog}
+      onOpenChange={(open) => {
+        // We lock the dialog so that it can stay in place while we process
+        // transactions. So only while the dialog submit is not in progress we
+        // allow the dialog open state to change.
+        if (!depositSubmit) {
+          BalanceStore.getState().updateDepositDialog(open);
+        }
+      }}
     >
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
