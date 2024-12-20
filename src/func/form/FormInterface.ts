@@ -8,5 +8,4 @@ export interface FormArgs {
 export interface FormInterface {
   button(setDisabled: (disabled: boolean) => void): JSX.Element;
   submit(args: FormArgs): void;
-  verify(): boolean;
 }

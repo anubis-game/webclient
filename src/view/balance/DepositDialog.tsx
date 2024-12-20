@@ -7,7 +7,7 @@ import { TrimWhitespace } from "../../func/string/TrimWhitespace";
 import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
 
-export const DepositBalance = () => {
+export const DepositDialog = () => {
   const { depositDialog, depositSubmit } = BalanceStore(
     useShallow((state) => ({
       depositDialog: state.depositDialog,
@@ -26,17 +26,7 @@ export const DepositBalance = () => {
           className="dialog fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-md p-4"
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <div className="flex mb-2">
-            <Dialog.Title className="w-full font-medium">Deposit</Dialog.Title>
-            <Dialog.Close asChild>
-              <div
-                className="flex items-center outline-none cursor-pointer"
-                aria-label="Close"
-              >
-                <XMarkIcon />
-              </div>
-            </Dialog.Close>
-          </div>
+          <Dialog.Title className="w-full mb-2 font-medium">Deposit</Dialog.Title>
 
           <Dialog.Description className="mb-4 text-sm">
             You can increase your available balance to play he game. You will get the allocated balance of every player
@@ -46,11 +36,9 @@ export const DepositBalance = () => {
           <div className="h-12 mb-4 flex items-center gap-2">
             <input
               className={TrimWhitespace(`
-                w-full h-full p-2 rounded
-                outline-none
+                w-full h-full p-2 rounded outline-none
+                text-2xl text-right text-black bg-white
                 placeholder:text-gray-400
-                bg-white
-                text-2xl text-right text-right text-black
               `)}
               id="amount"
               disabled={depositSubmit}
@@ -68,6 +56,21 @@ export const DepositBalance = () => {
           </div>
 
           <FormButton handler={new DepositHandler()} />
+
+          {/*
+          We keep the close button at the buttom of the dialog because we do not
+          want the close button to be the first element to receive an auto
+          focus. For our purposes here we want the input field above to be the
+          first element that receives the auto focus when the dialog opens.
+           */}
+          <Dialog.Close asChild>
+            <button
+              className="absolute top-4 right-4 flex items-center outline-none"
+              disabled={depositSubmit}
+            >
+              <XMarkIcon />
+            </button>
+          </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

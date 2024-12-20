@@ -13,10 +13,7 @@ export const FormButton = (props: Props) => {
 
   return (
     <button
-      className={`
-        flex button px-4 py-3 w-full h-full
-        ${disabled ? "cursor-not-allowed" : "text-gray-700"}
-      `}
+      className="button px-4 py-3 w-full h-full"
       disabled={disabled}
       type="button"
       onClick={() => {
@@ -46,7 +43,7 @@ export const FormButton = (props: Props) => {
               <SpinnerIcon textColour="text-gray-700" />
             </div>
 
-            <div className="flex">{processing}</div>
+            <div className="text-gray-700">{processing}</div>
           </div>
         ) : (
           props.handler.button(setDisabled)

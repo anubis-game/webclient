@@ -24,6 +24,7 @@ div#root {
 }
 
 input:disabled {
+  /* cursor-not-allowed */
   cursor: not-allowed;
 }
 
@@ -61,7 +62,11 @@ input::-moz-selection {
   outline-offset: 2px;
 }
 
+button:disabled,
 .button:disabled {
+  /* gray-700 */
+  color: rgb(55 65 81);
+  /* cursor-not-allowed */
   cursor: not-allowed;
 }
 
@@ -147,7 +152,8 @@ input::-moz-selection {
   cursor: default;
 }
 
-.dark .icon {
+.dark .icon,
+.dark button:disabled .icon:hover {
   /* gray-300 */
   color: rgb(209 213 219);
 }

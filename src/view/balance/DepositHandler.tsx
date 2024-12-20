@@ -22,19 +22,22 @@ export class DepositHandler implements FormInterface {
       BalanceStore.getState().updateDepositSubmit(true);
     }
 
-    await Sleep(2 * 1000);
+    await Sleep(5 * 1000);
 
     {
       args.sign("Confirming Onchain");
     }
 
-    await Sleep(2 * 1000);
+    await Sleep(5 * 1000);
 
     {
       args.done();
-      BalanceStore.getState().updateDepositAmount("");
-      BalanceStore.getState().updateDepositDialog(false);
+
+      // We must set the submit state to false before we hide the dialog,
+      // because the dialog is locked to stay in place while we process
+      // transactions.
       BalanceStore.getState().updateDepositSubmit(false);
+      BalanceStore.getState().updateDepositDialog(false);
     }
 
     {
@@ -42,7 +45,12 @@ export class DepositHandler implements FormInterface {
     }
   }
 
-  verify(): boolean {
+  private amount(): number {
+    const amo = BalanceStore.getState().depositAmount;
+    return amo ? Number(amo) : 0;
+  }
+
+  private verify(): boolean {
     const amo = this.amount();
 
     if (!amo) {
@@ -54,10 +62,5 @@ export class DepositHandler implements FormInterface {
     }
 
     return true;
-  }
-
-  private amount(): number {
-    const amo = BalanceStore.getState().depositAmount;
-    return amo ? Number(amo) : 0;
   }
 }
