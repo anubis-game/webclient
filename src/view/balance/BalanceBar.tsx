@@ -1,12 +1,15 @@
-import { ShowBalances } from "./ShowBalances";
-import { TokenStore } from "../../func/token/TokenStore";
+import { ActivityIcon } from "../icon/ActivityIcon";
+import { BalanceStore } from "../../func/balance/BalanceStore";
+import { DollarIcon } from "../icon/DollarIcon";
+import { Tooltip } from "../tooltip/Tooltip";
 import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const BalanceBar = () => {
-  const { available } = TokenStore(
+  const { available, allocated } = BalanceStore(
     useShallow((state) => ({
       available: state.available,
+      allocated: state.allocated,
     })),
   );
 
@@ -16,7 +19,8 @@ export const BalanceBar = () => {
     })),
   );
 
-  const avl = TokenStore.getState().formatBalance(available);
+  const alo = BalanceStore.getState().formatBalance(allocated);
+  const avl = BalanceStore.getState().formatBalance(available);
 
   if (!connected || !avl) {
     return <></>;
@@ -24,7 +28,27 @@ export const BalanceBar = () => {
 
   return (
     <div className="absolute bottom-4 left-4 flex gap-4 items-center">
-      <ShowBalances />
+      {avl && (
+        <>
+          <Tooltip
+            content={<>Available Balance</>}
+            side="top"
+            trigger={<DollarIcon />}
+          />
+          <>{avl}</>
+        </>
+      )}
+
+      {alo && (
+        <>
+          <Tooltip
+            content={<>Allocated Balance</>}
+            side="top"
+            trigger={<ActivityIcon />}
+          />
+          <>{alo}</>
+        </>
+      )}
     </div>
   );
 };

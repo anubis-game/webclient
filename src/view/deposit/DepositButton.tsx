@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { BalanceStore } from "../../func/balance/BalanceStore";
+import { DepositStore } from "../../func/deposit/DepositStore";
 import { useShallow } from "zustand/react/shallow";
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
 }
 
 export const DepositButton = (props: Props) => {
-  const { amo } = BalanceStore(
+  const { amo } = DepositStore(
     useShallow((state) => ({
-      amo: state.depositAmount,
+      amo: state.amount,
     })),
   );
 

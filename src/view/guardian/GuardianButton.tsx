@@ -1,12 +1,12 @@
 import * as Request from "../../func/transaction/registry/Request";
 
 import { Address } from "viem";
+import { BalanceStore } from "../../func/balance/BalanceStore";
 import { SendTransaction } from "../../func/transaction/SendTransaction";
 import { StreamStore } from "../../func/stream/StreamStore";
 import { useShallow } from "zustand/react/shallow";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { TokenStore } from "../../func/token/TokenStore";
 
 export const GuardianButton = () => {
   const { guardians } = StreamStore(
@@ -20,7 +20,7 @@ export const GuardianButton = () => {
       // TODO ensure connect wallet
     }
 
-    if (!TokenStore.getState().hasAvailable()) {
+    if (!BalanceStore.getState().hasAvailable()) {
       // TODO ensure deposit balance
     }
 

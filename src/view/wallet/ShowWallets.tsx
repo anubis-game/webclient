@@ -4,11 +4,11 @@ import * as React from "react";
 import { Address } from "viem";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { ChainStore } from "../../func/chain/ChainStore";
+import { DepositStore } from "../../func/deposit/DepositStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
 import { LogoutIcon } from "../icon/LogoutIcon";
 import { OpenLinkIcon } from "../icon/OpenLinkIcon";
-import { TokenStore } from "../../func/token/TokenStore";
 import { Tooltip } from "../tooltip/Tooltip";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { useDisconnect } from "wagmi";
@@ -72,7 +72,7 @@ export const ShowWallets = () => {
         >
           <DropdownMenu.Item
             className="menu item p-2"
-            onSelect={() => BalanceStore.getState().updateDepositDialog(true)}
+            onSelect={() => DepositStore.getState().updateDepositDialog(true)}
           >
             <div className="w-[144px]">Deposit</div>
             <Tooltip
@@ -84,7 +84,7 @@ export const ShowWallets = () => {
 
           <DropdownMenu.Item
             className="menu item p-2"
-            disabled={!TokenStore.getState().hasAvailable()}
+            disabled={!BalanceStore.getState().hasAvailable()}
           >
             <div className="w-[144px]">Withdraw</div>
             <Tooltip

@@ -1,5 +1,5 @@
-import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DepositButton } from "./DepositButton";
+import { DepositStore } from "../../func/deposit/DepositStore";
 import { FormArgs } from "../../func/form/FormInterface";
 import { FormInterface } from "../../func/form/FormInterface";
 import { Sleep } from "../../func/sleep/Sleep";
@@ -19,22 +19,22 @@ export class DepositHandler implements FormInterface {
   async submit(args: FormArgs) {
     {
       args.init("Signing Transaction");
-      BalanceStore.getState().updateDepositSubmit(true);
+      DepositStore.getState().updateDepositSubmit(true);
     }
 
-    await Sleep(5 * 1000);
+    await Sleep(2 * 1000);
 
     {
       args.sign("Confirming Onchain");
     }
 
-    await Sleep(5 * 1000);
+    await Sleep(2 * 1000);
 
     {
       args.done();
 
-      BalanceStore.getState().updateDepositDialog(false);
-      BalanceStore.getState().updateDepositSubmit(false);
+      DepositStore.getState().updateDepositDialog(false);
+      DepositStore.getState().updateDepositSubmit(false);
     }
 
     {
@@ -43,7 +43,7 @@ export class DepositHandler implements FormInterface {
   }
 
   private amount(): number {
-    const amo = BalanceStore.getState().depositAmount;
+    const amo = DepositStore.getState().amount;
     return amo ? Number(amo) : 0;
   }
 

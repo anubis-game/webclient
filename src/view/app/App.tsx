@@ -1,5 +1,5 @@
 import { BalanceBar } from "../balance/BalanceBar";
-import { DepositDialog } from "../balance/DepositDialog";
+import { DepositDialog } from "../deposit/DepositDialog";
 import { GuardianButton } from "../guardian/GuardianButton";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { QueryStore } from "../../func/query/QueryStore";

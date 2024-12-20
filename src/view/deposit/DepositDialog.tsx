@@ -1,29 +1,29 @@
 import * as Dialog from "@radix-ui/react-dialog";
 
-import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DepositHandler } from "./DepositHandler";
+import { DepositStore } from "../../func/deposit/DepositStore";
 import { FormButton } from "../form/FormButton";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
 import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
 
 export const DepositDialog = () => {
-  const { depositDialog, depositSubmit } = BalanceStore(
+  const { dialog, submit } = DepositStore(
     useShallow((state) => ({
-      depositDialog: state.depositDialog,
-      depositSubmit: state.depositSubmit,
+      dialog: state.dialog,
+      submit: state.submit,
     })),
   );
 
   return (
     <Dialog.Root
-      open={depositDialog}
+      open={dialog}
       onOpenChange={(open) => {
         // We lock the dialog so that it can stay in place while we process
         // transactions. So only while the dialog submit is not in progress we
         // allow the dialog open state to change.
-        if (!depositSubmit) {
-          BalanceStore.getState().updateDepositDialog(open);
+        if (!submit) {
+          DepositStore.getState().updateDepositDialog(open);
         }
       }}
     >
@@ -48,13 +48,13 @@ export const DepositDialog = () => {
                 placeholder:text-gray-400
               `)}
               id="amount"
-              disabled={depositSubmit}
+              disabled={submit}
               placeholder="5"
               type="number"
               max={10}
               min={1}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                BalanceStore.getState().updateDepositAmount(e.currentTarget.value);
+                DepositStore.getState().updateDepositAmount(e.currentTarget.value);
               }}
             />
             <div className="button px-4 py-3 w-full h-full">
@@ -73,7 +73,7 @@ export const DepositDialog = () => {
           <Dialog.Close asChild>
             <button
               className="absolute top-4 right-4 flex items-center outline-none"
-              disabled={depositSubmit}
+              disabled={submit}
             >
               <XMarkIcon />
             </button>
