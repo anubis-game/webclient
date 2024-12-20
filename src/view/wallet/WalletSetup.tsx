@@ -1,4 +1,5 @@
 import { alchemy } from "@account-kit/infra";
+import { BalanceStore } from "../../func/balance/BalanceStore";
 import { ChainStore } from "../../func/chain/ChainStore";
 import { createLightAccount } from "@account-kit/smart-contracts";
 import { createPublicClient, custom } from "viem";
@@ -6,7 +7,6 @@ import { createWalletClient } from "viem";
 import { EnsureSigner } from "../../func/signer/EnsureSigner";
 import { http } from "viem";
 import { StreamStore } from "../../func/stream/StreamStore";
-import { TokenStore } from "../../func/token/TokenStore";
 import { useAccountEffect } from "wagmi";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
@@ -73,7 +73,7 @@ export const WalletSetup = () => {
       // Connected
       //
 
-      TokenStore.getState().updateBalance();
+      BalanceStore.getState().updateBalance();
       WalletStore.getState().updateConnected(true);
     },
     onDisconnect: () => {

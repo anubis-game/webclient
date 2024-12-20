@@ -20,18 +20,35 @@
 html,
 body,
 div#root {
-  min-height: 100%;
+  min-height: 100vh;
 }
 
-.dark .button {
-  /* items-center */
-  align-items: center;
+input:disabled {
+  /* cursor-not-allowed */
+  cursor: not-allowed;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input::selection {
   /* bg-sky-400 */
   background-color: rgb(56 189 248);
+}
+
+input::-moz-selection {
+  /* bg-sky-400 */
+  background-color: rgb(56 189 248);
+}
+
+.button {
+  /* items-center */
+  align-items: center;
   /* rounded (4px) */
   border-radius: 0.25rem;
-  /* text-black */
-  color: black;
   /* cursor-pointer */
   cursor: pointer;
   /* flex */
@@ -43,6 +60,21 @@ div#root {
   /* outline-none */
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+button:disabled,
+.button:disabled {
+  /* gray-700 */
+  color: rgb(55 65 81);
+  /* cursor-not-allowed */
+  cursor: not-allowed;
+}
+
+.dark .button {
+  /* bg-sky-400 */
+  background-color: rgb(56 189 248);
+  /* text-black */
+  color: black;
 }
 
 .dark .button.transparent {
@@ -120,12 +152,42 @@ div#root {
   cursor: default;
 }
 
-.dark .icon {
+.dark .icon,
+.dark button:disabled .icon:hover {
+  /* gray-300 */
+  color: rgb(209 213 219);
+}
+
+.dark .icon:hover {
   /* text-white */
   color: white;
 }
 
-.dark .group:hover .icon {
-  /* text-gray-400 */
-  color: rgb(156 163 175);
+/*
+ *
+ *
+ *
+ */
+
+ @keyframes infiniteProgressSpinner {
+  0% {
+    stroke-dashoffset: 0;
+  }
+
+  15% {
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dashoffset: -24;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.spinner {
+  stroke-dasharray: 96;
+  animation: infiniteProgressSpinner 3s ease-in-out infinite;
 }

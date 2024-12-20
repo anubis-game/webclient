@@ -1,5 +1,11 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import * as React from "react";
 
+import { Address } from "viem";
+import { BalanceStore } from "../../func/balance/BalanceStore";
+import { ChainStore } from "../../func/chain/ChainStore";
+import { DepositStore } from "../../func/deposit/DepositStore";
+import { DollarIcon } from "../icon/DollarIcon";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
 import { LogoutIcon } from "../icon/LogoutIcon";
 import { OpenLinkIcon } from "../icon/OpenLinkIcon";
@@ -9,9 +15,10 @@ import { useDisconnect } from "wagmi";
 import { useEnsName } from "wagmi";
 import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { ChainStore } from "../../func/chain/ChainStore";
 
-export const WalletAccount = () => {
+export const ShowWallets = () => {
+  const [open, setOpen] = React.useState<boolean>(false);
+
   const { wallet, signer, player } = WalletStore(
     useShallow((state) => ({
       wallet: state.wallet?.address || "",
@@ -23,9 +30,9 @@ export const WalletAccount = () => {
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ address: wallet });
 
-  const onSelect = () => {
+  const onAddress = (add: Address) => {
     const url = new URL(
-      `/address/${player}`,
+      `/address/${add}`,
       ChainStore.getState().getActive().viem.blockExplorers?.default.url,
     ).toString();
 
@@ -35,19 +42,60 @@ export const WalletAccount = () => {
   };
 
   return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <div className="button transparent px-4 py-3 min-w-[145px]">
-          {wallet && <div>{ensName ? ensName : TruncateSeparator(wallet, "...")}</div>}
+    <DropdownMenu.Root
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <div className="flex group min-w-[181px]">
+        <DropdownMenu.Trigger asChild>
+          <div className="button transparent px-4 py-3 w-full">
+            {wallet && <div>{ensName ? ensName : TruncateSeparator(wallet, "...")}</div>}
+          </div>
+        </DropdownMenu.Trigger>
+        <div
+          className={`
+            py-3 hover:visible flex items-center cursor-pointer
+            ${open ? "visible" : "invisible group-hover:visible"}
+          `}
+          onClick={() => onAddress(wallet)}
+        >
+          <OpenLinkIcon />
         </div>
-      </DropdownMenu.Trigger>
+      </div>
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           className="dialog min-w-[198px] p-2"
           align="start"
-          sideOffset={5}
+          side="bottom"
+          sideOffset={8}
         >
+          <DropdownMenu.Item
+            className="menu item p-2"
+            onSelect={() => DepositStore.getState().updateDialog(true)}
+          >
+            <div className="w-[144px]">Deposit</div>
+            <Tooltip
+              content={<>Deposit small amounts of tokens. Everyone with an available balance can play.</>}
+              side="right"
+              trigger={<DollarIcon />}
+            />
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Item
+            className="menu item p-2"
+            disabled={!BalanceStore.getState().hasAvailable()}
+          >
+            <div className="w-[144px]">Withdraw</div>
+            <Tooltip
+              content={<>You can withdraw your available balance back to your wallet any time.</>}
+              side="right"
+              trigger={<DollarIcon />}
+            />
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Separator className="mt-2 mb-3 h-px bg-gray-600" />
+
           {signer && (
             <DropdownMenu.Item
               className="menu item p-2"
@@ -62,12 +110,10 @@ export const WalletAccount = () => {
             </DropdownMenu.Item>
           )}
 
-          <DropdownMenu.Separator className="mt-2 mb-3 h-px bg-gray-600" />
-
           {player && (
             <DropdownMenu.Item
               className="menu item p-2"
-              onSelect={onSelect}
+              onSelect={() => onAddress(player)}
             >
               <div className="w-[144px]">{TruncateSeparator(player, "...")}</div>
               <Tooltip
@@ -81,7 +127,7 @@ export const WalletAccount = () => {
           {wallet && (
             <DropdownMenu.Item
               className="menu item p-2"
-              onClick={() => disconnect()}
+              onSelect={() => disconnect()}
             >
               <div className="w-[144px]">Disconnect</div>
               <LogoutIcon />
