@@ -72,7 +72,7 @@ export const ShowWallets = () => {
         >
           <DropdownMenu.Item
             className="menu item p-2"
-            onSelect={() => DepositStore.getState().updateDepositDialog(true)}
+            onSelect={() => DepositStore.getState().updateDialog(true)}
           >
             <div className="w-[144px]">Deposit</div>
             <Tooltip

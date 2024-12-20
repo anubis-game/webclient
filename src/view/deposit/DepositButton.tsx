@@ -9,19 +9,19 @@ interface Props {
 }
 
 export const DepositButton = (props: Props) => {
-  const { amo } = DepositStore(
+  const { amount } = DepositStore(
     useShallow((state) => ({
-      amo: state.amount,
+      amount: state.amount,
     })),
   );
 
   React.useEffect(() => {
     props.setDisabled(!props.verify());
-  }, [amo, props]);
+  }, [amount, props]);
 
-  if (!amo) {
+  if (!amount) {
     return <div>Choose an Amount</div>;
   }
 
-  return <div>Deposit {amo} USDC</div>;
+  return <div>Deposit {amount} USDC</div>;
 };

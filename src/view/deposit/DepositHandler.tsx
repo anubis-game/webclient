@@ -19,7 +19,7 @@ export class DepositHandler implements FormInterface {
   async submit(args: FormArgs) {
     {
       args.init("Signing Transaction");
-      DepositStore.getState().updateDepositSubmit(true);
+      DepositStore.getState().updateSubmit(true);
     }
 
     await Sleep(2 * 1000);
@@ -33,8 +33,8 @@ export class DepositHandler implements FormInterface {
     {
       args.done();
 
-      DepositStore.getState().updateDepositDialog(false);
-      DepositStore.getState().updateDepositSubmit(false);
+      DepositStore.getState().updateDialog(false);
+      DepositStore.getState().updateSubmit(false);
     }
 
     {

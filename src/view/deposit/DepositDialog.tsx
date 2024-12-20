@@ -23,7 +23,7 @@ export const DepositDialog = () => {
         // transactions. So only while the dialog submit is not in progress we
         // allow the dialog open state to change.
         if (!submit) {
-          DepositStore.getState().updateDepositDialog(open);
+          DepositStore.getState().updateDialog(open);
         }
       }}
     >
@@ -54,7 +54,7 @@ export const DepositDialog = () => {
               max={10}
               min={1}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                DepositStore.getState().updateDepositAmount(e.currentTarget.value);
+                DepositStore.getState().updateAmount(e.currentTarget.value);
               }}
             />
             <div className="button px-4 py-3 w-full h-full">

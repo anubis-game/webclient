@@ -9,7 +9,7 @@ export interface BalanceMessage {
 
 export const DepositStore = create(
   combine({} as BalanceMessage, (set) => ({
-    updateDepositAmount: (v: string) => {
+    updateAmount: (v: string) => {
       set((state) => {
         return {
           ...state,
@@ -18,7 +18,7 @@ export const DepositStore = create(
       });
     },
 
-    updateDepositDialog: (v: boolean) => {
+    updateDialog: (v: boolean) => {
       set((state) => {
         return {
           ...state,
@@ -28,7 +28,7 @@ export const DepositStore = create(
       });
     },
 
-    updateDepositSubmit: (v: boolean) => {
+    updateSubmit: (v: boolean) => {
       set((state) => {
         return {
           ...state,
