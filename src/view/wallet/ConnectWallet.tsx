@@ -3,7 +3,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useConnect } from "wagmi";
 import { WalletOption } from "./WalletOption";
 
-export const WalletButton = () => {
+export const ConnectWallet = () => {
   const { connectors, connect } = useConnect();
 
   return (
@@ -18,7 +18,8 @@ export const WalletButton = () => {
         <DropdownMenu.Content
           className="dialog min-w-[198px] p-2"
           align="start"
-          sideOffset={5}
+          side="bottom"
+          sideOffset={8}
         >
           {connectors.map((connector) => (
             <WalletOption

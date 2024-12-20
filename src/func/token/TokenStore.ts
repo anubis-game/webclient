@@ -1,7 +1,8 @@
+import { BalanceOf } from "../transaction/erc20/BalanceOf";
 import { ChainStore } from "../chain/ChainStore";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { BalanceOf } from "../transaction/erc20/BalanceOf";
+import { DefaultTokenSymcol } from "../config/Config";
 import { SearchBalance } from "../transaction/registry/SearchBalance";
 import { TokenConfig } from "./TokenConfig";
 
@@ -24,6 +25,20 @@ export const TokenStore = create(
             available: {},
           };
         });
+      },
+
+      formatBalance: (mes: TokenMessage, tok: string = DefaultTokenSymcol): string => {
+        return mes[tok] ? mes[tok].balance.toFixed(mes[tok].precision) : "";
+      },
+
+      hasAllocated: (tok: string = DefaultTokenSymcol): boolean => {
+        const alo = get().allocated[tok];
+        return alo && alo.balance !== 0;
+      },
+
+      hasAvailable: (tok: string = DefaultTokenSymcol): boolean => {
+        const avl = get().available[tok];
+        return avl && avl.balance !== 0;
       },
 
       updateBalance: async () => {

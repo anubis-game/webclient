@@ -5,6 +5,7 @@ export const ArbitrumSepoliaAlchemyGasPolicy: string = import.meta.env.VITE_ARBI
 export const ArbitrumSepoliaAlchemyRpcEndpoint: string = import.meta.env.VITE_ARBITRUM_SEPOLIA_ALCHEMY_RPC_ENDPOINT || "";
 
 export const DefaultChainId: number = Number(import.meta.env.VITE_DEFAULT_CHAIN_ID) || 0;
+export const DefaultTokenSymcol: string = import.meta.env.VITE_DEFAULT_TOKEN_SYMBOL || "";
 
 export const GuardianEndpoints: string[] = SplitString(import.meta.env.VITE_GUARDIAN_ENDPOINTS) || [];
 export const GuardianHypertextProtocol: string = import.meta.env.VITE_GUARDIAN_HYPERTEXT_PROTOCOL || "";
