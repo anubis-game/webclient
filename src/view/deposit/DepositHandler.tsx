@@ -1,44 +1,63 @@
 import { DepositButton } from "./DepositButton";
 import { DepositStore } from "../../func/deposit/DepositStore";
-import { FormArgs } from "../../func/form/FormInterface";
 import { FormInterface } from "../../func/form/FormInterface";
+import { FormState } from "../form/FormState";
+import { FormStateLoading } from "../form/FormState";
+import { FormStateSuccess } from "../form/FormState";
 import { Sleep } from "../../func/sleep/Sleep";
 
 export class DepositHandler implements FormInterface {
-  constructor() {}
-
-  button(setDisabled: (disabled: boolean) => void): JSX.Element {
-    return (
-      <DepositButton
-        verify={this.verify.bind(this)}
-        setDisabled={setDisabled}
-      />
-    );
+  button(setState: (state: FormState) => void): JSX.Element {
+    return <DepositButton setState={setState} />;
   }
 
-  async submit(args: FormArgs) {
+  async submit(setState: (state: FormState) => void) {
     {
-      args.init("Signing Transaction");
+      setState({
+        name: FormStateLoading,
+        disabled: true,
+        finished: false,
+        loading: true,
+        message: "Signing Transaction",
+      });
+
       DepositStore.getState().updateSubmit(true);
     }
 
     await Sleep(2 * 1000);
 
     {
-      args.sign("Confirming Onchain");
+      setState({
+        name: FormStateLoading,
+        disabled: true,
+        finished: false,
+        loading: true,
+        message: "Confirming Onchain",
+      });
     }
 
     await Sleep(2 * 1000);
 
     {
-      args.done();
-
-      DepositStore.getState().updateDialog(false);
-      DepositStore.getState().updateSubmit(false);
+      setState({
+        name: FormStateSuccess,
+        disabled: true,
+        finished: false,
+        loading: true,
+        message: `Deposited ${this.amount()} ${this.symbol()}`,
+      });
     }
+
+    await Sleep(2 * 1000);
 
     {
       // args.fail();
+    }
+
+    // Hide the dialog as last step.
+    {
+      DepositStore.getState().updateDialog(false);
+      DepositStore.getState().updateSubmit(false);
     }
   }
 
@@ -47,17 +66,8 @@ export class DepositHandler implements FormInterface {
     return amo ? Number(amo) : 0;
   }
 
-  private verify(): boolean {
-    const amo = this.amount();
-
-    if (!amo) {
-      return false;
-    }
-
-    if (amo < 1 || amo > 10) {
-      return false;
-    }
-
-    return true;
+  private symbol(): string {
+    const sym = DepositStore.getState().symbol;
+    return sym.toUpperCase();
   }
 }

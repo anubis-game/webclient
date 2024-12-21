@@ -34,12 +34,12 @@ export const GuardianButton = () => {
   };
 
   return (
-    <div className="mt-32">
+    <div className="guardian dialog grid mt-32 p-4 gap-4 ">
       {guardians &&
         Array.from(guardians.entries()).map(([key, val]) => (
           <div
             key={key}
-            className="button flex mb-2 p-4 gap-4 items-center justify-between"
+            className="button solid p-4 gap-4 items-center justify-between"
             onClick={() => onClick(key)}
           >
             <div className="w-[144px]">{TruncateSeparator(key, "...")}</div>

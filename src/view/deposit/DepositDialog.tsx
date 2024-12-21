@@ -1,19 +1,28 @@
 import * as Dialog from "@radix-ui/react-dialog";
+import * as React from "react";
 
+import { AllTokenSymbols } from "../../func/token/TokenConfig";
+import { DefaultTokenSymcol } from "../../func/config/Config";
 import { DepositHandler } from "./DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
 import { FormButton } from "../form/FormButton";
+import { ToggleBar } from "../toggle/ToggleBar";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
 import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
 
 export const DepositDialog = () => {
-  const { dialog, submit } = DepositStore(
+  const { dialog, submit, symbol } = DepositStore(
     useShallow((state) => ({
       dialog: state.dialog,
       submit: state.submit,
+      symbol: state.symbol,
     })),
   );
+
+  React.useEffect(() => {
+    DepositStore.getState().updateSymol(DefaultTokenSymcol);
+  }, []);
 
   return (
     <Dialog.Root
@@ -30,22 +39,20 @@ export const DepositDialog = () => {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
         <Dialog.Content
-          className="dialog fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-md p-4"
+          className="deposit dialog fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-md p-4"
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <Dialog.Title className="w-full mb-2 font-medium">Deposit</Dialog.Title>
-
-          <Dialog.Description className="mb-4 text-sm">
+          <Dialog.Description className="mt-[50px] mb-4 text-sm">
             You can increase your available balance to play he game. You will get the allocated balance of every player
             that you beat.
           </Dialog.Description>
 
-          <div className="h-12 mb-4 flex items-center gap-2">
+          <div className="items-center grid gap-4">
             <input
               className={TrimWhitespace(`
                 w-full h-full p-2 rounded outline-none
-                text-2xl text-right text-black bg-white
-                placeholder:text-gray-400
+                text-2xl text-center text-black bg-white
+                disabled:text-gray-400 placeholder:text-gray-400
               `)}
               id="amount"
               disabled={submit}
@@ -57,12 +64,19 @@ export const DepositDialog = () => {
                 DepositStore.getState().updateAmount(e.currentTarget.value);
               }}
             />
-            <div className="button px-4 py-3 w-full h-full">
-              <div>USDC</div>
-            </div>
+
+            <FormButton handler={new DepositHandler()} />
           </div>
 
-          <FormButton handler={new DepositHandler()} />
+          <Dialog.Title className="absolute top-4 left-4 w-full">
+            <ToggleBar
+              default={DefaultTokenSymcol}
+              disabled={submit}
+              onSelect={DepositStore.getState().updateSymol}
+              selected={symbol}
+              values={AllTokenSymbols()}
+            />
+          </Dialog.Title>
 
           {/*
           We keep the close button at the buttom of the dialog because we do not
@@ -72,7 +86,7 @@ export const DepositDialog = () => {
            */}
           <Dialog.Close asChild>
             <button
-              className="absolute top-4 right-4 flex items-center outline-none"
+              className="button ghost icon absolute top-4 right-4 flex items-center outline-none"
               disabled={submit}
             >
               <XMarkIcon />

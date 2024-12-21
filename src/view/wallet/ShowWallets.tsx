@@ -46,15 +46,17 @@ export const ShowWallets = () => {
       open={open}
       onOpenChange={setOpen}
     >
-      <div className="flex group min-w-[181px]">
-        <DropdownMenu.Trigger asChild>
-          <div className="button transparent px-4 py-3 w-full">
-            {wallet && <div>{ensName ? ensName : TruncateSeparator(wallet, "...")}</div>}
-          </div>
-        </DropdownMenu.Trigger>
+      <div className="flex group min-w-[181px] items-center justify-between">
+        <div>
+          <DropdownMenu.Trigger asChild>
+            <div className="flex button ghost open px-4 py-3">
+              {wallet && <div>{ensName ? ensName : TruncateSeparator(wallet, "...")}</div>}
+            </div>
+          </DropdownMenu.Trigger>
+        </div>
         <div
           className={`
-            py-3 hover:visible flex items-center cursor-pointer
+            button ghost icon py-3 hover:visible flex items-center
             ${open ? "visible" : "invisible group-hover:visible"}
           `}
           onClick={() => onAddress(wallet)}
@@ -65,13 +67,13 @@ export const ShowWallets = () => {
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="dialog min-w-[198px] p-2"
+          className="wallet dialog min-w-[198px] p-2"
           align="start"
           side="bottom"
           sideOffset={8}
         >
           <DropdownMenu.Item
-            className="menu item p-2"
+            className="button ghost p-2"
             onSelect={() => DepositStore.getState().updateDialog(true)}
           >
             <div className="w-[144px]">Deposit</div>
@@ -83,7 +85,7 @@ export const ShowWallets = () => {
           </DropdownMenu.Item>
 
           <DropdownMenu.Item
-            className="menu item p-2"
+            className="button ghost p-2"
             disabled={!BalanceStore.getState().hasAvailable()}
           >
             <div className="w-[144px]">Withdraw</div>
@@ -98,7 +100,7 @@ export const ShowWallets = () => {
 
           {signer && (
             <DropdownMenu.Item
-              className="menu item p-2"
+              className="button ghost p-2"
               disabled
             >
               <div className="w-[144px]">{TruncateSeparator(signer, "...")}</div>
@@ -112,7 +114,7 @@ export const ShowWallets = () => {
 
           {player && (
             <DropdownMenu.Item
-              className="menu item p-2"
+              className="button ghost p-2"
               onSelect={() => onAddress(player)}
             >
               <div className="w-[144px]">{TruncateSeparator(player, "...")}</div>
@@ -126,7 +128,7 @@ export const ShowWallets = () => {
 
           {wallet && (
             <DropdownMenu.Item
-              className="menu item p-2"
+              className="button ghost p-2"
               onSelect={() => disconnect()}
             >
               <div className="w-[144px]">Disconnect</div>

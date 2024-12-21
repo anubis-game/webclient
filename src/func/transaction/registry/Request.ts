@@ -1,7 +1,7 @@
 import { Address } from "viem";
 import { CreateSignature } from "../../signature/CreateSignature";
 import { ContractConfig } from "../../contract/ContractConfig";
-import { ContractWithSymbol } from "../../chain/ChainConfig";
+import { ContractWithSymbol } from "../../contract/ContractConfig";
 import { encodeFunctionData } from "viem";
 import { EncodeFunctionDataParameters } from "viem";
 import { TransactionObject } from "../TransactionObject";

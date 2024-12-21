@@ -1,6 +1,11 @@
 import * as React from "react";
 
+import { CheckMarkIcon } from "../icon/CheckMarkIcon";
+import { DefaultFormState } from "./FormState";
 import { FormInterface } from "../../func/form/FormInterface";
+import { FormState } from "./FormState";
+import { FormStateLoading } from "./FormState";
+import { FormStateSuccess } from "./FormState";
 import { SpinnerIcon } from "../icon/SpinnerIcon";
 
 interface Props {
@@ -8,45 +13,29 @@ interface Props {
 }
 
 export const FormButton = (props: Props) => {
-  const [disabled, setDisabled] = React.useState<boolean>(false);
-  const [processing, setProcessing] = React.useState<string>("");
+  const [state, setState] = React.useState<FormState>(DefaultFormState());
 
   return (
     <button
-      className="button px-4 py-3 w-full h-full"
-      disabled={disabled}
+      className={`button form ${state.name} px-4 py-3 w-full h-full`}
+      disabled={state.disabled}
       type="button"
       onClick={() => {
-        props.handler.submit({
-          init: (title: string) => {
-            setDisabled(true);
-            setProcessing(title);
-          },
-          sign: (title: string) => {
-            setProcessing(title);
-          },
-          done: () => {
-            setDisabled(false);
-            setProcessing("");
-          },
-          fail: () => {
-            setDisabled(false);
-            setProcessing("");
-          },
-        });
+        props.handler.submit(setState);
       }}
     >
       <>
-        {processing ? (
+        {state.loading || state.finished ? (
           <div className="flex gap-x-2">
             <div className="flex my-auto">
-              <SpinnerIcon textColour="text-gray-700" />
+              {state.name === FormStateSuccess && <CheckMarkIcon />}
+              {state.name === FormStateLoading && <SpinnerIcon />}
             </div>
 
-            <div className="text-gray-700">{processing}</div>
+            <div>{state.message}</div>
           </div>
         ) : (
-          props.handler.button(setDisabled)
+          props.handler.button(setState)
         )}
       </>
     </button>

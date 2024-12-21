@@ -5,6 +5,7 @@ export interface BalanceMessage {
   amount: string;
   dialog: boolean;
   submit: boolean;
+  symbol: string;
 }
 
 export const DepositStore = create(
@@ -33,6 +34,15 @@ export const DepositStore = create(
         return {
           ...state,
           submit: v,
+        };
+      });
+    },
+
+    updateSymol: (v: string) => {
+      set((state) => {
+        return {
+          ...state,
+          symbol: v,
         };
       });
     },
