@@ -9,7 +9,7 @@ export const ConnectWallet = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <div className="button dropdown px-4 py-3 min-w-[145px]">
+        <div className="button solid px-4 py-3 min-w-[145px]">
           <div>Connect Wallet</div>
         </div>
       </DropdownMenu.Trigger>
