@@ -3,7 +3,6 @@ import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
 import { ChainStore } from "../../func/chain/ChainStore";
-import { DefaultTokenSymcol } from "../../func/config/Config";
 import { DepositHandler } from "./DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
 import { FormButton } from "../form/FormButton";
@@ -21,13 +20,6 @@ export const DepositDialog = () => {
       symbol: state.symbol,
     })),
   );
-
-  React.useEffect(() => {
-    // Setting the default token here on component mount allows the toggle bar
-    // below to have the right symbol checked when the deposit dialog is
-    // rendered.
-    DepositStore.getState().updateSymol(DefaultTokenSymcol);
-  }, []);
 
   return (
     <Dialog.Root
