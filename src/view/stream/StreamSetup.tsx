@@ -4,9 +4,9 @@ import { Address } from "viem";
 import { Guardian } from "../../func/stream/StreamMessage";
 import { GuardianEndpoints } from "../../func/config/Config";
 import { GuardianHypertextProtocol } from "../../func/config/Config";
+import { ShuffleStrings } from "../../func/string/ShuffleStrings";
 import { Sleep } from "../../func/sleep/Sleep";
 import { StreamStore } from "../../func/stream/StreamStore";
-import { ShuffleStrings } from "../../func/string/ShuffleStrings";
 
 export const StreamSetup = () => {
   // Continuously check the the available guardian servers.
@@ -16,7 +16,7 @@ export const StreamSetup = () => {
     (async () => {
       while (mnt) {
         await updateGuardians();
-        await Sleep(5 * 1000);
+        await Sleep(60 * 1000);
       }
     })();
 
