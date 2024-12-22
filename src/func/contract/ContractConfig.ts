@@ -15,7 +15,7 @@ export const ContractWithSymbol = (sym: string): ContractConfig => {
   });
 
   if (con === undefined) {
-    throw `Could not find contract config for token symbol ${sym}.`;
+    throw `Could not find contract config for symbol ${sym}.`;
   }
 
   return con;

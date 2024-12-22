@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
+import { ChainStore } from "../../func/chain/ChainStore";
 import { DefaultTokenSymcol } from "../../func/config/Config";
 import { DepositHandler } from "./DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
@@ -10,6 +11,7 @@ import { ToggleBar } from "../toggle/ToggleBar";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
 import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
+import { BlockExplorerToken } from "../../func/token/BlockExplorerToken";
 
 export const DepositDialog = () => {
   const { dialog, submit, symbol } = DepositStore(
@@ -42,11 +44,18 @@ export const DepositDialog = () => {
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
         <Dialog.Content
-          className="deposit dialog fixed left-1/2 top-1/2 max-h-[85vh] w-[90vw] max-w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-md p-4"
+          className="deposit dialog p-4"
           onInteractOutside={(e) => e.preventDefault()}
         >
           <Dialog.Description className="mt-[50px] mb-4 text-sm">
-            Increase your available balance to play the game. Win the allocated balance of every player you beat.
+            Increase your available balance to play the game with&nbsp;
+            <a
+              href={BlockExplorerToken(symbol, "href")}
+              target="_blank"
+            >
+              {symbol}
+            </a>
+            &nbsp;on {ChainStore.getState().getActive().viem.name}. Win the allocated balance of every player you beat.
             Withdraw your available balance any time.
           </Dialog.Description>
 

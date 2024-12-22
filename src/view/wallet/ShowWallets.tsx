@@ -1,9 +1,8 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
 
-import { Address } from "viem";
 import { BalanceStore } from "../../func/balance/BalanceStore";
-import { ChainStore } from "../../func/chain/ChainStore";
+import { BlockExplorerAddress } from "../../func/address/BlockExplorerAddress";
 import { DepositStore } from "../../func/deposit/DepositStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
@@ -30,17 +29,6 @@ export const ShowWallets = () => {
   const { disconnect } = useDisconnect();
   const { data: ensName } = useEnsName({ address: wallet });
 
-  const onAddress = (add: Address) => {
-    const url = new URL(
-      `/address/${add}`,
-      ChainStore.getState().getActive().viem.blockExplorers?.default.url,
-    ).toString();
-
-    {
-      window.open(url, "_blank");
-    }
-  };
-
   return (
     <DropdownMenu.Root
       open={open}
@@ -49,7 +37,7 @@ export const ShowWallets = () => {
       <div className="flex group min-w-[181px] items-center justify-between">
         <div>
           <DropdownMenu.Trigger asChild>
-            <div className="button ghost open px-4 py-3">
+            <div className="button ghost px-4 py-3">
               {wallet && <div>{ensName ? ensName : TruncateSeparator(wallet, "...")}</div>}
             </div>
           </DropdownMenu.Trigger>
@@ -59,7 +47,7 @@ export const ShowWallets = () => {
             button ghost icon py-3 hover:visible flex items-center
             ${open ? "visible" : "invisible group-hover:visible"}
           `}
-          onClick={() => onAddress(wallet)}
+          onClick={() => BlockExplorerAddress(wallet, "open")}
         >
           <OpenLinkIcon />
         </div>
@@ -115,7 +103,7 @@ export const ShowWallets = () => {
           {player && (
             <DropdownMenu.Item
               className="button ghost p-2"
-              onSelect={() => onAddress(player)}
+              onClick={() => BlockExplorerAddress(player, "open")}
             >
               <div className="w-[144px]">{TruncateSeparator(player, "...")}</div>
               <Tooltip

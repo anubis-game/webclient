@@ -25,6 +25,23 @@ div#root {
   min-height: 100vh;
 }
 
+/*
+ *
+ *
+ *
+ */
+
+ html body a {
+  /* text-sky-400 */
+  color: rgb(56 189 248);
+ }
+
+/*
+ *
+ *
+ *
+ */
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -47,18 +64,38 @@ input::-moz-selection {
  *
  */
 
-.dark .dialog {
-  /* bg-gray-900 */
-  background-color: rgb(17 24 39);
+.dialog {
   /* border */
   border-width: 1px;
-  /* border-gray-700 */
-  border-color: rgb(55 65 81);
   /* rounded (4px) */
   border-radius: 0.25rem;
   /* outline-none */
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+.dark .dialog {
+  /* bg-gray-900 */
+  background-color: rgb(17 24 39);
+  /* border-gray-700 */
+  border-color: rgb(55 65 81);
+}
+
+.deposit.dialog {
+  /* left-1/2 */
+  left: 50%;
+  /* max-h-[85vh] */
+  max-height: 85vh;
+  /* max-w-[450px] */
+  max-width: 450px;
+  /* fixed */
+  position: fixed;
+  /* top-1/2 */
+  top: 50%;
+  /* -translate-x-1/2 -translate-y-1/2 */
+  transform: translate(-50%, -50%);
+  /* w-[90vw] */
+  width: 90vw;
 }
 
 /*

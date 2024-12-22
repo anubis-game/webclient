@@ -20,7 +20,15 @@ export const ChainList: ChainConfig[] = [
       "Registry-USDC": [{ abi: RegistryAbi, address: "0x", latest: true }],
     },
     tokens: {
-      USDC: [{ abi: Erc20Abi, address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d", decimals: 6, precision: 2 }],
+      USDC: [
+        {
+          abi: Erc20Abi,
+          address: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
+          decimals: 6,
+          precision: 2,
+          latest: true,
+        },
+      ],
     },
   },
 ];
