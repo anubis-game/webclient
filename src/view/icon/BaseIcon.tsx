@@ -14,7 +14,7 @@ interface Props {
 export const BaseIcon = (props: Props) => {
   const defaultClassName = TrimWhitespace(`
     w-5 h-5
-    ${props.className && props.className !== "" ? props.className : "icon"}
+    ${props.className ? props.className : ""}
   `);
 
   return (

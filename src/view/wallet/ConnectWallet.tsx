@@ -1,7 +1,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 import { useConnect } from "wagmi";
-import { WalletOption } from "./WalletOption";
+import { WalletItem } from "./WalletItem";
 
 export const ConnectWallet = () => {
   const { connectors, connect } = useConnect();
@@ -9,20 +9,20 @@ export const ConnectWallet = () => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <div className="button px-4 py-3 min-w-[145px]">
+        <div className="button solid px-4 py-3 min-w-[145px]">
           <div>Connect Wallet</div>
         </div>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          className="dialog min-w-[198px] p-2"
+          className="wallet dialog min-w-[198px] p-2"
           align="start"
           side="bottom"
           sideOffset={8}
         >
           {connectors.map((connector) => (
-            <WalletOption
+            <WalletItem
               key={connector.uid}
               connector={connector}
               onSelect={() => connect({ connector })}

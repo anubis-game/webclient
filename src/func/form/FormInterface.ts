@@ -1,11 +1,6 @@
-export interface FormArgs {
-  init: (title: string) => void;
-  sign: (title: string) => void;
-  done: () => void;
-  fail: () => void;
-}
+import { FormState } from "../../view/form/FormState";
 
 export interface FormInterface {
-  button(setDisabled: (disabled: boolean) => void): JSX.Element;
-  submit(args: FormArgs): void;
+  button(setState: (state: FormState) => void): JSX.Element;
+  submit(setState: (state: FormState) => void): void;
 }

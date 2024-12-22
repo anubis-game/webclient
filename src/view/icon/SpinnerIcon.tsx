@@ -1,6 +1,5 @@
 interface Props {
   className?: string;
-  textColour: string;
 }
 
 export const SpinnerIcon = (props: Props) => {
@@ -11,7 +10,7 @@ export const SpinnerIcon = (props: Props) => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        className={`spinner ${props.textColour}`}
+        className="spinner"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"

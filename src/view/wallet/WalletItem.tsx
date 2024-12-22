@@ -11,7 +11,7 @@ interface Props {
   onSelect: () => void;
 }
 
-export const WalletOption = (props: Props) => {
+export const WalletItem = (props: Props) => {
   const [ready, setReady] = React.useState(false);
 
   React.useEffect(() => {
@@ -23,7 +23,7 @@ export const WalletOption = (props: Props) => {
 
   return (
     <DropdownMenu.Item
-      className="menu item p-2"
+      className="button ghost p-2"
       disabled={!ready}
       onSelect={props.onSelect}
     >
