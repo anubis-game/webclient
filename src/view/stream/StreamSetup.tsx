@@ -12,14 +12,12 @@ export const StreamSetup = () => {
   React.useEffect(() => {
     let mnt = true;
 
-    const loop = async () => {
+    (async () => {
       while (mnt) {
         await updateGuardians();
         await Sleep(60 * 1000);
       }
-    };
-
-    loop();
+    })();
 
     return () => {
       mnt = false;

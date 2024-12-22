@@ -4,15 +4,20 @@ import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const WalletBar = () => {
-  const wallet = WalletStore(
+  const { connected, ready } = WalletStore(
     useShallow((state) => ({
       connected: state.connected,
+      ready: state.ready,
     })),
   );
 
+  if (!ready) {
+    return <></>;
+  }
+
   return (
     <div className="absolute top-4 left-4 flex gap-4 items-center">
-      {wallet.connected ? <ShowWallets /> : <ConnectWallet />}
+      {connected ? <ShowWallets /> : <ConnectWallet />}
     </div>
   );
 };
