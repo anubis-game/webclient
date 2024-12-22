@@ -51,7 +51,7 @@ export const DepositDialog = () => {
             Withdraw your available balance any time.
           </Dialog.Description>
 
-          <div className="items-center grid gap-4">
+          <div className="grid gap-4 items-center">
             <input
               className={TrimWhitespace(`
                 w-full h-full p-2 rounded outline-none

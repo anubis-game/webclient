@@ -17,13 +17,13 @@ export const AllTokenSymbols = (): string[] => {
 export const TokenWithSymbol = (sym: string): TokenConfig => {
   const chn = ChainStore.getState().getActive();
 
-  const con = chn.tokens[sym].find((x: TokenConfig) => {
+  const tok = chn.tokens[sym].find((x: TokenConfig) => {
     return x.latest === true;
   });
 
-  if (con === undefined) {
+  if (tok === undefined) {
     throw `Could not find token config for symbol ${sym}.`;
   }
 
-  return con;
+  return tok;
 };
