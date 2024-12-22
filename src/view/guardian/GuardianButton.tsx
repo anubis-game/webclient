@@ -17,11 +17,11 @@ export const GuardianButton = () => {
 
   const onClick = async (grd: Address) => {
     if (!WalletStore.getState().connected) {
-      // TODO ensure connect wallet
+      // TODO ensure connect wallet before contract write
     }
 
     if (!BalanceStore.getState().hasAvailable()) {
-      // TODO ensure deposit balance
+      // TODO ensure deposit balance before contract write
     }
 
     {
@@ -37,6 +37,9 @@ export const GuardianButton = () => {
     return <></>;
   }
 
+  // Since we randomize the update of the Guardian metadata, we have to sort the
+  // map before rendering the buttons below. That is to guarantee a stable
+  // visual representation of the available Guardian game servers.
   const sorted = Array.from(guardians.entries()).sort(([x], [b]) => x.localeCompare(b));
 
   return (

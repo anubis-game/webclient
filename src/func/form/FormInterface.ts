@@ -1,6 +1,6 @@
-import { FormState } from "../../view/form/FormState";
+import { FormStatus } from "./FormStatus";
 
 export interface FormInterface {
-  button(setState: (state: FormState) => void): JSX.Element;
-  submit(setState: (state: FormState) => void): void;
+  button(setStatus: (status: FormStatus) => void): JSX.Element;
+  submit(setStatus: (status: FormStatus) => void): void;
 }

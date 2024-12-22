@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
 import { ChainStore } from "../../func/chain/ChainStore";
-import { DepositHandler } from "./DepositHandler";
+import { DepositHandler } from "../../func/deposit/DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
 import { FormButton } from "../form/FormButton";
 import { ToggleBar } from "../toggle/ToggleBar";
