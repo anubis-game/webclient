@@ -33,19 +33,24 @@ export const GuardianButton = () => {
     ]);
   };
 
+  if (!guardians) {
+    return <></>;
+  }
+
+  const sorted = Array.from(guardians.entries()).sort(([x], [b]) => x.localeCompare(b));
+
   return (
     <div className="guardian dialog grid mt-32 p-4 gap-4 ">
-      {guardians &&
-        Array.from(guardians.entries()).map(([key, val]) => (
-          <div
-            key={key}
-            className="button solid p-4 gap-4 items-center justify-between"
-            onClick={() => onClick(key)}
-          >
-            <div className="w-[144px]">{TruncateSeparator(key, "...")}</div>
-            <div>{Math.round(val.latency)} ms</div>
-          </div>
-        ))}
+      {sorted.map(([key, val]) => (
+        <div
+          key={key}
+          className="button solid p-4 gap-4 items-center justify-between"
+          onClick={() => onClick(key)}
+        >
+          <div className="w-[144px]">{TruncateSeparator(key, "...")}</div>
+          <div>{Math.round(val.latency)} ms</div>
+        </div>
+      ))}
     </div>
   );
 };

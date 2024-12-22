@@ -13,10 +13,20 @@ export interface WalletMessage {
   player: { address: Hex; client: LightAccount };
   public: PublicClient;
   connected: boolean;
+  ready: boolean;
 }
 
+// newWalletMessage ensures that we also have initialized booleans so that we do
+// not have to work with any undefined state during component rendering.
+const newWalletMessage = (): WalletMessage => {
+  return {
+    connected: false,
+    ready: false,
+  } as WalletMessage;
+};
+
 export const WalletStore = create(
-  combine({} as WalletMessage, (set) => ({
+  combine(newWalletMessage(), (set) => ({
     updateWallet: (a: Hex, c: WalletClient) => {
       set((state) => {
         return {
@@ -63,6 +73,14 @@ export const WalletStore = create(
         return {
           ...state,
           connected: c,
+        };
+      });
+    },
+    updateReady: (r: boolean) => {
+      set((state) => {
+        return {
+          ...state,
+          ready: r,
         };
       });
     },
