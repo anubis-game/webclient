@@ -39,8 +39,6 @@ const validate = (amo: string, sym: string): FormState => {
     };
   }
 
-  const num = amo ? Number(amo) : 0;
-
   if (amo.includes(".") || amo.includes("e")) {
     return {
       name: FormStateInvalid,
@@ -50,6 +48,8 @@ const validate = (amo: string, sym: string): FormState => {
       message: `Only full ${sym}`,
     };
   }
+
+  const num = amo ? Number(amo) : 0;
 
   if (num < 1) {
     return {

@@ -49,7 +49,7 @@ export const ShowWallets = () => {
       <div className="flex group min-w-[181px] items-center justify-between">
         <div>
           <DropdownMenu.Trigger asChild>
-            <div className="flex button ghost open px-4 py-3">
+            <div className="button ghost open px-4 py-3">
               {wallet && <div>{ensName ? ensName : TruncateSeparator(wallet, "...")}</div>}
             </div>
           </DropdownMenu.Trigger>

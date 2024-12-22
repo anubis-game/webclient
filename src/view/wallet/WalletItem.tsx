@@ -23,7 +23,7 @@ export const WalletItem = (props: Props) => {
 
   return (
     <DropdownMenu.Item
-      className="button connect p-2"
+      className="button ghost p-2"
       disabled={!ready}
       onSelect={props.onSelect}
     >

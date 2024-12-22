@@ -1,8 +1,8 @@
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
+
 import { ToggleItem } from "./ToggleItem";
 
 interface Props {
-  default: string;
   disabled: boolean;
   onSelect: (val: string) => void;
   selected: string;

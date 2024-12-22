@@ -21,6 +21,9 @@ export const DepositDialog = () => {
   );
 
   React.useEffect(() => {
+    // Setting the default token here on component mount allows the toggle bar
+    // below to have the right symbol checked when the deposit dialog is
+    // rendered.
     DepositStore.getState().updateSymol(DefaultTokenSymcol);
   }, []);
 
@@ -43,8 +46,8 @@ export const DepositDialog = () => {
           onInteractOutside={(e) => e.preventDefault()}
         >
           <Dialog.Description className="mt-[50px] mb-4 text-sm">
-            You can increase your available balance to play he game. You will get the allocated balance of every player
-            that you beat.
+            Increase your available balance to play the game. Win the allocated balance of every player you beat.
+            Withdraw your available balance any time.
           </Dialog.Description>
 
           <div className="items-center grid gap-4">
@@ -70,7 +73,6 @@ export const DepositDialog = () => {
 
           <Dialog.Title className="absolute top-4 left-4 w-full">
             <ToggleBar
-              default={DefaultTokenSymcol}
               disabled={submit}
               onSelect={DepositStore.getState().updateSymol}
               selected={symbol}
