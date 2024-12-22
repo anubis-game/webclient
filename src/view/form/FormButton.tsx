@@ -1,11 +1,11 @@
 import * as React from "react";
 
 import { CheckMarkIcon } from "../icon/CheckMarkIcon";
-import { DefaultFormState } from "./FormState";
+import { DefaultFormStatus } from "../../func/form/FormStatus";
 import { FormInterface } from "../../func/form/FormInterface";
-import { FormState } from "./FormState";
-import { FormStateLoading } from "./FormState";
-import { FormStateSuccess } from "./FormState";
+import { FormStatus } from "../../func/form/FormStatus";
+import { FormStatusLoading } from "../../func/form/FormStatus";
+import { FormStatusSuccess } from "../../func/form/FormStatus";
 import { SpinnerIcon } from "../icon/SpinnerIcon";
 
 interface Props {
@@ -13,29 +13,29 @@ interface Props {
 }
 
 export const FormButton = (props: Props) => {
-  const [state, setState] = React.useState<FormState>(DefaultFormState());
+  const [status, setStatus] = React.useState<FormStatus>(DefaultFormStatus());
 
   return (
     <button
-      className={`button form ${state.name} px-4 py-3 w-full h-full`}
-      disabled={state.disabled}
+      className={`button form ${status.name} px-4 py-3 w-full h-full`}
+      disabled={status.disabled}
       type="button"
       onClick={() => {
-        props.handler.submit(setState);
+        props.handler.submit(setStatus);
       }}
     >
       <>
-        {state.loading || state.finished ? (
+        {status.loading || status.finished ? (
           <div className="flex gap-x-2">
             <div className="flex my-auto">
-              {state.name === FormStateSuccess && <CheckMarkIcon />}
-              {state.name === FormStateLoading && <SpinnerIcon />}
+              {status.name === FormStatusSuccess && <CheckMarkIcon />}
+              {status.name === FormStatusLoading && <SpinnerIcon />}
             </div>
 
-            <div>{state.message}</div>
+            <div>{status.message}</div>
           </div>
         ) : (
-          props.handler.button(setState)
+          props.handler.button(setStatus)
         )}
       </>
     </button>

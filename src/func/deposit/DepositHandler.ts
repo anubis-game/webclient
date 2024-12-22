@@ -1,20 +1,23 @@
-import { DepositButton } from "./DepositButton";
-import { DepositStore } from "../../func/deposit/DepositStore";
-import { FormInterface } from "../../func/form/FormInterface";
-import { FormState } from "../form/FormState";
-import { FormStateLoading } from "../form/FormState";
-import { FormStateSuccess } from "../form/FormState";
-import { Sleep } from "../../func/sleep/Sleep";
+import * as React from "react";
+
+import { DepositButton } from "../../view/deposit/DepositButton";
+import { DepositStore } from "./DepositStore";
+import { FormInterface } from "../form/FormInterface";
+import { FormStatus } from "../form/FormStatus";
+import { FormStatusLoading } from "../form/FormStatus";
+import { FormStatusSuccess } from "../form/FormStatus";
+import { Sleep } from "../sleep/Sleep";
 
 export class DepositHandler implements FormInterface {
-  button(setState: (state: FormState) => void): JSX.Element {
-    return <DepositButton setState={setState} />;
+  button(setStatus: (status: FormStatus) => void): JSX.Element {
+    return React.createElement(DepositButton, { setStatus });
   }
 
-  async submit(setState: (state: FormState) => void) {
+  // TODO implement the contract write for Registry deposits
+  async submit(setStatus: (status: FormStatus) => void) {
     {
-      setState({
-        name: FormStateLoading,
+      setStatus({
+        name: FormStatusLoading,
         disabled: true,
         finished: false,
         loading: true,
@@ -27,8 +30,8 @@ export class DepositHandler implements FormInterface {
     await Sleep(2 * 1000);
 
     {
-      setState({
-        name: FormStateLoading,
+      setStatus({
+        name: FormStatusLoading,
         disabled: true,
         finished: false,
         loading: true,
@@ -39,8 +42,8 @@ export class DepositHandler implements FormInterface {
     await Sleep(2 * 1000);
 
     {
-      setState({
-        name: FormStateSuccess,
+      setStatus({
+        name: FormStatusSuccess,
         disabled: true,
         finished: false,
         loading: true,
