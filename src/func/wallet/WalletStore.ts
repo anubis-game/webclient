@@ -16,6 +16,8 @@ export interface WalletMessage {
   ready: boolean;
 }
 
+// newWalletMessage ensures that we also have initialized booleans so that we do
+// not have to work with any undefined state during component rendering.
 const newWalletMessage = (): WalletMessage => {
   return {
     connected: false,
