@@ -88,6 +88,8 @@ input::-moz-selection {
   max-height: 85vh;
   /* max-w-[450px] */
   max-width: 450px;
+  /* overflow-y-auto */
+  overflow-y: auto;
   /* fixed */
   position: fixed;
   /* top-1/2 */

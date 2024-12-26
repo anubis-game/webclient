@@ -1,27 +1,68 @@
-import { alchemy } from "@account-kit/infra";
-import { ArbitrumSepoliaAlchemyGasPolicy } from "../../func/config/Config";
-import { ChainStore } from "../../func/chain/ChainStore";
-import { createAlchemySmartAccountClient } from "@account-kit/infra";
+import { BaseError } from "viem";
 import { TransactionObject } from "./TransactionObject";
-import { WalletStore } from "../../func/wallet/WalletStore";
+import { TransactionResult } from "./TransactionResult";
+import { UserRejectedRequestError } from "viem";
+import { WalletStore } from "../wallet/WalletStore";
 
-export const SendTransaction = async (txn: TransactionObject[]) => {
-  const chn = ChainStore.getState().getActive();
+export const SendTransaction = async (txn: TransactionObject[]): Promise<TransactionResult> => {
+  const res = {} as TransactionResult;
 
-  const cli = createAlchemySmartAccountClient({
-    transport: alchemy({ apiKey: chn.alchemyApiKey }),
-    policyId: ArbitrumSepoliaAlchemyGasPolicy,
-    chain: chn.alchemy,
-    account: WalletStore.getState().player.client,
-  });
+  const wal = WalletStore.getState().wallet;
+  const pub = WalletStore.getState().public;
 
-  const res = await cli.sendUserOperation({
-    uo: txn,
-  });
+  for (const x of txn) {
+    console.log("SendTransaction." + x.name);
+    try {
+      const gas = await pub.estimateFeesPerGas();
+      console.log("SendTransaction.maxFeePerGas", gas.maxFeePerGas);
+      console.log("SendTransaction.maxPriorityFeePerGas", gas.maxPriorityFeePerGas);
 
-  console.log("UOP", res);
+      res.hash = await wal.client.sendTransaction({
+        account: wal.address,
+        data: x.data,
+        to: x.target,
+        chain: wal.client.chain,
+        maxFeePerGas: gas.maxFeePerGas,
+        maxPriorityFeePerGas: gas.maxPriorityFeePerGas,
+      });
 
-  const hsh = await cli.waitForUserOperationTransaction(res);
+      const rec = await pub.waitForTransactionReceipt({
+        hash: res.hash,
+      });
 
-  console.log("Transaction hash: ", hsh);
+      if (rec.status.toLowerCase() === "success") {
+        res.message = "Transaction Confirmed Onchain";
+        res.rejected = false;
+        res.success = true;
+      } else {
+        res.message = "Transaction Reverted Onchain";
+        res.rejected = false;
+        res.success = false;
+
+        return res;
+      }
+    } catch (err) {
+      if (userRejected(err)) {
+        res.message = "User Rejected Transaction";
+        res.rejected = true;
+        res.success = false;
+      } else {
+        res.message = err instanceof Error ? err.message : String(err);
+        res.rejected = false;
+        res.success = false;
+      }
+
+      return res;
+    }
+  }
+
+  return res;
+};
+
+const userRejected = (err: any): boolean => {
+  if (err instanceof BaseError) {
+    return err.walk((e) => e instanceof UserRejectedRequestError) instanceof UserRejectedRequestError;
+  }
+
+  return false;
 };

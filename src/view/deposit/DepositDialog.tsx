@@ -5,6 +5,7 @@ import { AllTokenSymbols } from "../../func/token/TokenConfig";
 import { ChainStore } from "../../func/chain/ChainStore";
 import { DepositHandler } from "../../func/deposit/DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
+// import { DummyHandler } from "../../func/deposit/DummyHandler";
 import { FormButton } from "../form/FormButton";
 import { ToggleBar } from "../toggle/ToggleBar";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
@@ -13,13 +14,23 @@ import { XMarkIcon } from "../icon/XMarkIcon";
 import { BlockExplorerToken } from "../../func/token/BlockExplorerToken";
 
 export const DepositDialog = () => {
-  const { dialog, submit, symbol } = DepositStore(
+  const { amount, dialog, status, submit, symbol } = DepositStore(
     useShallow((state) => ({
+      amount: state.amount,
       dialog: state.dialog,
+      status: state.status,
       submit: state.submit,
       symbol: state.symbol,
     })),
   );
+
+  // Update the status for the deposit form every time amount or symbol changes.
+  // Note that we cannot use status in the dependency array since it would cause
+  // re-renders every single time.
+  React.useEffect(() => {
+    DepositStore.getState().updateStatus(status);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount, symbol]);
 
   return (
     <Dialog.Root
@@ -69,7 +80,11 @@ export const DepositDialog = () => {
               }}
             />
 
-            <FormButton handler={new DepositHandler()} />
+            <FormButton
+              status={status}
+              submit={DepositHandler}
+              // submit={DummyHandler}
+            />
           </div>
 
           <Dialog.Title className="absolute top-4 left-4 w-full">

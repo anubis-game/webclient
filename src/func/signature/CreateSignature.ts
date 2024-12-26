@@ -1,31 +1,60 @@
 import { Address } from "viem";
-import { Hex } from "viem";
 import { SignatureContext } from "./SignatureContext";
 import { WalletStore } from "../wallet/WalletStore";
+import { zeroAddress } from "viem";
 
-export const CreateSignature = (grd: Address): SignatureContext => {
-  const tim = uniSec();
-  const wal = WalletStore.getState().wallet.address;
-  const pla = WalletStore.getState().player.address;
+export const DepositSignature = async (): Promise<SignatureContext> => {
+  const tim = SignatureTimestamp();
+  const wal = WalletStore.getState().wallet;
+  const sig = WalletStore.getState().signer;
+  const pla = WalletStore.getState().player;
+
+  return {
+    grd: zeroAddress,
+    tim: tim.toString(),
+    wal: wal.address.toLowerCase(),
+    sig: sig.address.toLowerCase(),
+    pla: pla.address.toLowerCase(),
+    sgn: await sig.client.signMessage(
+      ["deposit", tim.toString(), wal.address.toLowerCase()].join("-"), //
+    ),
+  };
+};
+
+export const RequestSignature = async (grd: Address, tim: number): Promise<SignatureContext> => {
+  const wal = WalletStore.getState().wallet;
+  const sig = WalletStore.getState().signer;
+  const pla = WalletStore.getState().player;
 
   return {
     grd: grd.toLowerCase(),
     tim: tim.toString(),
-    wal: wal.toLowerCase(),
-    pla: pla.toLowerCase(),
-    sg1: async (): Promise<Hex> => {
-      return await WalletStore.getState().signer.client.signMessage(
-        ["request", grd.toLowerCase(), tim.toString(), pla.toLowerCase()].join("-"),
-      );
-    },
-    sg2: async (): Promise<Hex> => {
-      return await WalletStore.getState().signer.client.signMessage(
-        ["connect", grd.toLowerCase(), tim.toString(), pla.toLowerCase()].join("-"),
-      );
-    },
+    wal: wal.address.toLowerCase(),
+    sig: sig.address.toLowerCase(),
+    pla: pla.address.toLowerCase(),
+    sgn: await sig.client.signMessage(
+      ["request", tim.toString(), grd.toLowerCase(), pla.address.toLowerCase()].join("-"), //
+    ),
   };
 };
 
-const uniSec = (): number => {
+export const ConnectSignature = async (grd: Address, tim: number): Promise<SignatureContext> => {
+  const wal = WalletStore.getState().wallet;
+  const sig = WalletStore.getState().signer;
+  const pla = WalletStore.getState().player;
+
+  return {
+    grd: grd.toLowerCase(),
+    tim: tim.toString(),
+    wal: wal.address.toLowerCase(),
+    sig: sig.address.toLowerCase(),
+    pla: pla.address.toLowerCase(),
+    sgn: await sig.client.signMessage(
+      ["connect", tim.toString(), grd.toLowerCase(), pla.address.toLowerCase()].join("-"), //
+    ),
+  };
+};
+
+export const SignatureTimestamp = (): number => {
   return Math.floor(Date.now() / 1000);
 };

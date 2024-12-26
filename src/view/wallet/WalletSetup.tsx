@@ -35,6 +35,7 @@ export const WalletSetup = () => {
 };
 
 const disconnect = () => {
+  BalanceStore.getState().delete();
   StreamStore.getState().client?.close();
   StreamStore.getState().updateClient(null);
   StreamStore.getState().updateConnected(false);
@@ -54,7 +55,7 @@ const setupWallet = async () => {
     transport: custom(window.ethereum!),
   });
 
-  const add = await wal.getAddresses();
+  const add = await wal.requestAddresses();
 
   WalletStore.getState().updateWallet(add[0], wal);
 

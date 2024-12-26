@@ -6,6 +6,9 @@ export interface TokenConfig {
   address: Address;
   decimals: number;
   precision: number;
+  // slot is the storage slot for ERC20 _allowances, required for transaction
+  // simulation
+  slot: number;
   latest: boolean;
 }
 

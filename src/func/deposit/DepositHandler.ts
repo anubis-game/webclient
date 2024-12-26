@@ -1,76 +1,113 @@
-import * as React from "react";
+import * as Approve from "../../func/transaction/erc20/Approve";
+import * as Deposit from "../../func/transaction/registry/Deposit";
 
-import { DepositButton } from "../../view/deposit/DepositButton";
+import { BalanceStore } from "../balance/BalanceStore";
+import { ChainStore } from "../chain/ChainStore";
 import { DepositStore } from "./DepositStore";
-import { FormInterface } from "../form/FormInterface";
-import { FormStatus } from "../form/FormStatus";
+import { FormStatusEnabled } from "../form/FormStatus";
+import { FormStatusFailure } from "../form/FormStatus";
 import { FormStatusLoading } from "../form/FormStatus";
 import { FormStatusSuccess } from "../form/FormStatus";
 import { Sleep } from "../sleep/Sleep";
+import { SendTransaction } from "../transaction/SendTransaction";
+import { WalletStore } from "../wallet/WalletStore";
+import { DepositSignature } from "../signature/CreateSignature";
 
-export class DepositHandler implements FormInterface {
-  button(setStatus: (status: FormStatus) => void): JSX.Element {
-    return React.createElement(DepositButton, { setStatus });
+export const DepositHandler = async () => {
+  {
+    DepositStore.getState().updateStatus({
+      phase: FormStatusLoading,
+      title: "Signing Transaction",
+    });
+
+    DepositStore.getState().updateSubmit(true);
   }
 
-  // TODO implement the contract write for Registry deposits
-  async submit(setStatus: (status: FormStatus) => void) {
-    {
-      setStatus({
-        name: FormStatusLoading,
-        disabled: true,
-        finished: false,
-        loading: true,
-        message: "Signing Transaction",
-      });
+  const amo = amount();
+  const sym = symbol();
 
-      DepositStore.getState().updateSubmit(true);
-    }
-
-    await Sleep(2 * 1000);
-
-    {
-      setStatus({
-        name: FormStatusLoading,
-        disabled: true,
-        finished: false,
-        loading: true,
-        message: "Confirming Onchain",
-      });
-    }
-
-    await Sleep(2 * 1000);
-
-    {
-      setStatus({
-        name: FormStatusSuccess,
-        disabled: true,
-        finished: false,
-        loading: true,
-        message: `Deposited ${this.amount()} ${this.symbol()}`,
-      });
-    }
-
-    await Sleep(2 * 1000);
-
-    {
-      // args.fail();
-    }
-
-    // Hide the dialog as last step.
-    {
-      DepositStore.getState().updateDialog(false);
-      DepositStore.getState().updateSubmit(false);
-    }
+  {
+    WalletStore.getState().wallet.client.switchChain({
+      id: ChainStore.getState().active,
+    });
   }
 
-  private amount(): number {
-    const amo = DepositStore.getState().amount;
-    return amo ? Number(amo) : 0;
+  const ctx = await DepositSignature();
+
+  try {
+    await Approve.Simulate(amo, sym);
+    await Deposit.Simulate(ctx, amo, sym);
+  } catch (err) {
+    return await failure("Simulation Failed", err);
   }
 
-  private symbol(): string {
-    const sym = DepositStore.getState().symbol;
-    return sym.toUpperCase();
+  {
+    DepositStore.getState().updateStatus({
+      phase: FormStatusLoading,
+      title: "Confirming Onchain",
+    });
   }
-}
+
+  const res = await SendTransaction([
+    Approve.Encode(amo, sym), //
+    Deposit.Encode(ctx, amo, sym), //
+  ]);
+
+  if (res.success) {
+    return await success(amo, sym);
+  } else {
+    return await failure(res.rejected ? "User Rejected Transaction" : "Something Went Wrong", res.message);
+  }
+};
+
+const amount = (): number => {
+  const amo = DepositStore.getState().amount;
+  return amo ? Number(amo) : 0;
+};
+
+const symbol = (): string => {
+  const sym = DepositStore.getState().symbol;
+  return sym.toUpperCase();
+};
+
+const failure = async (tit: string, err: any) => {
+  {
+    console.error(err);
+  }
+
+  DepositStore.getState().updateStatus({
+    phase: FormStatusFailure,
+    title: tit,
+  });
+
+  {
+    await Sleep(5 * 1000);
+  }
+
+  {
+    DepositStore.getState().updateStatus({
+      phase: FormStatusEnabled,
+      title: "Try Again",
+    });
+  }
+
+  {
+    DepositStore.getState().updateSubmit(false);
+  }
+};
+
+const success = async (amo: number, sym: string) => {
+  DepositStore.getState().updateStatus({
+    phase: FormStatusSuccess,
+    title: `Deposited ${amo} ${sym}`,
+  });
+
+  {
+    await Sleep(3 * 1000);
+  }
+
+  {
+    BalanceStore.getState().updateBalance();
+    DepositStore.getState().delete();
+  }
+};

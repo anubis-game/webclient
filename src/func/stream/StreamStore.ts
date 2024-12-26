@@ -2,7 +2,14 @@ import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { Guardian } from "./StreamMessage";
-import { StreamMessage } from "./StreamMessage";
+
+export interface StreamMessage {
+  client: WebSocket | null;
+  connected: boolean;
+  guardians: Map<Address, Guardian>;
+  ping: number;
+  reader: (str: string) => void;
+}
 
 export const StreamStore = create(
   combine({} as StreamMessage, (set, get) => ({
