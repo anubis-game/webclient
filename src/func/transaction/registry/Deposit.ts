@@ -63,9 +63,9 @@ const encPar = (
     functionName: "deposit", // function deposit(uint256 bal, uint64 tim, address sig, bytes memory sgn) public
     args: [
       bal, //                   the amount of tokens to deposit
-      ctx.tim, //               the Signer address belonging to the user
+      ctx.tim, //               the valid unix timestamp
       ctx.sig, //               the Signer address belonging to the user
-      ctx.sgn, //               the Signer address belonging to the user
+      ctx.sgn, //               the signature proving Signer ownership
     ],
   };
 };
