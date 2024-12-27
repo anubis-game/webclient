@@ -1,8 +1,15 @@
 import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { Guardian } from "./StreamMessage";
-import { StreamMessage } from "./StreamMessage";
+import { GuardianObject } from "./GuardianObject";
+
+export interface StreamMessage {
+  client: WebSocket | null;
+  connected: boolean;
+  guardians: Map<Address, GuardianObject>;
+  ping: number;
+  reader: (str: string) => void;
+}
 
 export const StreamStore = create(
   combine({} as StreamMessage, (set, get) => ({
@@ -30,7 +37,7 @@ export const StreamStore = create(
         };
       });
     },
-    updateGuardians: (g: Map<Address, Guardian>) => {
+    updateGuardians: (g: Map<Address, GuardianObject>) => {
       set((state) => {
         return {
           ...state,

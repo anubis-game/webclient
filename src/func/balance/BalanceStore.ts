@@ -1,4 +1,3 @@
-import { BalanceOf } from "../transaction/erc20/BalanceOf";
 import { ChainStore } from "../chain/ChainStore";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
@@ -51,8 +50,6 @@ export const BalanceStore = create(
           Object.entries(chn.tokens).map(async ([key, val]: [string, TokenConfig[]]) => {
             const bal = await Promise.all([...chn.contracts["Registry-" + key].map((x) => SearchBalance(x, val[0]))]);
 
-            const erc = await BalanceOf(val[0]);
-
             alo[key] = {
               ...val[0],
               balance: bal.reduce((sum, bal) => sum + bal.alo, 0),
@@ -60,15 +57,16 @@ export const BalanceStore = create(
 
             avl[key] = {
               ...val[0],
-              balance: bal.reduce((sum, bal) => sum + bal.avl, 0) + erc,
+              balance: bal.reduce((sum, bal) => sum + bal.avl, 0),
             };
           }),
         );
 
-        set(() => {
+        set((state) => {
           return {
-            allocated: alo,
-            available: avl,
+            ...state,
+            allocated: { ...alo },
+            available: { ...avl },
           };
         });
       },

@@ -6,19 +6,13 @@ export const FormStatusLoading = "loading";
 export const FormStatusSuccess = "success";
 
 export interface FormStatus {
-  name: string;
-  disabled: boolean;
-  finished: boolean;
-  loading: boolean;
-  message: string;
+  phase: "default" | "enabled" | "failure" | "invalid" | "loading" | "success";
+  title: string;
 }
 
 export const DefaultFormStatus = (msg: string = ""): FormStatus => {
   return {
-    name: "default",
-    disabled: true,
-    finished: false,
-    loading: false,
-    message: msg,
+    phase: FormStatusDefault,
+    title: msg,
   };
 };

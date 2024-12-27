@@ -1,10 +1,13 @@
-import { Guardian } from "./StreamMessage";
+import { GuardianObject } from "./GuardianObject";
 import { GuardianWebsocketProtocol } from "../config/Config";
 import { Hex } from "viem";
 import { StreamStore } from "../../func/stream/StreamStore";
 
-export const EnsureStream = (grd: Guardian, txn: Hex, sg2: Hex, clo: () => void) => {
-  const cli = new WebSocket(`${GuardianWebsocketProtocol}://${grd.endpoint}/connect`, ["dual-handshake", txn, sg2]);
+export const EnsureStream = (grd: GuardianObject, txn: Hex, sg2: Hex, clo: () => void) => {
+  const cli = new WebSocket(
+    `${GuardianWebsocketProtocol}://${grd.endpoint}/connect`, //
+    ["dual-handshake", txn, sg2], //
+  );
 
   {
     StreamStore.getState().updateClient(cli);

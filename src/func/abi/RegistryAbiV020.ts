@@ -1,4 +1,4 @@
-export const RegistryAbi = [
+export const RegistryAbiV020 = [
   {
     inputs: [
       {
@@ -10,6 +10,11 @@ export const RegistryAbi = [
         internalType: "address",
         name: "tok",
         type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "buy",
+        type: "uint256",
       },
     ],
     stateMutability: "nonpayable",
@@ -351,6 +356,19 @@ export const RegistryAbi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "VERSION",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -395,14 +413,48 @@ export const RegistryAbi = [
         type: "uint256",
       },
       {
+        internalType: "uint64",
+        name: "tim",
+        type: "uint64",
+      },
+      {
         internalType: "address",
         name: "sig",
         type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "sgn",
+        type: "bytes",
       },
     ],
     name: "deposit",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "tim",
+        type: "uint64",
+      },
+      {
+        internalType: "address",
+        name: "wal",
+        type: "address",
+      },
+    ],
+    name: "depositMessage",
+    outputs: [
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    stateMutability: "pure",
     type: "function",
   },
   {
@@ -816,19 +868,6 @@ export const RegistryAbi = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "sig",
-        type: "address",
-      },
-    ],
-    name: "updateSigner",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

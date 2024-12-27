@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Address } from "viem";
-import { Guardian } from "../../func/stream/StreamMessage";
+import { GuardianObject } from "../../func/stream/GuardianObject";
 import { GuardianEndpoints } from "../../func/config/Config";
 import { GuardianHypertextProtocol } from "../../func/config/Config";
 import { ShuffleStrings } from "../../func/string/ShuffleStrings";
@@ -29,7 +29,7 @@ export const StreamSetup = () => {
 };
 
 const updateGuardians = async () => {
-  const m: Map<Address, Guardian> = new Map();
+  const m: Map<Address, GuardianObject> = new Map();
 
   // Ensure a randomized execution of updating the guardian metadata in order to
   // prevent a biased latency representation. That way we may prevent weird

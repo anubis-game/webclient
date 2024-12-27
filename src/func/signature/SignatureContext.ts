@@ -4,7 +4,7 @@ export interface SignatureContext {
   grd: string;
   tim: string;
   wal: string;
+  sig: string;
   pla: string;
-  sg1: () => Promise<Hex>;
-  sg2: () => Promise<Hex>;
+  sgn: Hex;
 }

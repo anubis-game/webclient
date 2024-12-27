@@ -31,6 +31,12 @@ const newBalanceMessage = (): BalanceMessage => {
 
 export const DepositStore = create(
   combine(newBalanceMessage(), (set, get) => ({
+    delete: () => {
+      set(() => {
+        return newBalanceMessage();
+      });
+    },
+
     updateAmount: (a: string) => {
       set((state) => {
         return {
@@ -47,6 +53,15 @@ export const DepositStore = create(
           ...state,
           amount: v ? state.amount : "",
           dialog: v,
+        };
+      });
+    },
+
+    updateStatus: (v: FormStatus) => {
+      set((state) => {
+        return {
+          ...state,
+          status: v,
         };
       });
     },
@@ -75,21 +90,15 @@ export const DepositStore = create(
 const verifyStatus = (amo: string, sym: string): FormStatus => {
   if (!amo) {
     return {
-      name: FormStatusInvalid,
-      disabled: true,
-      finished: false,
-      loading: false,
-      message: "Choose an Amount",
+      phase: FormStatusInvalid,
+      title: "Choose an Amount",
     };
   }
 
   if (amo.includes(".") || amo.includes("e")) {
     return {
-      name: FormStatusInvalid,
-      disabled: true,
-      finished: false,
-      loading: false,
-      message: `Only full ${sym}`,
+      phase: FormStatusInvalid,
+      title: `Only full ${sym}`,
     };
   }
 
@@ -97,29 +106,20 @@ const verifyStatus = (amo: string, sym: string): FormStatus => {
 
   if (num < 1) {
     return {
-      name: FormStatusInvalid,
-      disabled: true,
-      finished: false,
-      loading: false,
-      message: `Minimum ${1} ${sym}`,
+      phase: FormStatusInvalid,
+      title: `Minimum ${1} ${sym}`,
     };
   }
 
   if (num > 10) {
     return {
-      name: FormStatusInvalid,
-      disabled: true,
-      finished: false,
-      loading: false,
-      message: `Maximum ${10} ${sym}`,
+      phase: FormStatusInvalid,
+      title: `Maximum ${10} ${sym}`,
     };
   }
 
   return {
-    name: FormStatusEnabled,
-    disabled: false,
-    finished: false,
-    loading: false,
-    message: `Deposit ${amo} ${sym}`,
+    phase: FormStatusEnabled,
+    title: `Deposit ${amo} ${sym}`,
   };
 };

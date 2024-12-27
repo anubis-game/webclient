@@ -1,43 +1,37 @@
-import * as React from "react";
-
 import { CheckMarkIcon } from "../icon/CheckMarkIcon";
-import { DefaultFormStatus } from "../../func/form/FormStatus";
-import { FormInterface } from "../../func/form/FormInterface";
+import { ErrorIcon } from "../icon/ErrorIcon";
 import { FormStatus } from "../../func/form/FormStatus";
+import { FormStatusEnabled } from "../../func/form/FormStatus";
+import { FormStatusFailure } from "../../func/form/FormStatus";
 import { FormStatusLoading } from "../../func/form/FormStatus";
 import { FormStatusSuccess } from "../../func/form/FormStatus";
 import { SpinnerIcon } from "../icon/SpinnerIcon";
 
 interface Props {
-  handler: FormInterface;
+  status: FormStatus;
+  submit: () => void;
 }
 
 export const FormButton = (props: Props) => {
-  const [status, setStatus] = React.useState<FormStatus>(DefaultFormStatus());
-
   return (
     <button
-      className={`button form ${status.name} px-4 py-3 w-full h-full`}
-      disabled={status.disabled}
+      className={`button form ${props.status.phase} px-4 py-3 w-full h-full`}
+      disabled={props.status.phase !== FormStatusEnabled}
       type="button"
-      onClick={() => {
-        props.handler.submit(setStatus);
-      }}
+      onClick={props.submit}
     >
-      <>
-        {status.loading || status.finished ? (
-          <div className="flex gap-x-2">
-            <div className="flex my-auto">
-              {status.name === FormStatusSuccess && <CheckMarkIcon />}
-              {status.name === FormStatusLoading && <SpinnerIcon />}
-            </div>
-
-            <div>{status.message}</div>
+      <div className="flex gap-x-2">
+        {(props.status.phase === FormStatusFailure ||
+          props.status.phase === FormStatusLoading ||
+          props.status.phase === FormStatusSuccess) && (
+          <div className="flex my-auto">
+            {props.status.phase === FormStatusFailure && <ErrorIcon />}
+            {props.status.phase === FormStatusLoading && <SpinnerIcon />}
+            {props.status.phase === FormStatusSuccess && <CheckMarkIcon />}
           </div>
-        ) : (
-          props.handler.button(setStatus)
         )}
-      </>
+        <div>{props.status.title}</div>
+      </div>
     </button>
   );
 };

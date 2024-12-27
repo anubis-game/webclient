@@ -6,10 +6,10 @@ import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const BalanceBar = () => {
-  const { available, allocated } = BalanceStore(
+  const { allocated, available } = BalanceStore(
     useShallow((state) => ({
-      available: state.available,
       allocated: state.allocated,
+      available: state.available,
     })),
   );
 
