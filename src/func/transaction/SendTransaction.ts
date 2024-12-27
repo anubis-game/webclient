@@ -11,11 +11,17 @@ export const SendTransaction = async (txn: TransactionObject[]): Promise<Transac
   const pub = WalletStore.getState().public;
 
   for (const x of txn) {
-    console.log("SendTransaction." + x.name);
+    {
+      console.log("SendTransaction." + x.name);
+    }
+
     try {
       const gas = await pub.estimateFeesPerGas();
-      console.log("SendTransaction.maxFeePerGas", gas.maxFeePerGas);
-      console.log("SendTransaction.maxPriorityFeePerGas", gas.maxPriorityFeePerGas);
+
+      {
+        console.log("SendTransaction.maxFeePerGas", gas.maxFeePerGas);
+        console.log("SendTransaction.maxPriorityFeePerGas", gas.maxPriorityFeePerGas);
+      }
 
       res.hash = await wal.client.sendTransaction({
         account: wal.address,
@@ -25,6 +31,10 @@ export const SendTransaction = async (txn: TransactionObject[]): Promise<Transac
         maxFeePerGas: gas.maxFeePerGas,
         maxPriorityFeePerGas: gas.maxPriorityFeePerGas,
       });
+
+      {
+        console.log("SendTransaction.transactionHash", res.hash);
+      }
 
       const rec = await pub.waitForTransactionReceipt({
         hash: res.hash,
