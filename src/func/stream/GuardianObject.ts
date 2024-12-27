@@ -1,4 +1,4 @@
-export interface Guardian {
+export interface GuardianObject {
   healthy: boolean;
   endpoint: string;
   latency: number;
