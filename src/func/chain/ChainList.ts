@@ -10,6 +10,7 @@ import { RegistryAbiV020 } from "../abi/RegistryAbiV020";
 import { RegistryAbiV030 } from "../abi/RegistryAbiV030";
 
 export const ChainList: ChainConfig[] = [
+  // localhost
   {
     alchemy: alchemyChains.arbitrumSepolia,
     viem: viemChains.localhost,
@@ -18,7 +19,9 @@ export const ChainList: ChainConfig[] = [
     alchemyGasPolicy: ArbitrumSepoliaAlchemyGasPolicy,
     alchemyRpcEndpoint: ArbitrumSepoliaAlchemyRpcEndpoint,
     contracts: {
-      "Registry-STBL": [{ abi: RegistryAbiV030, address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", latest: true }],
+      Registry: [
+        { abi: RegistryAbiV030, address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", symbol: "STBL", latest: true },
+      ],
     },
     tokens: {
       STBL: [
@@ -33,6 +36,7 @@ export const ChainList: ChainConfig[] = [
       ],
     },
   },
+  // arbitrum sepolia
   {
     alchemy: alchemyChains.arbitrumSepolia,
     viem: viemChains.arbitrumSepolia,
@@ -41,9 +45,9 @@ export const ChainList: ChainConfig[] = [
     alchemyGasPolicy: ArbitrumSepoliaAlchemyGasPolicy,
     alchemyRpcEndpoint: ArbitrumSepoliaAlchemyRpcEndpoint,
     contracts: {
-      "Registry-USDC": [
-        { abi: RegistryAbiV020, address: "0xB89BbEd0467cb27C310bedc002733116289Bb63F", latest: false },
-        { abi: RegistryAbiV030, address: "0x9632185d3851Fd06304C09BA6F1c1308189BE12b", latest: true },
+      Registry: [
+        { abi: RegistryAbiV020, address: "0xB89BbEd0467cb27C310bedc002733116289Bb63F", symbol: "USDC", latest: false },
+        { abi: RegistryAbiV030, address: "0x9632185d3851Fd06304C09BA6F1c1308189BE12b", symbol: "USDC", latest: true },
       ],
     },
     tokens: {

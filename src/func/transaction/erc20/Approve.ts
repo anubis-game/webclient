@@ -1,6 +1,5 @@
 import { Address } from "viem";
 import { ContractConfig } from "../../contract/ContractConfig";
-import { ContractWithSymbol } from "../../contract/ContractConfig";
 import { encodeFunctionData } from "viem";
 import { EncodeFunctionDataParameters } from "viem";
 import { encodePacked } from "viem";
@@ -9,6 +8,7 @@ import { numberToHex } from "viem";
 import { pad } from "viem";
 import { padHex } from "viem";
 import { parseUnits } from "viem";
+import { RegistryWithSymbol } from "../../contract/ContractConfig";
 import { StateMapping } from "viem";
 import { TokenConfig } from "../../token/TokenConfig";
 import { TokenWithSymbol } from "../../token/TokenConfig";
@@ -16,7 +16,7 @@ import { TransactionObject } from "../TransactionObject";
 import { WalletStore } from "../../wallet/WalletStore";
 
 export const Encode = (amo: number, sym: string): TransactionObject => {
-  const con = ContractWithSymbol("Registry-" + sym);
+  const con = RegistryWithSymbol(sym);
   const tok = TokenWithSymbol(sym);
   const bal = parseUnits(String(amo), tok.decimals);
 
@@ -28,7 +28,7 @@ export const Encode = (amo: number, sym: string): TransactionObject => {
 };
 
 export const Simulate = async (amo: number, sym: string) => {
-  const con = ContractWithSymbol("Registry-" + sym);
+  const con = RegistryWithSymbol(sym);
   const tok = TokenWithSymbol(sym);
   const bal = parseUnits(String(amo), tok.decimals);
 

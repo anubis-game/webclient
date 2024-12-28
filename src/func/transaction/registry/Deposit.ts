@@ -1,10 +1,10 @@
 import * as Approve from "../erc20/Approve";
 
 import { ContractConfig } from "../../contract/ContractConfig";
-import { ContractWithSymbol } from "../../contract/ContractConfig";
 import { encodeFunctionData } from "viem";
 import { EncodeFunctionDataParameters } from "viem";
 import { parseUnits } from "viem";
+import { RegistryWithSymbol } from "../../contract/ContractConfig";
 import { SignatureContext } from "../../signature/SignatureContext";
 import { TokenConfig } from "../../token/TokenConfig";
 import { TokenWithSymbol } from "../../token/TokenConfig";
@@ -12,7 +12,7 @@ import { TransactionObject } from "../TransactionObject";
 import { WalletStore } from "../../wallet/WalletStore";
 
 export const Encode = (ctx: SignatureContext, amo: number, sym: string): TransactionObject => {
-  const con = ContractWithSymbol("Registry-" + sym);
+  const con = RegistryWithSymbol(sym);
   const tok = TokenWithSymbol(sym);
   const bal = parseUnits(String(amo), tok.decimals);
 
@@ -24,7 +24,7 @@ export const Encode = (ctx: SignatureContext, amo: number, sym: string): Transac
 };
 
 export const Simulate = async (ctx: SignatureContext, amo: number, sym: string) => {
-  const con = ContractWithSymbol("Registry-" + sym);
+  const con = RegistryWithSymbol(sym);
   const tok = TokenWithSymbol(sym);
   const bal = parseUnits(String(amo), tok.decimals);
 
