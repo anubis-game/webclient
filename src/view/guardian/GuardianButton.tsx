@@ -2,13 +2,13 @@ import * as Request from "../../func/transaction/registry/Request";
 
 import { Address } from "viem";
 import { BalanceStore } from "../../func/balance/BalanceStore";
+import { RequestSignature } from "../../func/signature/CreateSignature";
+import { SendTransaction } from "../../func/transaction/SendTransaction";
+import { SignatureTimestamp } from "../../func/signature/CreateSignature";
 import { StreamStore } from "../../func/stream/StreamStore";
-import { useShallow } from "zustand/react/shallow";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { DefaultTokenSymcol } from "../../func/config/Config";
-import { SendTransaction } from "../../func/transaction/SendTransaction";
-import { RequestSignature, SignatureTimestamp } from "../../func/signature/CreateSignature";
+import { useShallow } from "zustand/react/shallow";
 
 export const GuardianButton = () => {
   const { guardians } = StreamStore(
@@ -48,15 +48,18 @@ export const GuardianButton = () => {
   const sorted = Array.from(guardians.entries()).sort(([x], [b]) => x.localeCompare(b));
 
   return (
-    <div className="guardian dialog grid mt-32 p-4 gap-4 ">
+    <div className="guardian dialog mt-32 p-4 grid gap-4">
       {sorted.map(([key, val]) => (
         <div
           key={key}
-          className="button solid p-4 gap-4 items-center justify-between"
-          onClick={() => onClick(key, DefaultTokenSymcol)}
+          className="button solid p-4"
+          onClick={() => onClick(key, val.symbol)}
         >
-          <div className="w-[144px]">{TruncateSeparator(key, "...")}</div>
-          <div>{Math.round(val.latency)} ms</div>
+          <div className="w-full grid grid-cols-6 gap-4 whitespace-nowrap">
+            <div className="col-span-4">{TruncateSeparator(key, "...")}</div>
+            <div className="col-span-1">{val.symbol}</div>
+            <div className="col-span-1">{Math.round(val.latency)} ms</div>
+          </div>
         </div>
       ))}
     </div>

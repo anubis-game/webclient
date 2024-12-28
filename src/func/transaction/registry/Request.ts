@@ -1,13 +1,13 @@
 import { ContractConfig } from "../../contract/ContractConfig";
-import { ContractWithSymbol } from "../../contract/ContractConfig";
 import { encodeFunctionData } from "viem";
 import { EncodeFunctionDataParameters } from "viem";
+import { RegistryWithSymbol } from "../../contract/ContractConfig";
 import { SignatureContext } from "../../signature/SignatureContext";
 import { TransactionObject } from "../TransactionObject";
 import { WalletStore } from "../../wallet/WalletStore";
 
 export const Encode = (ctx: SignatureContext, sym: string): TransactionObject => {
-  const con = ContractWithSymbol("Registry-" + sym);
+  const con = RegistryWithSymbol(sym);
 
   return {
     name: "Request",
@@ -17,7 +17,7 @@ export const Encode = (ctx: SignatureContext, sym: string): TransactionObject =>
 };
 
 export const Simulate = async (ctx: SignatureContext, sym: string) => {
-  const con = ContractWithSymbol("Registry-" + sym);
+  const con = RegistryWithSymbol(sym);
 
   const pub = WalletStore.getState().public;
   const sig = WalletStore.getState().signer;

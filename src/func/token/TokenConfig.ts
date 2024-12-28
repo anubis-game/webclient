@@ -17,6 +17,11 @@ export const AllTokenSymbols = (): string[] => {
   return Object.keys(chn.tokens).sort();
 };
 
+export const ExistsTokenSymbol = (sym: string): boolean => {
+  const chn = ChainStore.getState().getActive();
+  return chn.tokens[sym] !== undefined;
+};
+
 export const TokenWithSymbol = (sym: string): TokenConfig => {
   const chn = ChainStore.getState().getActive();
 

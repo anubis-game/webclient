@@ -48,7 +48,13 @@ export const BalanceStore = create(
 
         await Promise.all(
           Object.entries(chn.tokens).map(async ([key, val]: [string, TokenConfig[]]) => {
-            const bal = await Promise.all([...chn.contracts["Registry-" + key].map((x) => SearchBalance(x, val[0]))]);
+            const con = chn.contracts["Registry"].filter((contract) => contract.symbol === key);
+
+            const bal = await Promise.all(
+              con.map((x) => {
+                return SearchBalance(x, val[0]);
+              }),
+            );
 
             alo[key] = {
               ...val[0],
