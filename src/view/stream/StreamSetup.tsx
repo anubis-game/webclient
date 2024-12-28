@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Address } from "viem";
+import { Address, zeroAddress } from "viem";
 import { ExistsTokenSymbol } from "../../func/token/TokenConfig";
 import { GuardianObject } from "../../func/stream/GuardianObject";
 import { GuardianEndpoints } from "../../func/config/Config";
@@ -39,30 +39,48 @@ const updateGuardians = async () => {
   // guardian's latency is properly reflected over time.
   const all = await Promise.all(
     ShuffleStrings(GuardianEndpoints).map(async (x) => {
-      const sta = performance.now();
-      const res = await fetch(`${GuardianHypertextProtocol}://${x}/version`);
-      const end = performance.now();
+      try {
+        const sta = performance.now();
+        const res = await fetch(`${GuardianHypertextProtocol}://${x}/version`);
+        const end = performance.now();
 
-      const obj = await res.json();
+        const obj = await res.json();
 
-      const grd = obj["grd"] as Address;
-      const reg = obj["reg"] as Address;
-      const sym = SymbolWithRegistry(reg);
+        const grd = obj["grd"] as Address;
+        const reg = obj["reg"] as Address;
+        const sym = SymbolWithRegistry(reg);
 
-      return {
-        key: grd,
-        val: {
-          healthy: res.ok && ExistsTokenSymbol(sym),
-          endpoint: x,
-          latency: end - sta,
-          symbol: sym,
-        },
-      };
+        return {
+          key: grd,
+          val: {
+            healthy: res.ok && ExistsTokenSymbol(sym),
+            endpoint: x,
+            latency: end - sta,
+            symbol: sym,
+          },
+        };
+      } catch (err) {
+        {
+          console.log(`Guardian at ${x} could not be scraped: ${err}`);
+        }
+
+        return {
+          key: zeroAddress,
+          val: {
+            healthy: false,
+            endpoint: x,
+            latency: NaN,
+            symbol: "",
+          },
+        };
+      }
     }),
   );
 
   for (const x of all) {
-    m.set(x.key, x.val);
+    if (x.val.healthy) {
+      m.set(x.key, x.val);
+    }
   }
 
   StreamStore.getState().updateGuardians(m);
