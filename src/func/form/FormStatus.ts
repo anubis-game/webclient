@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export const FormStatusDefault = "default";
 export const FormStatusEnabled = "enabled";
 export const FormStatusFailure = "failure";
@@ -6,13 +8,13 @@ export const FormStatusLoading = "loading";
 export const FormStatusSuccess = "success";
 
 export interface FormStatus {
-  phase: "default" | "enabled" | "failure" | "invalid" | "loading" | "success";
-  title: string;
+  lifecycle: "default" | "enabled" | "failure" | "invalid" | "loading" | "success";
+  container: JSX.Element;
 }
 
 export const DefaultFormStatus = (msg: string = ""): FormStatus => {
   return {
-    phase: FormStatusDefault,
-    title: msg,
+    lifecycle: FormStatusDefault,
+    container: React.createElement(msg),
   };
 };

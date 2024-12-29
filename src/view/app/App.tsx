@@ -1,9 +1,10 @@
 import { BalanceBar } from "../balance/BalanceBar";
 import { DepositDialog } from "../deposit/DepositDialog";
-import { GuardianButton } from "../guardian/GuardianButton";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { QueryStore } from "../../func/query/QueryStore";
+import { RequestDialog } from "../request/RequestDialog";
 import { StreamSetup } from "../stream/StreamSetup";
+import { ToastSetup } from "../toast/ToastSetup";
 import { WagmiConfig } from "../../func/wagmi/WagmiConfig";
 import { WagmiProvider } from "wagmi";
 import { WalletBar } from "../wallet/WalletBar";
@@ -14,21 +15,17 @@ export const App = () => {
     <>
       <WagmiProvider config={WagmiConfig}>
         <QueryClientProvider client={QueryStore.getState().wagmi.client}>
-          <BalanceBar />
-          <StreamSetup />
           <WalletBar />
           <WalletSetup />
         </QueryClientProvider>
       </WagmiProvider>
 
-      <div className="py-4 px-2 background justify-items-center">
-        <div className="m-auto h-full w-full max-w-xl">
-          <div className="min-[1024px]:ml-12 min-[1120px]:ml-0">
-            <DepositDialog />
-            <GuardianButton />
-          </div>
-        </div>
-      </div>
+      <BalanceBar />
+      <StreamSetup />
+      <ToastSetup />
+
+      <DepositDialog />
+      <RequestDialog />
     </>
   );
 };

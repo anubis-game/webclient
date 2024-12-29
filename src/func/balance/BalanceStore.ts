@@ -14,12 +14,14 @@ export const BalanceStore = create(
     {
       allocated: {} as BalanceMessage,
       available: {} as BalanceMessage,
+      initialized: false,
     },
 
     (set, get) => ({
       delete: () => {
-        set(() => {
+        set((state) => {
           return {
+            ...state,
             allocated: {},
             available: {},
           };
@@ -69,6 +71,7 @@ export const BalanceStore = create(
             ...state,
             allocated: { ...alo },
             available: { ...avl },
+            initialized: true,
           };
         });
       },
