@@ -83,12 +83,10 @@ input::-moz-selection {
 
 .deposit.dialog,
 .guardian.dialog {
-  /* h-[25vw] */
-  height: 25vw;
   /* left-1/2 */
   left: 50%;
-  /* max-h-[75vh] */
-  max-height: 75vh;
+  /* max-h-[50vh] */
+  max-height: 50vh;
   /* max-w-[450px] */
   max-width: 450px;
   /* overflow-y-auto */
