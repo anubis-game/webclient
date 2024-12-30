@@ -1,30 +1,26 @@
+import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { DefaultFormStatus } from "../form/FormStatus";
 import { DefaultTokenSymcol } from "../config/Config";
 import { FormStatus } from "../form/FormStatus";
+import { GuardianObject } from "./GuardianObject";
 
 export interface RequestMessage {
-  amount: string;
+  guardians: Map<Address, GuardianObject>;
   dialog: boolean;
   status: FormStatus;
   submit: boolean;
   symbol: string;
 }
 
-// newRequestMessage ensures that the request store is properly initialized
-// before any component is rendered. We need to make sure that the default
-// deposit status is initialized for the first button text that we want to show.
-// And it is further important for the default deposit symbol to be set, because
-// an otherwise empty string would break the rendering of some components.
 const newRequestMessage = (): RequestMessage => {
   return {
-    amount: "",
-    dialog: false,
+    dialog: true,
     status: DefaultFormStatus("Choose an Amount"),
     submit: false,
     symbol: DefaultTokenSymcol,
-  };
+  } as RequestMessage;
 };
 
 export const RequestStore = create(
@@ -35,21 +31,20 @@ export const RequestStore = create(
       });
     },
 
-    updateAmount: (a: string) => {
-      set((state) => {
-        return {
-          ...state,
-          amount: a,
-        };
-      });
-    },
-
     updateDialog: (v: boolean) => {
       set((state) => {
         return {
           ...state,
-          amount: v ? state.amount : "",
           dialog: v,
+        };
+      });
+    },
+
+    updateGuardians: (g: Map<Address, GuardianObject>) => {
+      set((state) => {
+        return {
+          ...state,
+          guardians: g,
         };
       });
     },

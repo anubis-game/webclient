@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
+import { BlockExplorerToken } from "../../func/token/BlockExplorerToken";
 import { ChainStore } from "../../func/chain/ChainStore";
 import { DepositHandler } from "../../func/deposit/DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
@@ -10,7 +11,6 @@ import { ToggleBar } from "../toggle/ToggleBar";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
 import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
-import { BlockExplorerToken } from "../../func/token/BlockExplorerToken";
 
 export const DepositDialog = () => {
   const { amount, dialog, status, submit, symbol } = DepositStore(

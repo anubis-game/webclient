@@ -18,7 +18,7 @@ export const DepositHandler = async () => {
   {
     DepositStore.getState().updateStatus({
       lifecycle: FormStatusLoading,
-      container: React.createElement("Signing Transaction"),
+      container: React.createElement("div", null, "Signing Transaction"),
     });
 
     DepositStore.getState().updateSubmit(true);
@@ -45,7 +45,7 @@ export const DepositHandler = async () => {
   {
     DepositStore.getState().updateStatus({
       lifecycle: FormStatusLoading,
-      container: React.createElement("Confirming Onchain"),
+      container: React.createElement("div", null, "Confirming Onchain"),
     });
   }
 
@@ -78,7 +78,7 @@ const failure = async (tit: string, err: any) => {
 
   DepositStore.getState().updateStatus({
     lifecycle: FormStatusFailure,
-    container: React.createElement(tit),
+    container: React.createElement("div", null, tit),
   });
 
   {
@@ -88,7 +88,7 @@ const failure = async (tit: string, err: any) => {
   {
     DepositStore.getState().updateStatus({
       lifecycle: FormStatusEnabled,
-      container: React.createElement("Try Again"),
+      container: React.createElement("div", null, "Try Again"),
     });
   }
 
@@ -100,7 +100,7 @@ const failure = async (tit: string, err: any) => {
 const success = async (amo: number, sym: string) => {
   DepositStore.getState().updateStatus({
     lifecycle: FormStatusSuccess,
-    container: React.createElement(`Deposited ${amo} ${sym}`),
+    container: React.createElement("div", null, `Deposited ${amo} ${sym}`),
   });
 
   {
