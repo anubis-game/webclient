@@ -6,7 +6,7 @@ import { SearchBalance } from "../transaction/registry/SearchBalance";
 import { TokenConfig } from "../token/TokenConfig";
 
 export interface BalanceMessage {
-  [key: string]: TokenConfig & { balance: number };
+  [key: string]: TokenConfig & { balance: number; updated: boolean };
 }
 
 export const BalanceStore = create(
@@ -18,8 +18,9 @@ export const BalanceStore = create(
 
     (set, get) => ({
       delete: () => {
-        set(() => {
+        set((state) => {
           return {
+            ...state,
             allocated: {},
             available: {},
           };
@@ -28,6 +29,11 @@ export const BalanceStore = create(
 
       formatBalance: (mes: BalanceMessage, tok: string = DefaultTokenSymcol): string => {
         return mes[tok] ? mes[tok].balance.toFixed(mes[tok].precision) : "";
+      },
+
+      getUpdated: (tok: string = DefaultTokenSymcol): boolean => {
+        const avl = get().available[tok];
+        return avl && avl.updated === true;
       },
 
       hasAllocated: (tok: string = DefaultTokenSymcol): boolean => {
@@ -55,11 +61,13 @@ export const BalanceStore = create(
             alo[key] = {
               ...val[0],
               balance: bal.reduce((sum, bal) => sum + bal.alo, 0),
+              updated: true,
             };
 
             avl[key] = {
               ...val[0],
               balance: bal.reduce((sum, bal) => sum + bal.avl, 0),
+              updated: true,
             };
           }),
         );

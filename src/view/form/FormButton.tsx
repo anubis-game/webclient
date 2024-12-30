@@ -15,22 +15,22 @@ interface Props {
 export const FormButton = (props: Props) => {
   return (
     <button
-      className={`button form ${props.status.phase} px-4 py-3 w-full h-full`}
-      disabled={props.status.phase !== FormStatusEnabled}
+      className={`button form ${props.status.lifecycle} px-4 py-3 w-full h-full`}
+      disabled={props.status.lifecycle !== FormStatusEnabled}
       type="button"
       onClick={props.submit}
     >
       <div className="flex gap-x-2">
-        {(props.status.phase === FormStatusFailure ||
-          props.status.phase === FormStatusLoading ||
-          props.status.phase === FormStatusSuccess) && (
+        {(props.status.lifecycle === FormStatusFailure ||
+          props.status.lifecycle === FormStatusLoading ||
+          props.status.lifecycle === FormStatusSuccess) && (
           <div className="flex my-auto">
-            {props.status.phase === FormStatusFailure && <ErrorIcon />}
-            {props.status.phase === FormStatusLoading && <SpinnerIcon />}
-            {props.status.phase === FormStatusSuccess && <CheckMarkIcon />}
+            {props.status.lifecycle === FormStatusFailure && <ErrorIcon />}
+            {props.status.lifecycle === FormStatusLoading && <SpinnerIcon />}
+            {props.status.lifecycle === FormStatusSuccess && <CheckMarkIcon />}
           </div>
         )}
-        <div>{props.status.title}</div>
+        <div>{props.status.container}</div>
       </div>
     </button>
   );

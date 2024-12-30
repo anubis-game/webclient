@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const WalletItem = (props: Props) => {
-  const [ready, setReady] = React.useState(false);
+  const [ready, setReady] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     (async () => {

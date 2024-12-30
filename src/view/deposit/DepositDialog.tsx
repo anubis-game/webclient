@@ -5,7 +5,6 @@ import { AllTokenSymbols } from "../../func/token/TokenConfig";
 import { ChainStore } from "../../func/chain/ChainStore";
 import { DepositHandler } from "../../func/deposit/DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
-// import { DummyHandler } from "../../func/deposit/DummyHandler";
 import { FormButton } from "../form/FormButton";
 import { ToggleBar } from "../toggle/ToggleBar";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
@@ -83,7 +82,6 @@ export const DepositDialog = () => {
             <FormButton
               status={status}
               submit={DepositHandler}
-              // submit={DummyHandler}
             />
           </div>
 

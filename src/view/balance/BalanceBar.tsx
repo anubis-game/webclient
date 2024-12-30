@@ -27,7 +27,7 @@ export const BalanceBar = () => {
   }
 
   return (
-    <div className="absolute bottom-4 left-4 flex gap-4 items-center">
+    <div className="absolute bottom-6 left-6 flex gap-4 items-center">
       {avl && (
         <>
           <Tooltip
