@@ -16,6 +16,11 @@ export const ToastConnect = () => {
   );
 
   React.useEffect(() => {
+    // The idea for this permanent toast is to show a message to the user in
+    // case no wallet was connected. So if we know that we checked for wallet
+    // connections, and if we find no wallet to be connected, then we show the
+    // toast below. Conversely, the toast should disappear when a wallet was
+    // connected.
     if (ready) {
       setOpen(!connected);
     }

@@ -9,9 +9,9 @@ import { WalletStore } from "../../func/wallet/WalletStore";
 export const ToastDeposit = () => {
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const { initialized } = BalanceStore(
+  const { available } = BalanceStore(
     useShallow((state) => ({
-      initialized: state.initialized,
+      available: state.available,
     })),
   );
 
@@ -23,14 +23,23 @@ export const ToastDeposit = () => {
   );
 
   React.useEffect(() => {
-    if (ready) {
-      setOpen(!connected);
-    }
-
-    if (initialized) {
+    // We want to show this permanent toast if no available balance got
+    // deposited. Only if we have the updated balance state ready, only then can
+    // we check for the available amount of tokens. Every time "available"
+    // updates we check whether the relevant token balance is greater than zero.
+    // As soon as some balance got deposited, the toast should disappear.
+    if (BalanceStore.getState().getUpdated()) {
       setOpen(!BalanceStore.getState().hasAvailable());
     }
-  }, [connected, initialized, ready]);
+
+    // This special case hides the deposit toast in case a user was connected
+    // without any available balance, and then disconnected. So if we had a
+    // wallet connected, and if that wallet had no available balance, then we
+    // want to hide the toast again.
+    if (ready && !connected) {
+      setOpen(false);
+    }
+  }, [available, connected, ready]);
 
   // TODO put the toast styles into CSS selectors
   return (
