@@ -1,16 +1,17 @@
 import * as React from "react";
 
-import { Address, zeroAddress } from "viem";
+import { Address } from "viem";
 import { ExistsTokenSymbol } from "../../func/token/TokenConfig";
-import { GuardianObject } from "../../func/stream/GuardianObject";
+import { GuardianObject } from "../../func/request/GuardianObject";
 import { GuardianEndpoints } from "../../func/config/Config";
 import { GuardianHypertextProtocol } from "../../func/config/Config";
+import { RequestStore } from "../../func/request/RequestStore";
 import { ShuffleStrings } from "../../func/string/ShuffleStrings";
 import { Sleep } from "../../func/sleep/Sleep";
-import { StreamStore } from "../../func/stream/StreamStore";
 import { SymbolWithRegistry } from "../../func/contract/ContractConfig";
+import { zeroAddress } from "viem";
 
-export const StreamSetup = () => {
+export const RequestSetup = () => {
   // Continuously check the the available guardian servers.
   React.useEffect(() => {
     let mnt = true;
@@ -83,5 +84,5 @@ const updateGuardians = async () => {
     }
   }
 
-  StreamStore.getState().updateGuardians(m);
+  RequestStore.getState().updateGuardians(m);
 };

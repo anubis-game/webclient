@@ -1,13 +1,14 @@
-import { StreamStore } from "../../func/stream/StreamStore";
+import { RequestHandler } from "../../func/request/RequestHandler";
+import { RequestStore } from "../../func/request/RequestStore";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { useShallow } from "zustand/react/shallow";
-import { RequestHandler } from "../../func/request/RequestHandler";
 
 export const RequestDialog = () => {
-  // TODO move this to the RequestStore
-  const { guardians } = StreamStore(
+  const { dialog, guardians } = RequestStore(
     useShallow((state) => ({
+      dialog: state.dialog,
       guardians: state.guardians,
+      submit: state.submit,
     })),
   );
 
@@ -22,24 +23,36 @@ export const RequestDialog = () => {
 
   // TODO make Guardian buttons the default container in FormStatus
 
-  // TODO show this in a default open Dialog
   return (
-    <div className="grid gap-4 w-full">
-      <div className="guardian dialog p-4 grid gap-4">
-        {sorted.map(([key, val]) => (
-          <div
-            key={key}
-            className="button solid p-4"
-            onClick={() => RequestHandler(key, val.symbol)}
-          >
-            <div className="w-full grid grid-cols-6 gap-4 whitespace-nowrap">
-              <div className="col-span-4">{TruncateSeparator(key, "...")}</div>
-              <div className="col-span-1">{val.symbol}</div>
-              <div className="col-span-1">{Math.round(val.latency)} ms</div>
-            </div>
+    <>
+      {dialog && (
+        <div className="guardian dialog p-4">
+          <div className="grid gap-4">
+            {sorted.map(([key, val]) => (
+              <div
+                key={key}
+                className="button solid p-4"
+                onClick={() => RequestHandler(key, val.symbol)}
+              >
+                <div className="w-full grid grid-cols-6 gap-4 whitespace-nowrap">
+                  <div className="col-span-4">{TruncateSeparator(key, "...")}</div>
+                  <div className="col-span-1">{val.symbol}</div>
+                  <div className="col-span-1">{Math.round(val.latency)} ms</div>
+                </div>
+              </div>
+            ))}
+
+            {Array.from({ length: Math.max(5 - sorted.length, 0) }).map((_, i) => (
+              <div
+                key={`skeleton-${i}`}
+                className="button solid disabled p-4"
+              >
+                More Games Soon
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 };

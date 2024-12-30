@@ -81,11 +81,12 @@ input::-moz-selection {
   border-color: rgb(55 65 81);
 }
 
-.deposit.dialog {
+.deposit.dialog,
+.guardian.dialog {
   /* left-1/2 */
   left: 50%;
-  /* max-h-[85vh] */
-  max-height: 85vh;
+  /* max-h-[50vh] */
+  max-height: 50vh;
   /* max-w-[450px] */
   max-width: 450px;
   /* overflow-y-auto */
@@ -134,6 +135,7 @@ html body .button.failure,
 html body .button.invalid,
 html body .button.loading,
 html body .button.success,
+html body .button.disabled,
 html body .button:disabled,
 html body .deposit.dialog .button[data-disabled] {
   /* cursor-not-allowed */
@@ -209,6 +211,13 @@ html body .wallet.dialog .button[data-disabled] {
   background-color: rgb(56 189 248);
   /* text-black */
   color: black;
+}
+
+.dark .button.solid.disabled {
+  /* bg-sky-900/50 */
+  background-color: rgb(12, 74, 110, 0.5);
+  /* text-gray-600 */
+  color: rgb(75 85 99);
 }
 
 /*
@@ -303,6 +312,34 @@ html body .wallet.dialog .button[data-disabled] {
   border-style: solid;
   /* text-gray-600 */
   color: rgb(75 85 99);
+}
+
+/*
+ *
+ *
+ *
+ */
+
+.toast {
+  /* items-center */
+  align-items: center;
+  /* rounded */
+  border-radius: 0.25rem;
+  /* flex */
+  display: flex;
+  /* gap-4 */
+  gap: 1rem;
+  /* p-4 */
+  padding: 1rem;
+  /* w-full */
+  width: 100%;
+}
+
+.toast.info {
+  /* bg-yellow-400 */
+  background-color: rgb(250, 204, 21);
+  /* text-black */
+  color: black;
 }
 
 /*

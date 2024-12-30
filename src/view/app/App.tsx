@@ -3,7 +3,7 @@ import { DepositDialog } from "../deposit/DepositDialog";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { QueryStore } from "../../func/query/QueryStore";
 import { RequestDialog } from "../request/RequestDialog";
-import { StreamSetup } from "../stream/StreamSetup";
+import { RequestSetup } from "../request/RequestSetup";
 import { ToastSetup } from "../toast/ToastSetup";
 import { WagmiConfig } from "../../func/wagmi/WagmiConfig";
 import { WagmiProvider } from "wagmi";
@@ -21,7 +21,7 @@ export const App = () => {
       </WagmiProvider>
 
       <BalanceBar />
-      <StreamSetup />
+      <RequestSetup />
       <ToastSetup />
 
       <DepositDialog />

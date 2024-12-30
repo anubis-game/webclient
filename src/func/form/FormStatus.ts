@@ -15,6 +15,6 @@ export interface FormStatus {
 export const DefaultFormStatus = (msg: string = ""): FormStatus => {
   return {
     lifecycle: FormStatusDefault,
-    container: React.createElement(msg),
+    container: React.createElement("div", null, msg),
   };
 };

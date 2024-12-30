@@ -19,7 +19,7 @@ export const RequestHandler = async (grd: Address, sym: string) => {
   {
     RequestStore.getState().updateStatus({
       lifecycle: FormStatusLoading,
-      container: React.createElement("Signing Transaction"),
+      container: React.createElement("div", null, "Signing Transaction"),
     });
 
     RequestStore.getState().updateSubmit(true);
@@ -43,7 +43,7 @@ export const RequestHandler = async (grd: Address, sym: string) => {
   {
     RequestStore.getState().updateStatus({
       lifecycle: FormStatusLoading,
-      container: React.createElement("Confirming Onchain"),
+      container: React.createElement("div", null, "Confirming Onchain"),
     });
   }
 
@@ -66,7 +66,7 @@ const failure = async (tit: string, err: any) => {
 
   RequestStore.getState().updateStatus({
     lifecycle: FormStatusFailure,
-    container: React.createElement(tit),
+    container: React.createElement("div", null, tit),
   });
 
   {
@@ -76,7 +76,7 @@ const failure = async (tit: string, err: any) => {
   {
     RequestStore.getState().updateStatus({
       lifecycle: FormStatusEnabled,
-      container: React.createElement("Try Again"),
+      container: React.createElement("div", null, "Try Again"),
     });
   }
 
@@ -88,7 +88,7 @@ const failure = async (tit: string, err: any) => {
 const success = async () => {
   RequestStore.getState().updateStatus({
     lifecycle: FormStatusSuccess,
-    container: React.createElement("Ready To Play"),
+    container: React.createElement("div", null, "Ready To Play"),
   });
 
   {

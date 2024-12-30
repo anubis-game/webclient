@@ -93,14 +93,14 @@ const verifyStatus = (amo: string, sym: string): FormStatus => {
   if (!amo) {
     return {
       lifecycle: FormStatusInvalid,
-      container: React.createElement("Choose an Amount"),
+      container: React.createElement("div", null, "Choose an Amount"),
     };
   }
 
   if (amo.includes(".") || amo.includes("e")) {
     return {
       lifecycle: FormStatusInvalid,
-      container: React.createElement(`Only full ${sym}`),
+      container: React.createElement("div", null, `Only full ${sym}`),
     };
   }
 
@@ -109,19 +109,19 @@ const verifyStatus = (amo: string, sym: string): FormStatus => {
   if (num < 1) {
     return {
       lifecycle: FormStatusInvalid,
-      container: React.createElement(`Minimum ${1} ${sym}`),
+      container: React.createElement("div", null, `Minimum ${1} ${sym}`),
     };
   }
 
   if (num > 10) {
     return {
       lifecycle: FormStatusInvalid,
-      container: React.createElement(`Maximum ${10} ${sym}`),
+      container: React.createElement("div", null, `Maximum ${10} ${sym}`),
     };
   }
 
   return {
     lifecycle: FormStatusEnabled,
-    container: React.createElement(`Deposit ${amo} ${sym}`),
+    container: React.createElement("div", null, `Deposit ${amo} ${sym}`),
   };
 };

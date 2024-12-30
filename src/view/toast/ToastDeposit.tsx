@@ -41,10 +41,9 @@ export const ToastDeposit = () => {
     }
   }, [available, connected, ready]);
 
-  // TODO put the toast styles into CSS selectors
   return (
     <Toast.Root
-      className="flex gap-4 p-4 w-full text-black bg-yellow-400 rounded items-center"
+      className="toast info"
       open={open}
       onOpenChange={setOpen}
     >

@@ -13,7 +13,6 @@ export const ToastSetup = () => {
     })),
   );
 
-  // TODO put the toast styles into CSS selectors
   return (
     <Toast.Provider duration={Infinity}>
       <Toast.Viewport className="fixed top-0 right-0 p-4 grid gap-4 w-full sm:w-[350px] list-none z-[2147483647] outline-none" />
@@ -24,7 +23,7 @@ export const ToastSetup = () => {
       {toasts.map((x) => (
         <Toast.Root
           key={x.hash}
-          className="flex gap-4 p-4 w-full text-black bg-yellow-400 rounded items-center"
+          className="toast info"
           duration={10_000}
           onOpenChange={(open: boolean) => {
             if (open === false) {
