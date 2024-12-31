@@ -28,7 +28,7 @@ export const BalanceBar = () => {
   }
 
   const alo = balance.allocated.toFixed(balance.precision);
-  const avl = balance.deposited.toFixed(balance.precision);
+  const dep = balance.deposited.toFixed(balance.precision);
 
   return (
     <div className="absolute bottom-6 left-6 flex gap-4 items-center">
@@ -37,7 +37,7 @@ export const BalanceBar = () => {
         side="top"
         trigger={<DollarIcon />}
       />
-      <div>{avl}</div>
+      <div>{dep}</div>
 
       <Tooltip
         content={<>Allocated Balance</>}
