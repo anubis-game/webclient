@@ -31,7 +31,7 @@ export const DepositButton = () => {
     if (balance.status !== BalanceStatusLoading) {
       DepositStore.getState().updateStatus(VerifyStatus(deposit.amount, deposit.symbol));
     }
-  }, [balance.status, deposit.amount, deposit.status.lifecycle, deposit.symbol]);
+  }, [balance.status, deposit.amount, deposit.symbol]);
 
   return (
     <SubmitButton
