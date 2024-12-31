@@ -4,8 +4,8 @@ import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { Tooltip } from "../tooltip/Tooltip";
 import { useShallow } from "zustand/react/shallow";
-import { WalletStore } from "../../func/wallet/WalletStore";
 import { WalletStatusConnected } from "../../func/wallet/WalletStatus";
+import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const BalanceBar = () => {
   const balance = BalanceStore(
