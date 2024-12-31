@@ -2,24 +2,24 @@ import * as React from "react";
 
 import { Address } from "viem";
 import { ExistsTokenSymbol } from "../../func/token/TokenConfig";
-import { GuardianObject } from "../../func/request/GuardianObject";
+import { GuardianObject } from "../../func/guardian/GuardianObject";
 import { GuardianEndpoints } from "../../func/config/Config";
 import { GuardianHypertextProtocol } from "../../func/config/Config";
-import { RequestStore } from "../../func/request/RequestStore";
+import { GuardianStore } from "../../func/guardian/GuardianStore";
 import { ShuffleStrings } from "../../func/string/ShuffleStrings";
 import { Sleep } from "../../func/sleep/Sleep";
 import { SymbolWithRegistry } from "../../func/contract/ContractConfig";
 import { zeroAddress } from "viem";
 
-export const RequestSetup = () => {
-  // Continuously check the the available guardian servers.
+export const GuardianSetup = () => {
+  // Continuously check the available guardian servers.
   React.useEffect(() => {
     let mnt = true;
 
     (async () => {
       while (mnt) {
         await updateGuardians();
-        await Sleep(60 * 1000);
+        await Sleep(10_000);
       }
     })();
 
@@ -54,10 +54,11 @@ const updateGuardians = async () => {
         return {
           key: grd,
           val: {
+            address: grd,
             healthy: res.ok && ExistsTokenSymbol(sym),
             endpoint: x,
             latency: end - sta,
-            symbol: sym,
+            registry: reg,
           },
         };
       } catch (err) {
@@ -68,21 +69,28 @@ const updateGuardians = async () => {
         return {
           key: zeroAddress,
           val: {
+            address: zeroAddress,
             healthy: false,
             endpoint: x,
             latency: NaN,
-            symbol: "",
+            registry: zeroAddress,
           },
         };
       }
     }),
   );
 
-  for (const x of all) {
+  for (const x of all.sort((a, b) => a.key.localeCompare(b.key))) {
     if (x.val.healthy) {
       m.set(x.key, x.val);
     }
   }
 
-  RequestStore.getState().updateGuardians(m);
+  // Update the Guardian objects based on the current data and activated the
+  // server with the lowest latency at this point in time once the new data is
+  // set.
+  {
+    GuardianStore.getState().updateObject(m);
+    GuardianStore.getState().updateActive();
+  }
 };

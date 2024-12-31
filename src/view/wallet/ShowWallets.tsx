@@ -1,11 +1,13 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
 
+import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { BlockExplorerAddress } from "../../func/address/BlockExplorerAddress";
 import { DepositStore } from "../../func/deposit/DepositStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
+import { InfoToast } from "../../func/toast/ToastSender";
 import { LogoutIcon } from "../icon/LogoutIcon";
 import { OpenLinkIcon } from "../icon/OpenLinkIcon";
 import { Tooltip } from "../tooltip/Tooltip";
@@ -14,7 +16,6 @@ import { useDisconnect } from "wagmi";
 import { useEnsName } from "wagmi";
 import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
 
 export const ShowWallets = () => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -73,7 +74,7 @@ export const ShowWallets = () => {
           >
             <div className="w-[144px]">Deposit</div>
             <Tooltip
-              content={<>Deposit small amounts of tokens. Everyone with an available balance can play.</>}
+              content={<>Deposit some tokens to play the game.</>}
               side="right"
               trigger={<DollarIcon />}
             />
@@ -82,10 +83,11 @@ export const ShowWallets = () => {
           <DropdownMenu.Item
             className="button ghost p-2"
             disabled={status !== BalanceStatusFunded}
+            onSelect={() => InfoToast(<>Just chill ok, it's coming!</>)}
           >
             <div className="w-[144px]">Withdraw</div>
             <Tooltip
-              content={<>You can withdraw your available balance back to your wallet any time.</>}
+              content={<>Withdraw your funds any time.</>}
               side="right"
               trigger={<DollarIcon />}
             />
@@ -100,7 +102,7 @@ export const ShowWallets = () => {
             >
               <div className="w-[144px]">{TruncateSeparator(signer, "...")}</div>
               <Tooltip
-                content={<>This is the signer controlling your Smart Wallet. It will never leave this device.</>}
+                content={<>The signer controlling your Smart Wallet. It will never leave this device.</>}
                 side="right"
                 trigger={<InfoCircleIcon />}
               />
@@ -114,7 +116,7 @@ export const ShowWallets = () => {
             >
               <div className="w-[144px]">{TruncateSeparator(player, "...")}</div>
               <Tooltip
-                content={<>This is your Smart Wallet managing the game. It will never hold your funds.</>}
+                content={<>Your smart wallet managing the game. It will never hold your funds.</>}
                 side="right"
                 trigger={<OpenLinkIcon />}
               />

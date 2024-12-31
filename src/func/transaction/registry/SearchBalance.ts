@@ -5,7 +5,7 @@ import { WalletStore } from "../../wallet/WalletStore";
 
 interface BalanceResponse {
   alo: number;
-  avl: number;
+  dep: number;
   his: number;
 }
 
@@ -19,7 +19,7 @@ export const SearchBalance = async (con: ContractConfig, tok: TokenConfig): Prom
 
   return {
     alo: Number(formatUnits(res[0], tok.decimals)),
-    avl: Number(formatUnits(res[1], tok.decimals)),
+    dep: Number(formatUnits(res[1], tok.decimals)),
     his: Number(formatUnits(res[2], tok.decimals)),
   };
 };

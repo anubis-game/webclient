@@ -1,6 +1,6 @@
 import { ToastStore } from "./ToastStore";
 
-export const ControlInfoToast = (mes: JSX.Element) => {
+export const InfoToast = (mes: JSX.Element) => {
   ToastStore.getState().createToast({
     node: mes,
   });

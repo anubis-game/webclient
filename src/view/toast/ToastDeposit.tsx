@@ -16,20 +16,19 @@ export const ToastDeposit = () => {
   );
 
   React.useEffect(() => {
-    // We want to show this permanent toast if no available balance got
-    // deposited. As soon as some balance got deposited, the toast should
-    // disappear.
+    // We want to show this permanent toast if no balance got deposited. As soon
+    // as some balance got deposited, the toast should disappear.
     setOpen(balance.status === BalanceStatusEmpty);
   }, [balance.status]);
 
   return (
     <Toast.Root
       className="toast info"
-      open={open}
       onOpenChange={setOpen}
+      open={open}
     >
       <InfoCircleIcon />
-      <Toast.Title>Deposit Some Tokens</Toast.Title>
+      <Toast.Title>Now Deposit Some Tokens</Toast.Title>
     </Toast.Root>
   );
 };
