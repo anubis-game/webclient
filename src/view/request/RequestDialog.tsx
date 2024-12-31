@@ -1,6 +1,5 @@
-import { RequestHandler } from "../../func/request/RequestHandler";
+import { RequestButton } from "./RequestButton";
 import { RequestStore } from "../../func/request/RequestStore";
-import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { useShallow } from "zustand/react/shallow";
 
 export const RequestDialog = () => {
@@ -8,7 +7,6 @@ export const RequestDialog = () => {
     useShallow((state) => ({
       dialog: state.dialog,
       guardians: state.guardians,
-      submit: state.submit,
     })),
   );
 
@@ -21,7 +19,8 @@ export const RequestDialog = () => {
   // visual representation of the available Guardian game servers.
   const sorted = Array.from(guardians.entries()).sort(([x], [b]) => x.localeCompare(b));
 
-  // TODO make Guardian buttons the default container in FormStatus
+  // TODO automate Guardian selection on behalf of the user
+  // TODO show a single simple "Play Now" button
 
   return (
     <>
@@ -29,17 +28,11 @@ export const RequestDialog = () => {
         <div className="guardian dialog p-4">
           <div className="grid gap-4">
             {sorted.map(([key, val]) => (
-              <div
+              <RequestButton
                 key={key}
-                className="button solid p-4"
-                onClick={() => RequestHandler(key, val.symbol)}
-              >
-                <div className="w-full grid grid-cols-6 gap-4 whitespace-nowrap">
-                  <div className="col-span-4">{TruncateSeparator(key, "...")}</div>
-                  <div className="col-span-1">{val.symbol}</div>
-                  <div className="col-span-1">{Math.round(val.latency)} ms</div>
-                </div>
-              </div>
+                address={key}
+                object={val}
+              />
             ))}
 
             {Array.from({ length: Math.max(5 - sorted.length, 0) }).map((_, i) => (

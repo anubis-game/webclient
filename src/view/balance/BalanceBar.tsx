@@ -1,54 +1,49 @@
 import { ActivityIcon } from "../icon/ActivityIcon";
+import { BalanceStatusLoading } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { Tooltip } from "../tooltip/Tooltip";
 import { useShallow } from "zustand/react/shallow";
+import { WalletStatusConnected } from "../../func/wallet/WalletStatus";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const BalanceBar = () => {
-  const { allocated, available } = BalanceStore(
+  const balance = BalanceStore(
     useShallow((state) => ({
       allocated: state.allocated,
       available: state.available,
+      status: state.status,
     })),
   );
 
-  const { connected } = WalletStore(
+  const wallet = WalletStore(
     useShallow((state) => ({
-      connected: state.connected,
+      status: state.status,
     })),
   );
 
-  const alo = BalanceStore.getState().formatBalance(allocated);
-  const avl = BalanceStore.getState().formatBalance(available);
-
-  if (!connected || !avl) {
+  if (wallet.status !== WalletStatusConnected || balance.status === BalanceStatusLoading) {
     return <></>;
   }
 
+  const alo = balance.allocated.balance.toFixed(balance.allocated.precision);
+  const avl = balance.available.balance.toFixed(balance.available.precision);
+
   return (
     <div className="absolute bottom-6 left-6 flex gap-4 items-center">
-      {avl && (
-        <>
-          <Tooltip
-            content={<>Available Balance</>}
-            side="top"
-            trigger={<DollarIcon />}
-          />
-          <>{avl}</>
-        </>
-      )}
+      <Tooltip
+        content={<>Available Balance</>}
+        side="top"
+        trigger={<DollarIcon />}
+      />
+      <div>{avl}</div>
 
-      {alo && (
-        <>
-          <Tooltip
-            content={<>Allocated Balance</>}
-            side="top"
-            trigger={<ActivityIcon />}
-          />
-          <>{alo}</>
-        </>
-      )}
+      <Tooltip
+        content={<>Allocated Balance</>}
+        side="top"
+        trigger={<ActivityIcon />}
+      />
+      <div>{alo}</div>
     </div>
   );
 };

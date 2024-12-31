@@ -14,9 +14,16 @@ import { useDisconnect } from "wagmi";
 import { useEnsName } from "wagmi";
 import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
+import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
 
 export const ShowWallets = () => {
   const [open, setOpen] = React.useState<boolean>(false);
+
+  const { status } = BalanceStore(
+    useShallow((state) => ({
+      status: state.status,
+    })),
+  );
 
   const { wallet, signer, player } = WalletStore(
     useShallow((state) => ({
@@ -74,7 +81,7 @@ export const ShowWallets = () => {
 
           <DropdownMenu.Item
             className="button ghost p-2"
-            disabled={!BalanceStore.getState().hasAvailable()}
+            disabled={status !== BalanceStatusFunded}
           >
             <div className="w-[144px]">Withdraw</div>
             <Tooltip

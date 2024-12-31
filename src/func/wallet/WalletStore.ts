@@ -6,27 +6,34 @@ import { PrivateKeyAccount } from "viem";
 import { PublicClient } from "viem";
 import { WalletClient } from "viem";
 import { LightAccount } from "@account-kit/smart-contracts";
+import { WalletStatus } from "./WalletStatus";
+import { WalletStatusLoading } from "./WalletStatus";
 
 export interface WalletMessage {
   wallet: { address: Hex; client: WalletClient };
   signer: { address: Hex; client: LocalAccountSigner<PrivateKeyAccount> };
   player: { address: Hex; client: LightAccount };
   public: PublicClient;
-  connected: boolean;
-  ready: boolean;
+  status: WalletStatus;
 }
 
-// newWalletMessage ensures that we also have initialized booleans so that we do
-// not have to work with any undefined state during component rendering.
+// newWalletMessage ensures that we have an initialized loading status so that
+// we do not have to work with any undefined state during the first component
+// renderings.
 const newWalletMessage = (): WalletMessage => {
   return {
-    connected: false,
-    ready: false,
+    status: WalletStatusLoading,
   } as WalletMessage;
 };
 
 export const WalletStore = create(
   combine(newWalletMessage(), (set) => ({
+    delete: () => {
+      set(() => {
+        return newWalletMessage();
+      });
+    },
+
     updateWallet: (a: Hex, c: WalletClient) => {
       set((state) => {
         return {
@@ -38,6 +45,7 @@ export const WalletStore = create(
         };
       });
     },
+
     updateSigner: (a: Hex, c: LocalAccountSigner<PrivateKeyAccount>) => {
       set((state) => {
         return {
@@ -49,6 +57,7 @@ export const WalletStore = create(
         };
       });
     },
+
     updatePlayer: (a: Hex, c: LightAccount) => {
       set((state) => {
         return {
@@ -60,6 +69,7 @@ export const WalletStore = create(
         };
       });
     },
+
     updatePublic: (p: PublicClient) => {
       set((state) => {
         return {
@@ -68,19 +78,12 @@ export const WalletStore = create(
         };
       });
     },
-    updateConnected: (c: boolean) => {
+
+    updateStatus: (s: WalletStatus) => {
       set((state) => {
         return {
           ...state,
-          connected: c,
-        };
-      });
-    },
-    updateReady: (r: boolean) => {
-      set((state) => {
-        return {
-          ...state,
-          ready: r,
+          status: s,
         };
       });
     },

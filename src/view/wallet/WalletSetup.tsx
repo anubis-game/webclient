@@ -10,6 +10,8 @@ import { EnsureSigner } from "../../func/signer/EnsureSigner";
 import { http } from "viem";
 import { StreamStore } from "../../func/stream/StreamStore";
 import { useAccount } from "wagmi";
+import { WalletStatusConnected } from "../../func/wallet/WalletStatus";
+import { WalletStatusDisconnected } from "../../func/wallet/WalletStatus";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const WalletSetup = () => {
@@ -24,10 +26,6 @@ export const WalletSetup = () => {
       if (status === "disconnected") {
         disconnect();
       }
-
-      if (status === "connected" || status === "disconnected") {
-        updateReady();
-      }
     })();
   }, [status]);
 
@@ -39,7 +37,7 @@ const disconnect = () => {
   StreamStore.getState().client?.close();
   StreamStore.getState().updateClient(null);
   StreamStore.getState().updateConnected(false);
-  WalletStore.getState().updateConnected(false);
+  WalletStore.getState().updateStatus(WalletStatusDisconnected);
 };
 
 const setupWallet = async () => {
@@ -96,9 +94,5 @@ const setupWallet = async () => {
   //
 
   BalanceStore.getState().updateBalance();
-  WalletStore.getState().updateConnected(true);
-};
-
-const updateReady = () => {
-  WalletStore.getState().updateReady(true);
+  WalletStore.getState().updateStatus(WalletStatusConnected);
 };

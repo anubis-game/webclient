@@ -3,32 +3,25 @@ import * as Request from "../transaction/registry/Request";
 
 import { Address } from "viem";
 import { BalanceStore } from "../balance/BalanceStore";
-import { ChainStore } from "../chain/ChainStore";
-import { FormStatusEnabled } from "../form/FormStatus";
-import { FormStatusFailure } from "../form/FormStatus";
-import { FormStatusLoading } from "../form/FormStatus";
-import { FormStatusSuccess } from "../form/FormStatus";
 import { RequestSignature } from "../signature/CreateSignature";
 import { RequestStore } from "./RequestStore";
 import { Sleep } from "../sleep/Sleep";
 import { SendTransaction } from "../transaction/SendTransaction";
 import { SignatureTimestamp } from "../../func/signature/CreateSignature";
-import { WalletStore } from "../wallet/WalletStore";
+import { SubmitStatusEnabled } from "../submit/SubmitStatus";
+import { SubmitStatusFailure } from "../submit/SubmitStatus";
+import { SubmitStatusLoading } from "../submit/SubmitStatus";
+import { SubmitStatusSuccess } from "../submit/SubmitStatus";
+import { zeroAddress } from "viem";
 
 export const RequestHandler = async (grd: Address, sym: string) => {
   {
     RequestStore.getState().updateStatus({
-      lifecycle: FormStatusLoading,
+      lifecycle: SubmitStatusLoading,
       container: React.createElement("div", null, "Signing Transaction"),
     });
 
-    RequestStore.getState().updateSubmit(true);
-  }
-
-  {
-    WalletStore.getState().wallet.client.switchChain({
-      id: ChainStore.getState().active,
-    });
+    RequestStore.getState().updateSubmit(grd);
   }
 
   const tim = SignatureTimestamp();
@@ -42,7 +35,7 @@ export const RequestHandler = async (grd: Address, sym: string) => {
 
   {
     RequestStore.getState().updateStatus({
-      lifecycle: FormStatusLoading,
+      lifecycle: SubmitStatusLoading,
       container: React.createElement("div", null, "Confirming Onchain"),
     });
   }
@@ -65,7 +58,7 @@ const failure = async (tit: string, err: any) => {
   }
 
   RequestStore.getState().updateStatus({
-    lifecycle: FormStatusFailure,
+    lifecycle: SubmitStatusFailure,
     container: React.createElement("div", null, tit),
   });
 
@@ -75,19 +68,19 @@ const failure = async (tit: string, err: any) => {
 
   {
     RequestStore.getState().updateStatus({
-      lifecycle: FormStatusEnabled,
+      lifecycle: SubmitStatusEnabled,
       container: React.createElement("div", null, "Try Again"),
     });
   }
 
   {
-    RequestStore.getState().updateSubmit(false);
+    RequestStore.getState().updateSubmit(zeroAddress);
   }
 };
 
 const success = async () => {
   RequestStore.getState().updateStatus({
-    lifecycle: FormStatusSuccess,
+    lifecycle: SubmitStatusSuccess,
     container: React.createElement("div", null, "Ready To Play"),
   });
 

@@ -6,16 +6,15 @@ import { BlockExplorerToken } from "../../func/token/BlockExplorerToken";
 import { ChainStore } from "../../func/chain/ChainStore";
 import { DepositHandler } from "../../func/deposit/DepositHandler";
 import { DepositStore } from "../../func/deposit/DepositStore";
-import { FormButton } from "../form/FormButton";
+import { SubmitButton } from "../submit/SubmitButton";
 import { ToggleBar } from "../toggle/ToggleBar";
 import { TrimWhitespace } from "../../func/string/TrimWhitespace";
 import { useShallow } from "zustand/react/shallow";
 import { XMarkIcon } from "../icon/XMarkIcon";
 
 export const DepositDialog = () => {
-  const { amount, dialog, status, submit, symbol } = DepositStore(
+  const { dialog, status, submit, symbol } = DepositStore(
     useShallow((state) => ({
-      amount: state.amount,
       dialog: state.dialog,
       status: state.status,
       submit: state.submit,
@@ -23,13 +22,12 @@ export const DepositDialog = () => {
     })),
   );
 
-  // Update the status for the deposit form every time amount or symbol changes.
-  // Note that we cannot use status in the dependency array since it would cause
-  // re-renders every single time.
   React.useEffect(() => {
-    DepositStore.getState().updateStatus(status);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, symbol]);
+    // We want to reset the deposit store data every time the dialog closes.
+    if (!dialog) {
+      DepositStore.getState().delete();
+    }
+  }, [dialog]);
 
   return (
     <Dialog.Root
@@ -79,9 +77,9 @@ export const DepositDialog = () => {
               }}
             />
 
-            <FormButton
+            <SubmitButton
               status={status}
-              submit={DepositHandler}
+              action={DepositHandler}
             />
           </div>
 
