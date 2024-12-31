@@ -1,26 +1,28 @@
 import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { DefaultFormStatus } from "../form/FormStatus";
+import { DefaultSubmitStatus } from "../submit/SubmitStatus";
 import { DefaultTokenSymcol } from "../config/Config";
-import { FormStatus } from "../form/FormStatus";
+import { SubmitStatus } from "../submit/SubmitStatus";
 import { GuardianObject } from "./GuardianObject";
+import { zeroAddress } from "viem";
 
 export interface RequestMessage {
-  guardians: Map<Address, GuardianObject>;
   dialog: boolean;
-  status: FormStatus;
-  submit: boolean;
+  guardians: Map<Address, GuardianObject>;
+  status: SubmitStatus;
+  submit: Address;
   symbol: string;
 }
 
 const newRequestMessage = (): RequestMessage => {
   return {
     dialog: true,
-    status: DefaultFormStatus("Choose an Amount"),
-    submit: false,
+    guardians: new Map(),
+    status: DefaultSubmitStatus(),
+    submit: zeroAddress,
     symbol: DefaultTokenSymcol,
-  } as RequestMessage;
+  };
 };
 
 export const RequestStore = create(
@@ -31,11 +33,11 @@ export const RequestStore = create(
       });
     },
 
-    updateDialog: (v: boolean) => {
+    updateDialog: (d: boolean) => {
       set((state) => {
         return {
           ...state,
-          dialog: v,
+          dialog: d,
         };
       });
     },
@@ -49,20 +51,20 @@ export const RequestStore = create(
       });
     },
 
-    updateStatus: (v: FormStatus) => {
+    updateStatus: (s: SubmitStatus) => {
       set((state) => {
         return {
           ...state,
-          status: v,
+          status: s,
         };
       });
     },
 
-    updateSubmit: (v: boolean) => {
+    updateSubmit: (s: Address) => {
       set((state) => {
         return {
           ...state,
-          submit: v,
+          submit: s,
         };
       });
     },

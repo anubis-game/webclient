@@ -1,85 +1,59 @@
-import { ChainStore } from "../chain/ChainStore";
+import { BalanceConfig } from "./BalanceConfig";
+import { BalanceStatus } from "./BalanceStatus";
+import { BalanceStatusEmpty } from "./BalanceStatus";
+import { BalanceStatusFunded } from "./BalanceStatus";
+import { BalanceStatusLoading } from "./BalanceStatus";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { DefaultTokenSymcol } from "../config/Config";
+import { RegistryWithSymbol } from "../contract/ContractConfig";
 import { SearchBalance } from "../transaction/registry/SearchBalance";
-import { TokenConfig } from "../token/TokenConfig";
+import { TokenWithSymbol } from "../token/TokenConfig";
 
 export interface BalanceMessage {
-  [key: string]: TokenConfig & { balance: number; updated: boolean };
+  active: string;
+  allocated: BalanceConfig;
+  available: BalanceConfig;
+  status: BalanceStatus;
 }
 
+const newBalanceMessage = (): BalanceMessage => {
+  return {
+    active: DefaultTokenSymcol,
+    allocated: {} as BalanceConfig,
+    available: {} as BalanceConfig,
+    status: BalanceStatusLoading,
+  } as BalanceMessage;
+};
+
 export const BalanceStore = create(
-  combine(
-    {
-      allocated: {} as BalanceMessage,
-      available: {} as BalanceMessage,
+  combine(newBalanceMessage(), (set, get) => ({
+    delete: () => {
+      set(() => {
+        return newBalanceMessage();
+      });
     },
 
-    (set, get) => ({
-      delete: () => {
-        set((state) => {
-          return {
-            ...state,
-            allocated: {},
-            available: {},
-          };
-        });
-      },
+    updateBalance: async () => {
+      const act = get().active;
+      const alo = get().allocated;
+      const avl = get().available;
+      const reg = RegistryWithSymbol(act);
+      const tok = TokenWithSymbol(act);
 
-      formatBalance: (mes: BalanceMessage, tok: string = DefaultTokenSymcol): string => {
-        return mes[tok] ? mes[tok].balance.toFixed(mes[tok].precision) : "";
-      },
+      const bal = await SearchBalance(reg, tok);
 
-      getUpdated: (tok: string = DefaultTokenSymcol): boolean => {
-        const avl = get().available[tok];
-        return avl && avl.updated === true;
-      },
+      alo.balance = bal.alo;
+      avl.balance = bal.avl;
 
-      hasAllocated: (tok: string = DefaultTokenSymcol): boolean => {
-        const alo = get().allocated[tok];
-        return alo && alo.balance !== 0;
-      },
-
-      hasAvailable: (tok: string = DefaultTokenSymcol): boolean => {
-        const avl = get().available[tok];
-        return avl && avl.balance !== 0;
-      },
-
-      updateBalance: async () => {
-        const chn = ChainStore.getState().getActive();
-
-        const alo = get().allocated;
-        const avl = get().available;
-
-        await Promise.all(
-          Object.entries(chn.tokens).map(async ([key, val]: [string, TokenConfig[]]) => {
-            const con = chn.contracts["Registry"].filter((contract) => contract.symbol === key);
-
-            const bal = await Promise.all(con.map((x) => SearchBalance(x, val[0])));
-
-            alo[key] = {
-              ...val[0],
-              balance: bal.reduce((sum, bal) => sum + bal.alo, 0),
-              updated: true,
-            };
-
-            avl[key] = {
-              ...val[0],
-              balance: bal.reduce((sum, bal) => sum + bal.avl, 0),
-              updated: true,
-            };
-          }),
-        );
-
-        set((state) => {
-          return {
-            ...state,
-            allocated: { ...alo },
-            available: { ...avl },
-          };
-        });
-      },
-    }),
-  ),
+      set((state) => {
+        return {
+          ...state,
+          allocated: { ...alo },
+          available: { ...avl },
+          status: avl.balance > 0 ? BalanceStatusFunded : BalanceStatusEmpty,
+        };
+      });
+    },
+  })),
 );

@@ -5,33 +5,31 @@ import * as React from "react";
 import { BalanceStore } from "../balance/BalanceStore";
 import { ChainStore } from "../chain/ChainStore";
 import { DepositStore } from "./DepositStore";
-import { FormStatusEnabled } from "../form/FormStatus";
-import { FormStatusFailure } from "../form/FormStatus";
-import { FormStatusLoading } from "../form/FormStatus";
-import { FormStatusSuccess } from "../form/FormStatus";
 import { Sleep } from "../sleep/Sleep";
 import { SendTransaction } from "../transaction/SendTransaction";
+import { SubmitStatusEnabled } from "../submit/SubmitStatus";
+import { SubmitStatusFailure } from "../submit/SubmitStatus";
+import { SubmitStatusLoading } from "../submit/SubmitStatus";
+import { SubmitStatusSuccess } from "../submit/SubmitStatus";
 import { WalletStore } from "../wallet/WalletStore";
 import { DepositSignature } from "../signature/CreateSignature";
 
 export const DepositHandler = async () => {
   {
-    DepositStore.getState().updateStatus({
-      lifecycle: FormStatusLoading,
-      container: React.createElement("div", null, "Signing Transaction"),
-    });
-
     DepositStore.getState().updateSubmit(true);
   }
+
+  DepositStore.getState().updateStatus({
+    lifecycle: SubmitStatusLoading,
+    container: React.createElement("div", null, "Signing Transaction"),
+  });
 
   const amo = amount();
   const sym = symbol();
 
-  {
-    WalletStore.getState().wallet.client.switchChain({
-      id: ChainStore.getState().active,
-    });
-  }
+  WalletStore.getState().wallet.client.switchChain({
+    id: ChainStore.getState().active,
+  });
 
   const ctx = await DepositSignature();
 
@@ -42,12 +40,10 @@ export const DepositHandler = async () => {
     return await failure("Simulation Failed", err);
   }
 
-  {
-    DepositStore.getState().updateStatus({
-      lifecycle: FormStatusLoading,
-      container: React.createElement("div", null, "Confirming Onchain"),
-    });
-  }
+  DepositStore.getState().updateStatus({
+    lifecycle: SubmitStatusLoading,
+    container: React.createElement("div", null, "Confirming Onchain"),
+  });
 
   const res = await SendTransaction([
     Approve.Encode(amo, sym), //
@@ -77,7 +73,7 @@ const failure = async (tit: string, err: any) => {
   }
 
   DepositStore.getState().updateStatus({
-    lifecycle: FormStatusFailure,
+    lifecycle: SubmitStatusFailure,
     container: React.createElement("div", null, tit),
   });
 
@@ -85,12 +81,10 @@ const failure = async (tit: string, err: any) => {
     await Sleep(5 * 1000);
   }
 
-  {
-    DepositStore.getState().updateStatus({
-      lifecycle: FormStatusEnabled,
-      container: React.createElement("div", null, "Try Again"),
-    });
-  }
+  DepositStore.getState().updateStatus({
+    lifecycle: SubmitStatusEnabled,
+    container: React.createElement("div", null, "Try Again"),
+  });
 
   {
     DepositStore.getState().updateSubmit(false);
@@ -99,7 +93,7 @@ const failure = async (tit: string, err: any) => {
 
 const success = async (amo: number, sym: string) => {
   DepositStore.getState().updateStatus({
-    lifecycle: FormStatusSuccess,
+    lifecycle: SubmitStatusSuccess,
     container: React.createElement("div", null, `Deposited ${amo} ${sym}`),
   });
 

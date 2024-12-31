@@ -2,16 +2,16 @@ import * as React from "react";
 
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { DefaultFormStatus } from "../../func/form/FormStatus";
+import { DefaultSubmitStatus } from "../submit/SubmitStatus";
 import { DefaultTokenSymcol } from "../config/Config";
-import { FormStatus } from "../../func/form/FormStatus";
-import { FormStatusEnabled } from "../../func/form/FormStatus";
-import { FormStatusInvalid } from "../../func/form/FormStatus";
+import { SubmitStatus } from "../submit/SubmitStatus";
+import { SubmitStatusEnabled } from "../submit/SubmitStatus";
+import { SubmitStatusInvalid } from "../submit/SubmitStatus";
 
 export interface DepositMessage {
   amount: string;
   dialog: boolean;
-  status: FormStatus;
+  status: SubmitStatus;
   submit: boolean;
   symbol: string;
 }
@@ -25,7 +25,7 @@ const newDepositMessage = (): DepositMessage => {
   return {
     amount: "",
     dialog: false,
-    status: DefaultFormStatus("Choose an Amount"),
+    status: DefaultSubmitStatus("Choose an Amount"),
     submit: false,
     symbol: DefaultTokenSymcol,
   };
@@ -59,7 +59,7 @@ export const DepositStore = create(
       });
     },
 
-    updateStatus: (v: FormStatus) => {
+    updateStatus: (v: SubmitStatus) => {
       set((state) => {
         return {
           ...state,
@@ -89,17 +89,17 @@ export const DepositStore = create(
   })),
 );
 
-const verifyStatus = (amo: string, sym: string): FormStatus => {
+const verifyStatus = (amo: string, sym: string): SubmitStatus => {
   if (!amo) {
     return {
-      lifecycle: FormStatusInvalid,
+      lifecycle: SubmitStatusInvalid,
       container: React.createElement("div", null, "Choose an Amount"),
     };
   }
 
   if (amo.includes(".") || amo.includes("e")) {
     return {
-      lifecycle: FormStatusInvalid,
+      lifecycle: SubmitStatusInvalid,
       container: React.createElement("div", null, `Only full ${sym}`),
     };
   }
@@ -108,20 +108,20 @@ const verifyStatus = (amo: string, sym: string): FormStatus => {
 
   if (num < 1) {
     return {
-      lifecycle: FormStatusInvalid,
+      lifecycle: SubmitStatusInvalid,
       container: React.createElement("div", null, `Minimum ${1} ${sym}`),
     };
   }
 
   if (num > 10) {
     return {
-      lifecycle: FormStatusInvalid,
+      lifecycle: SubmitStatusInvalid,
       container: React.createElement("div", null, `Maximum ${10} ${sym}`),
     };
   }
 
   return {
-    lifecycle: FormStatusEnabled,
+    lifecycle: SubmitStatusEnabled,
     container: React.createElement("div", null, `Deposit ${amo} ${sym}`),
   };
 };

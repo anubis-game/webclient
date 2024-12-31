@@ -4,42 +4,23 @@ import * as Toast from "@radix-ui/react-toast";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
 import { useShallow } from "zustand/react/shallow";
-import { WalletStore } from "../../func/wallet/WalletStore";
+import { BalanceStatusEmpty } from "../../func/balance/BalanceStatus";
 
 export const ToastDeposit = () => {
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const { available } = BalanceStore(
+  const balance = BalanceStore(
     useShallow((state) => ({
-      available: state.available,
-    })),
-  );
-
-  const { connected, ready } = WalletStore(
-    useShallow((state) => ({
-      connected: state.connected,
-      ready: state.ready,
+      status: state.status,
     })),
   );
 
   React.useEffect(() => {
     // We want to show this permanent toast if no available balance got
-    // deposited. Only if we have the updated balance state ready, only then can
-    // we check for the available amount of tokens. Every time "available"
-    // updates we check whether the relevant token balance is greater than zero.
-    // As soon as some balance got deposited, the toast should disappear.
-    if (BalanceStore.getState().getUpdated()) {
-      setOpen(!BalanceStore.getState().hasAvailable());
-    }
-
-    // This special case hides the deposit toast in case a user was connected
-    // without any available balance, and then disconnected. So if we had a
-    // wallet connected, and if that wallet had no available balance, then we
-    // want to hide the toast again.
-    if (ready && !connected) {
-      setOpen(false);
-    }
-  }, [available, connected, ready]);
+    // deposited. As soon as some balance got deposited, the toast should
+    // disappear.
+    setOpen(balance.status === BalanceStatusEmpty);
+  }, [balance.status]);
 
   return (
     <Toast.Root
