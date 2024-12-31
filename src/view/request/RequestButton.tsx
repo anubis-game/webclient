@@ -78,7 +78,7 @@ export const RequestButton = (props: Props) => {
   return (
     <SubmitButton
       status={request.status}
-      submit={() => RequestHandler(props.address, props.object.symbol)}
+      action={() => RequestHandler(props.address, props.object.symbol)}
     />
   );
 };

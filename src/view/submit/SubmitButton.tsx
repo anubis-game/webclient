@@ -9,7 +9,7 @@ import { SubmitStatusSuccess } from "../../func/submit/SubmitStatus";
 
 interface Props {
   status: SubmitStatus;
-  submit: () => void;
+  action: () => void;
 }
 
 export const SubmitButton = (props: Props) => {
@@ -18,7 +18,7 @@ export const SubmitButton = (props: Props) => {
       className={`button form ${props.status.lifecycle} px-4 py-3 w-full h-full`}
       disabled={props.status.lifecycle !== SubmitStatusEnabled}
       type="button"
-      onClick={props.submit}
+      onClick={props.action}
     >
       <div className="flex gap-x-2">
         {(props.status.lifecycle === SubmitStatusFailure ||

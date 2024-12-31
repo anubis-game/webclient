@@ -79,7 +79,7 @@ export const DepositDialog = () => {
 
             <SubmitButton
               status={status}
-              submit={DepositHandler}
+              action={DepositHandler}
             />
           </div>
 
