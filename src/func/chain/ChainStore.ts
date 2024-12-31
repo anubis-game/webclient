@@ -29,9 +29,11 @@ export const ChainStore = create(
     getActive: (): ChainConfig => {
       return get().chains.get(get().active)!;
     },
+
     getAll: (): ChainConfig[] => {
       return Array.from(get().chains.values());
     },
+
     updateActive: (i: number) => {
       set((state: ChainMessage) => {
         return {
@@ -40,6 +42,7 @@ export const ChainStore = create(
         };
       });
     },
+
     updateChain: (c: ChainConfig) => {
       set((state: ChainMessage) => {
         const m = new Map(state.chains);

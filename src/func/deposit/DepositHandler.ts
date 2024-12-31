@@ -86,6 +86,8 @@ const failure = async (tit: string, err: any) => {
     container: React.createElement("div", null, "Try Again"),
   });
 
+  // On failure, reset the submit state so that the user can try to submit the
+  // form once again. Note that we are not closing the dialog here.
   {
     DepositStore.getState().updateSubmit(false);
   }
@@ -103,6 +105,11 @@ const success = async (amo: number, sym: string) => {
 
   {
     BalanceStore.getState().updateBalance();
-    DepositStore.getState().delete();
+  }
+
+  // On success, close the dialog. This causes the deposit store to reset based
+  // on a useEffect in the DepositDialog component.
+  {
+    DepositStore.getState().updateDialog(false);
   }
 };

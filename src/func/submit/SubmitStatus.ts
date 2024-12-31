@@ -18,9 +18,9 @@ export interface SubmitStatus {
   container: JSX.Element;
 }
 
-export const DefaultSubmitStatus = (msg: string = ""): SubmitStatus => {
+export const DefaultSubmitStatus = (): SubmitStatus => {
   return {
     lifecycle: SubmitStatusDefault,
-    container: React.createElement("div", null, msg),
+    container: React.createElement("div", null, ""),
   };
 };

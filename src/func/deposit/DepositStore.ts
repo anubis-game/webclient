@@ -1,12 +1,8 @@
-import * as React from "react";
-
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { DefaultSubmitStatus } from "../submit/SubmitStatus";
 import { DefaultTokenSymcol } from "../config/Config";
 import { SubmitStatus } from "../submit/SubmitStatus";
-import { SubmitStatusEnabled } from "../submit/SubmitStatus";
-import { SubmitStatusInvalid } from "../submit/SubmitStatus";
 
 export interface DepositMessage {
   amount: string;
@@ -21,13 +17,13 @@ export interface DepositMessage {
 // deposit status is initialized for the first button text that we want to show.
 // And it is further important for the default deposit symbol to be set, because
 // an otherwise empty string would break the rendering of some components.
-const newDepositMessage = (): DepositMessage => {
+const newDepositMessage = (sym: string = DefaultTokenSymcol): DepositMessage => {
   return {
     amount: "",
     dialog: false,
-    status: DefaultSubmitStatus("Choose an Amount"),
+    status: DefaultSubmitStatus(),
     submit: false,
-    symbol: DefaultTokenSymcol,
+    symbol: sym,
   };
 };
 
@@ -35,7 +31,11 @@ export const DepositStore = create(
   combine(newDepositMessage(), (set, get) => ({
     delete: () => {
       set(() => {
-        return newDepositMessage();
+        // We reset the deposit store when the deposit dialog gets closed. That
+        // is to reset all user input, with one exception. We want the selected
+        // token symbol to remain selected, so that it does not revert back to
+        // the default token symbol.
+        return newDepositMessage(get().symbol);
       });
     },
 
@@ -43,7 +43,6 @@ export const DepositStore = create(
       set((state) => {
         return {
           ...state,
-          status: verifyStatus(a, get().symbol),
           amount: a,
         };
       });
@@ -53,7 +52,6 @@ export const DepositStore = create(
       set((state) => {
         return {
           ...state,
-          amount: v ? state.amount : "",
           dialog: v,
         };
       });
@@ -81,47 +79,9 @@ export const DepositStore = create(
       set((state) => {
         return {
           ...state,
-          status: verifyStatus(get().amount, s),
           symbol: s,
         };
       });
     },
   })),
 );
-
-const verifyStatus = (amo: string, sym: string): SubmitStatus => {
-  if (!amo) {
-    return {
-      lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, "Choose an Amount"),
-    };
-  }
-
-  if (amo.includes(".") || amo.includes("e")) {
-    return {
-      lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, `Only full ${sym}`),
-    };
-  }
-
-  const num = amo ? Number(amo) : 0;
-
-  if (num < 1) {
-    return {
-      lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, `Minimum ${1} ${sym}`),
-    };
-  }
-
-  if (num > 10) {
-    return {
-      lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, `Maximum ${10} ${sym}`),
-    };
-  }
-
-  return {
-    lifecycle: SubmitStatusEnabled,
-    container: React.createElement("div", null, `Deposit ${amo} ${sym}`),
-  };
-};

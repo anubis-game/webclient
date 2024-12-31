@@ -27,11 +27,11 @@ export const ToastConnect = () => {
   return (
     <Toast.Root
       className="toast info"
-      open={open}
       onOpenChange={setOpen}
+      open={open}
     >
       <InfoCircleIcon />
-      <Toast.Title>Connect Your Wallet</Toast.Title>
+      <Toast.Title>Connect Your Wallet First</Toast.Title>
     </Toast.Root>
   );
 };

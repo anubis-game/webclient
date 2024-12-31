@@ -1,27 +1,19 @@
-import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { DefaultSubmitStatus } from "../submit/SubmitStatus";
-import { DefaultTokenSymcol } from "../config/Config";
 import { SubmitStatus } from "../submit/SubmitStatus";
-import { GuardianObject } from "./GuardianObject";
-import { zeroAddress } from "viem";
 
 export interface RequestMessage {
   dialog: boolean;
-  guardians: Map<Address, GuardianObject>;
   status: SubmitStatus;
-  submit: Address;
-  symbol: string;
+  submit: boolean;
 }
 
 const newRequestMessage = (): RequestMessage => {
   return {
     dialog: true,
-    guardians: new Map(),
     status: DefaultSubmitStatus(),
-    submit: zeroAddress,
-    symbol: DefaultTokenSymcol,
+    submit: false,
   };
 };
 
@@ -42,15 +34,6 @@ export const RequestStore = create(
       });
     },
 
-    updateGuardians: (g: Map<Address, GuardianObject>) => {
-      set((state) => {
-        return {
-          ...state,
-          guardians: g,
-        };
-      });
-    },
-
     updateStatus: (s: SubmitStatus) => {
       set((state) => {
         return {
@@ -60,20 +43,11 @@ export const RequestStore = create(
       });
     },
 
-    updateSubmit: (s: Address) => {
+    updateSubmit: (s: boolean) => {
       set((state) => {
         return {
           ...state,
           submit: s,
-        };
-      });
-    },
-
-    updateSymol: (s: string) => {
-      set((state) => {
-        return {
-          ...state,
-          symbol: s,
         };
       });
     },

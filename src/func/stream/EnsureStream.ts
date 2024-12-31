@@ -1,4 +1,4 @@
-import { GuardianObject } from "../request/GuardianObject";
+import { GuardianObject } from "../guardian/GuardianObject";
 import { GuardianWebsocketProtocol } from "../config/Config";
 import { Hex } from "viem";
 import { StreamStore } from "../../func/stream/StreamStore";

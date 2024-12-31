@@ -1,7 +1,5 @@
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 
-import { ToggleItem } from "./ToggleItem";
-
 interface Props {
   disabled: boolean;
   onSelect: (val: string) => void;
@@ -9,7 +7,7 @@ interface Props {
   values: string[];
 }
 
-export const ToggleBar = (props: Props) => {
+export const SymbolToggle = (props: Props) => {
   return (
     <ToggleGroup.Root
       className="flex gap-2"
@@ -27,10 +25,13 @@ export const ToggleBar = (props: Props) => {
       rovingFocus={false}
     >
       {props.values.map((x: string) => (
-        <ToggleItem
+        <ToggleGroup.Item
           key={x}
+          className="button outline w-16 px-2 py-1"
           value={x}
-        />
+        >
+          {x}
+        </ToggleGroup.Item>
       ))}
     </ToggleGroup.Root>
   );

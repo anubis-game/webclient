@@ -33,7 +33,7 @@ div#root {
 
  html body a {
   /* text-sky-400 */
-  color: rgb(56 189 248);
+  color: rgb(56, 189, 248);
  }
 
 /*
@@ -50,12 +50,12 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input::selection {
   /* bg-sky-400 */
-  background-color: rgb(56 189 248);
+  background-color: rgb(56, 189, 248);
 }
 
 input::-moz-selection {
   /* bg-sky-400 */
-  background-color: rgb(56 189 248);
+  background-color: rgb(56, 189, 248);
 }
 
 /*
@@ -76,9 +76,9 @@ input::-moz-selection {
 
 .dark .dialog {
   /* bg-gray-900 */
-  background-color: rgb(17 24 39);
+  background-color: rgb(17, 24, 39);
   /* border-gray-700 */
-  border-color: rgb(55 65 81);
+  border-color: rgb(55, 65, 81);
 }
 
 .deposit.dialog,
@@ -159,40 +159,40 @@ html body .wallet.dialog .button[data-disabled] {
   /* text-black */
   color: black;
   /* bg-rose-600 */
-  background-color: rgb(225 29 72);
+  background-color: rgb(225, 29, 72);
 }
 
 .button.form.enabled {
   /* text-black */
   color: black;
   /* bg-sky-400 */
-  background-color: rgb(56 189 248);
+  background-color: rgb(56, 189, 248);
 }
 
 .button.form.loading {
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
   /* bg-sky-400 */
-  background-color: rgb(56 189 248);
+  background-color: rgb(56, 189, 248);
 }
 
 .button.form.loading svg {
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
 }
 
 .button.form.failure {
   /* text-black */
   color: black;
   /* bg-rose-600 */
-  background-color: rgb(225 29 72);
+  background-color: rgb(225, 29, 72);
 }
 
 .button.form.success {
   /* text-black */
   color: black;
   /* bg-emerald-600 */
-  background-color: rgb(5 150 105);
+  background-color: rgb(5, 150, 105);
 }
 
 .button.form.success svg {
@@ -208,16 +208,16 @@ html body .wallet.dialog .button[data-disabled] {
 
 .dark .button.solid {
   /* bg-sky-400 */
-  background-color: rgb(56 189 248);
+  background-color: rgb(56, 189, 248);
   /* text-black */
   color: black;
 }
 
 .dark .button.solid.disabled {
-  /* bg-sky-900/50 */
-  background-color: rgb(12, 74, 110, 0.5);
+  /* bg-sky-900/25 */
+  background-color: rgb(12, 74, 110, 0.25);
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
 }
 
 /*
@@ -230,7 +230,7 @@ html body .wallet.dialog .button[data-disabled] {
   /* bg-transparent */
   background-color: transparent;
   /* text-gray-300 */
-  color: rgb(209 213 219);
+  color: rgb(209, 213, 219);
   /* justify-start */
   justify-content: flex-start;
 }
@@ -243,7 +243,7 @@ html body .wallet.dialog .button[data-disabled] {
 .dark .button.ghost:disabled,
 .dark .button.ghost.icon:disabled {
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
 }
 
 .dark .button.ghost.icon:hover {
@@ -253,17 +253,17 @@ html body .wallet.dialog .button[data-disabled] {
 
 .dark .wallet.dialog .button.ghost {
   /* text-gray-300 */
-  color: rgb(209 213 219);
+  color: rgb(209, 213, 219);
 }
 
 .dark .wallet.dialog .button.ghost[data-highlighted] {
   /* bg-sky-900/50 */
-  background-color: rgb(12, 74, 110, 0.5);
+  background-color: rgb(12, 74, 110, 0.50);
 }
 
 .dark .wallet.dialog .button.ghost[data-disabled] {
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
 }
 
 /*
@@ -284,34 +284,32 @@ html body .wallet.dialog .button[data-disabled] {
 
 .dark .button.outline[data-state=on] {
   /* border-sky-400 */
-  border-color: rgb(56 189 248);
+  border-color: rgb(56, 189, 248);
   /* text-white */
   color: white;
 }
 
 .dark .button.outline[data-state=off] {
   /* border-gray-700 */
-  border-color: rgb(55 65 81);
+  border-color: rgb(55, 65, 81);
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
 }
 
 .dark .button.outline[data-state=off]:hover {
   /* bg-sky-900/50 */
-  background-color: rgb(12, 74, 110, 0.5);
-  /* border-none */
-  border-style: none;
+  background-color: rgb(12, 74, 110, 0.50);
+  /* border-transparent */
+  border-color: transparent;
   /* text-gray-300 */
-  color: rgb(209 213 219);
+  color: rgb(209, 213, 219);
 }
 
 .dark .button.outline[data-state=off]:disabled:hover {
   /* bg-transparent */
   background-color: transparent;
-  /* border-solid */
-  border-style: solid;
   /* text-gray-600 */
-  color: rgb(75 85 99);
+  color: rgb(75, 85, 99);
 }
 
 /*

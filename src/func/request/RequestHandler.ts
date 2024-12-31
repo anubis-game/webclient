@@ -12,7 +12,6 @@ import { SubmitStatusEnabled } from "../submit/SubmitStatus";
 import { SubmitStatusFailure } from "../submit/SubmitStatus";
 import { SubmitStatusLoading } from "../submit/SubmitStatus";
 import { SubmitStatusSuccess } from "../submit/SubmitStatus";
-import { zeroAddress } from "viem";
 
 export const RequestHandler = async (grd: Address, sym: string) => {
   {
@@ -21,7 +20,7 @@ export const RequestHandler = async (grd: Address, sym: string) => {
       container: React.createElement("div", null, "Signing Transaction"),
     });
 
-    RequestStore.getState().updateSubmit(grd);
+    RequestStore.getState().updateSubmit(true);
   }
 
   const tim = SignatureTimestamp();
@@ -74,7 +73,7 @@ const failure = async (tit: string, err: any) => {
   }
 
   {
-    RequestStore.getState().updateSubmit(zeroAddress);
+    RequestStore.getState().updateSubmit(false);
   }
 };
 
