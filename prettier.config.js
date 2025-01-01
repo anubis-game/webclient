@@ -5,7 +5,7 @@
 export default {
   arrowParens: "always",
   bracketSpacing: true,
-  printWidth: 100,
+  printWidth: 120,
   semi: true,
   singleAttributePerLine: true,
   trailingComma: "all",
