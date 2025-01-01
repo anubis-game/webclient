@@ -32,7 +32,7 @@ export const WithdrawAmount = (props: Props) => {
 
       <button
         type="button"
-        className="button ghost text right-2 p-2 h-8 text-sm"
+        className="button ghost textinput right-2 p-2 h-8 text-sm"
         disabled={submit}
         onClick={() => {
           TransferStore.getState().updateAmount(String(BalanceStore.getState().deposited));

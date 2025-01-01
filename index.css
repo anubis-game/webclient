@@ -278,7 +278,7 @@ html body .wallet.dialog .button[data-disabled] {
  *
  */
 
-.dark .button.ghost.text {
+.dark .button.ghost.textinput {
   /* text-sky-400 */
   color: rgb(56, 189, 248);
   /* absolute */
@@ -289,17 +289,17 @@ html body .wallet.dialog .button[data-disabled] {
   transform: translateY(-50%);
 }
 
-.dark .button.ghost.text:disabled {
+.dark .button.ghost.textinput:disabled {
   /* text-gray-300 */
   color: rgb(209, 213, 219);
 }
 
-.dark .button.ghost.text:hover {
+.dark .button.ghost.textinput:hover {
   /* bg-sky-400/25 */
   background-color: rgb(56, 189, 248, 0.25);
 }
 
-.dark .button.ghost.text:disabled:hover {
+.dark .button.ghost.textinput:disabled:hover {
   /* bg-transparent */
   background-color: transparent;
 }
