@@ -1,54 +1,60 @@
-import * as Approve from "../../func/transaction/erc20/Approve";
-import * as Deposit from "../../func/transaction/registry/Deposit";
+import * as Approve from "../transaction/erc20/Approve";
+import * as Deposit from "../transaction/registry/Deposit";
 import * as React from "react";
+import * as Withdraw from "../transaction/registry/Withdraw";
 
 import { BalanceStore } from "../balance/BalanceStore";
 import { ChainStore } from "../chain/ChainStore";
-import { DepositStore } from "./DepositStore";
+import { DepositSignature } from "../signature/CreateSignature";
+import { SignatureContext } from "../signature/SignatureContext";
 import { Sleep } from "../sleep/Sleep";
 import { SendTransaction } from "../transaction/SendTransaction";
 import { SubmitStatusEnabled } from "../submit/SubmitStatus";
 import { SubmitStatusFailure } from "../submit/SubmitStatus";
 import { SubmitStatusLoading } from "../submit/SubmitStatus";
 import { SubmitStatusSuccess } from "../submit/SubmitStatus";
+import { TransactionResult } from "../transaction/TransactionResult";
+import { TransferAction } from "./TransferAction";
+import { TransferActionDeposit } from "./TransferAction";
+import { TransferStore } from "./TransferStore";
 import { WalletStore } from "../wallet/WalletStore";
-import { DepositSignature } from "../signature/CreateSignature";
 
-export const DepositHandler = async () => {
+export const TransferHandler = async () => {
   {
-    DepositStore.getState().updateSubmit(true);
+    TransferStore.getState().updateSubmit(true);
   }
 
-  DepositStore.getState().updateStatus({
+  TransferStore.getState().updateStatus({
     lifecycle: SubmitStatusLoading,
     container: React.createElement("div", null, "Signing Transaction"),
   });
-
-  const amo = amount();
-  const sym = symbol();
 
   WalletStore.getState().wallet.client.switchChain({
     id: ChainStore.getState().active,
   });
 
+  const act = action();
+  const amo = amount();
+  const sym = symbol();
   const ctx = await DepositSignature();
 
   try {
-    await Approve.Simulate(amo, sym);
-    await Deposit.Simulate(ctx, amo, sym);
+    if (act === TransferActionDeposit) {
+      await Approve.Simulate(amo, sym);
+      await Deposit.Simulate(ctx, amo, sym);
+    } else {
+      await Withdraw.Simulate(amo, sym);
+    }
   } catch (err) {
     return await failure("Simulation Failed", err);
   }
 
-  DepositStore.getState().updateStatus({
+  TransferStore.getState().updateStatus({
     lifecycle: SubmitStatusLoading,
     container: React.createElement("div", null, "Confirming Onchain"),
   });
 
-  const res = await SendTransaction([
-    Approve.Encode(amo, sym), //
-    Deposit.Encode(ctx, amo, sym), //
-  ]);
+  const res = await sendTransaction(ctx, act, amo, sym);
 
   if (res.success) {
     return await success(amo, sym);
@@ -57,14 +63,49 @@ export const DepositHandler = async () => {
   }
 };
 
+//
+//
+//
+//
+//
+
+const action = (): TransferAction => {
+  const act = TransferStore.getState().action;
+  return act;
+};
+
 const amount = (): number => {
-  const amo = DepositStore.getState().amount;
+  const amo = TransferStore.getState().amount;
   return amo ? Number(amo) : 0;
 };
 
 const symbol = (): string => {
-  const sym = DepositStore.getState().symbol;
+  const sym = TransferStore.getState().symbol;
   return sym.toUpperCase();
+};
+
+//
+//
+//
+//
+//
+
+const sendTransaction = async (
+  ctx: SignatureContext,
+  act: TransferAction,
+  amo: number,
+  sym: string,
+): Promise<TransactionResult> => {
+  if (act === TransferActionDeposit) {
+    return await SendTransaction([
+      Approve.Encode(amo, sym), //
+      Deposit.Encode(ctx, amo, sym), //
+    ]);
+  } else {
+    return await SendTransaction([
+      Withdraw.Encode(amo, sym), //
+    ]);
+  }
 };
 
 const failure = async (tit: string, err: any) => {
@@ -72,16 +113,16 @@ const failure = async (tit: string, err: any) => {
     console.error(err);
   }
 
-  DepositStore.getState().updateStatus({
+  TransferStore.getState().updateStatus({
     lifecycle: SubmitStatusFailure,
     container: React.createElement("div", null, tit),
   });
 
   {
-    await Sleep(5 * 1000);
+    await Sleep(5_000);
   }
 
-  DepositStore.getState().updateStatus({
+  TransferStore.getState().updateStatus({
     lifecycle: SubmitStatusEnabled,
     container: React.createElement("div", null, "Try Again"),
   });
@@ -89,18 +130,18 @@ const failure = async (tit: string, err: any) => {
   // On failure, reset the submit state so that the user can try to submit the
   // form once again. Note that we are not closing the dialog here.
   {
-    DepositStore.getState().updateSubmit(false);
+    TransferStore.getState().updateSubmit(false);
   }
 };
 
 const success = async (amo: number, sym: string) => {
-  DepositStore.getState().updateStatus({
+  TransferStore.getState().updateStatus({
     lifecycle: SubmitStatusSuccess,
-    container: React.createElement("div", null, `Deposited ${amo} ${sym}`),
+    container: React.createElement("div", null, `Transferred ${amo} ${sym}`),
   });
 
   {
-    await Sleep(3 * 1000);
+    await Sleep(5_000);
   }
 
   {
@@ -110,6 +151,6 @@ const success = async (amo: number, sym: string) => {
   // On success, close the dialog. This causes the deposit store to reset based
   // on a useEffect in the DepositDialog component.
   {
-    DepositStore.getState().updateDialog(false);
+    TransferStore.getState().updateDialog(false);
   }
 };

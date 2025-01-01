@@ -1,5 +1,4 @@
-import { DepositStore } from "../../func/deposit/DepositStore";
-import { TrimWhitespace } from "../../func/string/TrimWhitespace";
+import { TransferStore } from "../../func/transfer/TransferStore";
 
 interface Props {
   disabled: boolean;
@@ -8,11 +7,7 @@ interface Props {
 export const DepositAmount = (props: Props) => {
   return (
     <input
-      className={TrimWhitespace(`
-        w-full h-full p-2 rounded outline-none
-        text-2xl text-center text-black bg-white
-        disabled:text-gray-400 placeholder:text-gray-400
-      `)}
+      className="transfer amount h-12"
       id="amount"
       disabled={props.disabled}
       placeholder="5"
@@ -20,7 +15,7 @@ export const DepositAmount = (props: Props) => {
       max={10}
       min={1}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        DepositStore.getState().updateAmount(e.currentTarget.value);
+        TransferStore.getState().updateAmount(e.currentTarget.value);
       }}
     />
   );
