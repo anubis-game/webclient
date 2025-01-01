@@ -13,6 +13,7 @@ export interface TokenConfig {
 }
 
 export const AllTokenSymbols = (): string[] => {
+  // return ["DAI", "USDC", "USDT"];
   const chn = ChainStore.getState().getActive();
   return Object.keys(chn.tokens).sort();
 };

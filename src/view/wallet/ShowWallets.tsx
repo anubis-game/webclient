@@ -4,13 +4,14 @@ import * as React from "react";
 import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { BlockExplorerAddress } from "../../func/address/BlockExplorerAddress";
-import { DepositStore } from "../../func/deposit/DepositStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
-import { InfoToast } from "../../func/toast/ToastSender";
 import { LogoutIcon } from "../icon/LogoutIcon";
 import { OpenLinkIcon } from "../icon/OpenLinkIcon";
 import { Tooltip } from "../tooltip/Tooltip";
+import { TransferActionDeposit } from "../../func/transfer/TransferAction";
+import { TransferActionWithdraw } from "../../func/transfer/TransferAction";
+import { TransferStore } from "../../func/transfer/TransferStore";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { useDisconnect } from "wagmi";
 import { useEnsName } from "wagmi";
@@ -70,7 +71,10 @@ export const ShowWallets = () => {
         >
           <DropdownMenu.Item
             className="button ghost p-2"
-            onSelect={() => DepositStore.getState().updateDialog(true)}
+            onSelect={() => {
+              TransferStore.getState().updateAction(TransferActionDeposit);
+              TransferStore.getState().updateDialog(true);
+            }}
           >
             <div className="w-[144px]">Deposit</div>
             <Tooltip
@@ -83,7 +87,10 @@ export const ShowWallets = () => {
           <DropdownMenu.Item
             className="button ghost p-2"
             disabled={status !== BalanceStatusFunded}
-            onSelect={() => InfoToast(<>Just chill ok, it's coming!</>)}
+            onSelect={() => {
+              TransferStore.getState().updateAction(TransferActionWithdraw);
+              TransferStore.getState().updateDialog(true);
+            }}
           >
             <div className="w-[144px]">Withdraw</div>
             <Tooltip

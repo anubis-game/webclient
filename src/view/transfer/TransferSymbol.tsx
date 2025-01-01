@@ -7,7 +7,7 @@ interface Props {
   values: string[];
 }
 
-export const SymbolToggle = (props: Props) => {
+export const TransferSymbol = (props: Props) => {
   return (
     <ToggleGroup.Root
       className="flex gap-2"

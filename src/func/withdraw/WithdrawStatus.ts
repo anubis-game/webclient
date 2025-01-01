@@ -5,9 +5,9 @@ import { SubmitStatus } from "../submit/SubmitStatus";
 import { SubmitStatusEnabled } from "../submit/SubmitStatus";
 import { SubmitStatusInvalid } from "../submit/SubmitStatus";
 
-export const VerifyStatus = (amo: string, sym: string): SubmitStatus => {
+export const WithdrawStatus = (amo: string, sym: string): SubmitStatus => {
   const des = amo ? Number(amo) : 0;
-  const cur = BalanceStore.getState().available;
+  const cur = BalanceStore.getState().deposited;
 
   if (cur === 0) {
     return {
@@ -19,7 +19,7 @@ export const VerifyStatus = (amo: string, sym: string): SubmitStatus => {
   if (!amo) {
     return {
       lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, "Choose an Amount"),
+      container: React.createElement("div", null, "Choose Withdraw Amount"),
     };
   }
 
@@ -37,22 +37,8 @@ export const VerifyStatus = (amo: string, sym: string): SubmitStatus => {
     };
   }
 
-  if (des < 1) {
-    return {
-      lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, `Minimum ${1} ${sym}`),
-    };
-  }
-
-  if (des > 10) {
-    return {
-      lifecycle: SubmitStatusInvalid,
-      container: React.createElement("div", null, `Maximum ${10} ${sym}`),
-    };
-  }
-
   return {
     lifecycle: SubmitStatusEnabled,
-    container: React.createElement("div", null, `Deposit ${amo} ${sym}`),
+    container: React.createElement("div", null, `Withdraw ${amo} ${sym}`),
   };
 };

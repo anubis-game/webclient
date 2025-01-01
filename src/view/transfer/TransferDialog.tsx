@@ -2,18 +2,21 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
-import { BlockExplorerToken } from "../../func/token/BlockExplorerToken";
-import { ChainStore } from "../../func/chain/ChainStore";
-import { DepositAmount } from "./DepositAmount";
-import { DepositButton } from "./DepositButton";
-import { DepositStore } from "../../func/deposit/DepositStore";
-import { SymbolToggle } from "./SymbolToggle";
+import { DepositAmount } from "../deposit/DepositAmount";
+import { DepositDescription } from "../deposit/DepositDescription";
+import { TransferActionDeposit } from "../../func/transfer/TransferAction";
+import { TransferButton } from "./TransferButton";
+import { TransferStore } from "../../func/transfer/TransferStore";
+import { TransferSymbol } from "./TransferSymbol";
 import { useShallow } from "zustand/react/shallow";
+import { WithdrawAmount } from "../withdraw/WithdrawAmount";
+import { WithdrawDescription } from "../withdraw/WithdrawDescription";
 import { XMarkIcon } from "../icon/XMarkIcon";
 
-export const DepositDialog = () => {
-  const { dialog, submit, symbol } = DepositStore(
+export const TransferDialog = () => {
+  const { action, dialog, submit, symbol } = TransferStore(
     useShallow((state) => ({
+      action: state.action,
       dialog: state.dialog,
       submit: state.submit,
       symbol: state.symbol,
@@ -23,7 +26,7 @@ export const DepositDialog = () => {
   React.useEffect(() => {
     // We want to reset the deposit store every time the dialog closes.
     if (!dialog) {
-      DepositStore.getState().delete();
+      TransferStore.getState().delete();
     }
   }, [dialog]);
 
@@ -35,48 +38,52 @@ export const DepositDialog = () => {
         // transactions. So only while the dialog submit is not in progress we
         // allow the dialog open state to change.
         if (!submit) {
-          DepositStore.getState().updateDialog(open);
+          TransferStore.getState().updateDialog(open);
         }
       }}
     >
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+
         <Dialog.Content
           className="deposit dialog p-4"
           onInteractOutside={(e) => e.preventDefault()}
         >
           <Dialog.Description className="mt-[50px] mb-4 text-sm">
-            Increase your balance to play the game with&nbsp;
-            <a
-              href={BlockExplorerToken(symbol, "href")}
-              target="_blank"
-            >
-              {symbol}
-            </a>
-            &nbsp;on {ChainStore.getState().getActive().viem.name}. Win the allocated balance of every player you beat.
-            Withdraw your funds any time.
+            {action === TransferActionDeposit ? (
+              <DepositDescription symbol={symbol} />
+            ) : (
+              <WithdrawDescription symbol={symbol} />
+            )}
           </Dialog.Description>
 
           <div className="grid gap-4 items-center">
-            <DepositAmount disabled={submit} />
-            <DepositButton />
+            {action === TransferActionDeposit ? (
+              <DepositAmount disabled={submit} />
+            ) : (
+              <WithdrawAmount disabled={submit} />
+            )}
+            <TransferButton />
           </div>
 
+          {/*
+          We keep the token toggle and close button at the buttom of the dialog
+          because we do not want the those elements to be the first to receive
+          auto focus on render. For our purposes here we want the input field
+          above to be the first element that receives the auto focus when the
+          dialog opens, because the user should start choosing a number to
+          transfer right away.
+           */}
+
           <Dialog.Title className="absolute top-4 left-4 w-full">
-            <SymbolToggle
+            <TransferSymbol
               disabled={submit}
-              onSelect={DepositStore.getState().updateSymol}
+              onSelect={TransferStore.getState().updateSymbol}
               selected={symbol}
               values={AllTokenSymbols()}
             />
           </Dialog.Title>
 
-          {/*
-          We keep the close button at the buttom of the dialog because we do not
-          want the close button to be the first element to receive an auto
-          focus. For our purposes here we want the input field above to be the
-          first element that receives the auto focus when the dialog opens.
-           */}
           <Dialog.Close asChild>
             <button
               className="button ghost icon absolute top-4 right-4 flex items-center outline-none"

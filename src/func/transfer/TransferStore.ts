@@ -3,8 +3,11 @@ import { create } from "zustand";
 import { DefaultSubmitStatus } from "../submit/SubmitStatus";
 import { DefaultTokenSymcol } from "../config/Config";
 import { SubmitStatus } from "../submit/SubmitStatus";
+import { TransferAction } from "./TransferAction";
+import { TransferActionDeposit } from "./TransferAction";
 
-export interface DepositMessage {
+export interface TransferMessage {
+  action: TransferAction;
   amount: string;
   dialog: boolean;
   status: SubmitStatus;
@@ -12,13 +15,15 @@ export interface DepositMessage {
   symbol: string;
 }
 
-// newDepositMessage ensures that the deposit store is properly initialized
+// newTransferMessage ensures that the transfer store is properly initialized
 // before any component is rendered. We need to make sure that the default
-// deposit status is initialized for the first button text that we want to show.
-// And it is further important for the default deposit symbol to be set, because
-// an otherwise empty string would break the rendering of some components.
-const newDepositMessage = (sym: string = DefaultTokenSymcol): DepositMessage => {
+// transfer status is initialized for the first button text that we want to
+// show. And it is further important for the default transfer symbol to be set,
+// because an otherwise empty string would break the rendering of some
+// components.
+const newTransferMessage = (sym: string = DefaultTokenSymcol): TransferMessage => {
   return {
+    action: TransferActionDeposit,
     amount: "",
     dialog: false,
     status: DefaultSubmitStatus(),
@@ -27,15 +32,24 @@ const newDepositMessage = (sym: string = DefaultTokenSymcol): DepositMessage => 
   };
 };
 
-export const DepositStore = create(
-  combine(newDepositMessage(), (set, get) => ({
+export const TransferStore = create(
+  combine(newTransferMessage(), (set, get) => ({
     delete: () => {
       set(() => {
-        // We reset the deposit store when the deposit dialog gets closed. That
-        // is to reset all user input, with one exception. We want the selected
-        // token symbol to remain selected, so that it does not revert back to
-        // the default token symbol.
-        return newDepositMessage(get().symbol);
+        // We reset the transfer store when the transfer dialog gets closed.
+        // That is to reset all user input, with one exception. We want the
+        // selected token symbol to remain selected, so that it does not revert
+        // back to the default token symbol.
+        return newTransferMessage(get().symbol);
+      });
+    },
+
+    updateAction: (a: TransferAction) => {
+      set((state) => {
+        return {
+          ...state,
+          action: a,
+        };
       });
     },
 
@@ -75,7 +89,7 @@ export const DepositStore = create(
       });
     },
 
-    updateSymol: (s: string) => {
+    updateSymbol: (s: string) => {
       set((state) => {
         return {
           ...state,
