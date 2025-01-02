@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
+import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DepositAmount } from "../deposit/DepositAmount";
 import { DepositDescription } from "../deposit/DepositDescription";
 import { TransferActionDeposit } from "../../func/transfer/TransferAction";
@@ -12,7 +13,6 @@ import { useShallow } from "zustand/react/shallow";
 import { WithdrawAmount } from "../withdraw/WithdrawAmount";
 import { WithdrawDescription } from "../withdraw/WithdrawDescription";
 import { XMarkIcon } from "../icon/XMarkIcon";
-import { BalanceStore } from "../../func/balance/BalanceStore";
 
 export const TransferDialog = () => {
   const { action, dialog, submit, symbol } = TransferStore(
