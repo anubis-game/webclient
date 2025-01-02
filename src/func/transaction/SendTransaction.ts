@@ -1,4 +1,5 @@
 import { BaseError } from "viem";
+import { TimeString } from "../string/TimeString";
 import { TransactionObject } from "./TransactionObject";
 import { TransactionResult } from "./TransactionResult";
 import { UserRejectedRequestError } from "viem";
@@ -16,6 +17,8 @@ export const SendTransaction = async (txn: TransactionObject[]): Promise<Transac
     }
 
     try {
+      const sta = performance.now();
+
       const gas = await pub.estimateFeesPerGas();
 
       {
@@ -39,6 +42,12 @@ export const SendTransaction = async (txn: TransactionObject[]): Promise<Transac
       const rec = await pub.waitForTransactionReceipt({
         hash: res.hash,
       });
+
+      const end = performance.now();
+
+      {
+        console.log("SendTransaction.duration", TimeString(end - sta));
+      }
 
       if (rec.status.toLowerCase() === "success") {
         res.message = "Transaction Confirmed Onchain";

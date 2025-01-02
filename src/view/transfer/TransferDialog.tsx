@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as React from "react";
 
 import { AllTokenSymbols } from "../../func/token/TokenConfig";
+import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DepositAmount } from "../deposit/DepositAmount";
 import { DepositDescription } from "../deposit/DepositDescription";
 import { TransferActionDeposit } from "../../func/transfer/TransferAction";
@@ -78,7 +79,22 @@ export const TransferDialog = () => {
           <Dialog.Title className="absolute top-4 left-4 w-full">
             <TransferSymbol
               disabled={submit}
-              onSelect={TransferStore.getState().updateSymbol}
+              onSelect={(sym: string) => {
+                // In case that the selected token symbol changes the currently
+                // active token symbol, we must make sure to update user
+                // balances too.
+                if (BalanceStore.getState().updateActive(sym)) {
+                  BalanceStore.getState().updateBalance();
+                }
+
+                // For transfers we must make sure that the selected token
+                // symbol is properly reflected in the transfer store, so that
+                // the user can deposit or withdraw the tokens that they are
+                // interested in.
+                {
+                  TransferStore.getState().updateSymbol(sym);
+                }
+              }}
               selected={symbol}
               values={AllTokenSymbols()}
             />

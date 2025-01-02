@@ -1,18 +1,16 @@
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { DefaultSubmitStatus } from "../submit/SubmitStatus";
+import { EnabledSubmitStatus } from "../submit/SubmitStatus";
 import { SubmitStatus } from "../submit/SubmitStatus";
 
 export interface RequestMessage {
-  dialog: boolean;
   status: SubmitStatus;
   submit: boolean;
 }
 
 const newRequestMessage = (): RequestMessage => {
   return {
-    dialog: true,
-    status: DefaultSubmitStatus(),
+    status: EnabledSubmitStatus("Play"),
     submit: false,
   };
 };
@@ -22,15 +20,6 @@ export const RequestStore = create(
     delete: () => {
       set(() => {
         return newRequestMessage();
-      });
-    },
-
-    updateDialog: (d: boolean) => {
-      set((state) => {
-        return {
-          ...state,
-          dialog: d,
-        };
       });
     },
 

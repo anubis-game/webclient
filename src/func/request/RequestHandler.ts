@@ -1,19 +1,19 @@
 import * as React from "react";
 import * as Request from "../transaction/registry/Request";
 
-import { Address } from "viem";
 import { BalanceStore } from "../balance/BalanceStore";
+import { GuardianStore } from "../guardian/GuardianStore";
 import { RequestSignature } from "../signature/CreateSignature";
 import { RequestStore } from "./RequestStore";
 import { Sleep } from "../sleep/Sleep";
-import { SendTransaction } from "../transaction/SendTransaction";
+import { SendUserOperation } from "../transaction/SendUserOperation";
 import { SignatureTimestamp } from "../../func/signature/CreateSignature";
 import { SubmitStatusEnabled } from "../submit/SubmitStatus";
 import { SubmitStatusFailure } from "../submit/SubmitStatus";
 import { SubmitStatusLoading } from "../submit/SubmitStatus";
 import { SubmitStatusSuccess } from "../submit/SubmitStatus";
 
-export const RequestHandler = async (grd: Address, sym: string) => {
+export const RequestHandler = async () => {
   {
     RequestStore.getState().updateStatus({
       lifecycle: SubmitStatusLoading,
@@ -23,6 +23,8 @@ export const RequestHandler = async (grd: Address, sym: string) => {
     RequestStore.getState().updateSubmit(true);
   }
 
+  const grd = GuardianStore.getState().active;
+  const sym = BalanceStore.getState().active;
   const tim = SignatureTimestamp();
   const ctx = await RequestSignature(grd, tim);
 
@@ -39,11 +41,14 @@ export const RequestHandler = async (grd: Address, sym: string) => {
     });
   }
 
-  const res = await SendTransaction([
+  const res = await SendUserOperation([
     Request.Encode(ctx, sym), //
   ]);
 
   // TODO handle connect after successful request
+  //
+  //     https://sepolia.arbiscan.io/tx/0x310843e119e6c8d574a0ecf591fb5dc92ae3823f2ef5f135fac970e7a1678274
+  //
   if (res.success) {
     return await success();
   } else {
@@ -75,16 +80,27 @@ const failure = async (tit: string, err: any) => {
   {
     RequestStore.getState().updateSubmit(false);
   }
+
+  {
+    await Sleep(5_000);
+  }
+
+  {
+    RequestStore.getState().updateStatus({
+      lifecycle: SubmitStatusEnabled,
+      container: React.createElement("div", null, "Play"),
+    });
+  }
 };
 
 const success = async () => {
   RequestStore.getState().updateStatus({
     lifecycle: SubmitStatusSuccess,
-    container: React.createElement("div", null, "Ready To Play"),
+    container: React.createElement("div", null, "Let's Go"),
   });
 
   {
-    await Sleep(3 * 1000);
+    await Sleep(5_000);
   }
 
   {

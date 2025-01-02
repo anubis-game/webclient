@@ -20,12 +20,12 @@ export const Simulate = async (ctx: SignatureContext, sym: string) => {
   const con = RegistryWithSymbol(sym);
 
   const pub = WalletStore.getState().public;
-  const sig = WalletStore.getState().signer;
+  const pla = WalletStore.getState().player;
 
   await pub.simulateContract({
     ...encPar(ctx, con),
     address: con.address,
-    account: sig.address,
+    account: pla.address, // the Player address must be msg.sender during simulation
   });
 };
 

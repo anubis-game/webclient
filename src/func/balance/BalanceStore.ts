@@ -38,13 +38,20 @@ export const BalanceStore = create(
       });
     },
 
-    updateActive: (a: string) => {
+    // updateActive returns whether the active token symbol changed as a result
+    // of the function call below. If the active token symbol changed, then the
+    // caller should ensure to update the user balances too.
+    updateActive: (a: string): boolean => {
+      const upd = a !== get().active;
+
       set((state) => {
         return {
           ...state,
           active: a,
         };
       });
+
+      return upd;
     },
 
     updateBalance: async () => {

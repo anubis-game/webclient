@@ -15,7 +15,7 @@ interface Props {
 export const SubmitButton = (props: Props) => {
   return (
     <button
-      className={`button form ${props.status.lifecycle} px-4 py-3`}
+      className={`button form ${props.status.lifecycle} px-4 py-3 w-full`}
       disabled={props.status.lifecycle !== SubmitStatusEnabled}
       type="button"
       onClick={props.action}
