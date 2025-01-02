@@ -12,6 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 import { WithdrawAmount } from "../withdraw/WithdrawAmount";
 import { WithdrawDescription } from "../withdraw/WithdrawDescription";
 import { XMarkIcon } from "../icon/XMarkIcon";
+import { BalanceStore } from "../../func/balance/BalanceStore";
 
 export const TransferDialog = () => {
   const { action, dialog, submit, symbol } = TransferStore(
@@ -78,7 +79,22 @@ export const TransferDialog = () => {
           <Dialog.Title className="absolute top-4 left-4 w-full">
             <TransferSymbol
               disabled={submit}
-              onSelect={TransferStore.getState().updateSymbol}
+              onSelect={(sym: string) => {
+                // In case that the selected token symbol changes the currently
+                // active token symbol, we must make sure to update user
+                // balances too.
+                if (BalanceStore.getState().updateActive(sym)) {
+                  BalanceStore.getState().updateBalance();
+                }
+
+                // For transfers we must make sure that the selected token
+                // symbol is properly reflected in the transfer store, so that
+                // the user can deposit or withdraw the tokens that they are
+                // interested in.
+                {
+                  TransferStore.getState().updateSymbol(sym);
+                }
+              }}
               selected={symbol}
               values={AllTokenSymbols()}
             />

@@ -24,3 +24,10 @@ export const DefaultSubmitStatus = (): SubmitStatus => {
     container: React.createElement("div", null, ""),
   };
 };
+
+export const EnabledSubmitStatus = (tit: string): SubmitStatus => {
+  return {
+    lifecycle: SubmitStatusEnabled,
+    container: React.createElement("div", null, tit),
+  };
+};

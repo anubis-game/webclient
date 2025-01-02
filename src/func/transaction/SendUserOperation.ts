@@ -2,6 +2,7 @@ import { alchemy } from "@account-kit/infra";
 import { ArbitrumSepoliaAlchemyGasPolicy } from "../config/Config";
 import { ChainStore } from "../chain/ChainStore";
 import { createAlchemySmartAccountClient } from "@account-kit/infra";
+import { TimeString } from "../string/TimeString";
 import { TransactionObject } from "./TransactionObject";
 import { TransactionResult } from "./TransactionResult";
 import { WalletStore } from "../wallet/WalletStore";
@@ -27,17 +28,29 @@ export const SendUserOperation = async (txn: TransactionObject[]): Promise<Trans
   });
 
   try {
+    const sta = performance.now();
+
     const res = await cli.sendUserOperation({
       uo: txn,
     });
 
-    console.log("UOP", res);
+    {
+      console.log("SendUserOperation.userOperationHash", res.hash);
+    }
 
     const hsh = await cli.waitForUserOperationTransaction({
       hash: res.hash,
     });
 
-    console.log("Transaction hash: ", hsh);
+    {
+      console.log("SendUserOperation.transactionHash", hsh);
+    }
+
+    const end = performance.now();
+
+    {
+      console.log("SendUserOperation.duration", TimeString(end - sta));
+    }
 
     return {
       hash: hsh,
@@ -47,9 +60,6 @@ export const SendUserOperation = async (txn: TransactionObject[]): Promise<Trans
     };
   } catch (err) {
     // TODO this could retry paying more gas https://accountkit.alchemy.com/infra/drop-and-replace
-
-    console.error(err);
-
     return {
       hash: zeroHash,
       rejected: false,
