@@ -1,9 +1,10 @@
 import * as React from "react";
 
 import { useShallow } from "zustand/react/shallow";
-import { StreamStore } from "../../func/stream/StreamStore";
-import { SchemaDecode, SchemaDecodeString } from "../../func/schema/SchemaDecode";
 import { SchemaAction } from "../../func/schema/SchemaAction";
+import { SchemaDecode } from "../../func/schema/SchemaDecode";
+import { SchemaDecodeString } from "../../func/schema/SchemaDecode";
+import { StreamStore } from "../../func/stream/StreamStore";
 
 export const StreamSetup = () => {
   const stream = StreamStore(
@@ -17,6 +18,9 @@ export const StreamSetup = () => {
       return;
     }
 
+    // We define the basis of our websocket communication as binary data packets
+    // to prevent higher order decoding. Given the first byte of a websocket
+    // message, we can then decide how to decode the received message further.
     {
       stream.client.binaryType = "arraybuffer";
     }
