@@ -6,8 +6,8 @@ import { ArbitrumSepoliaAlchemyApiKey, ArbitrumSepoliaAlchemyRpcEndpoint } from 
 import { ArbitrumSepoliaAlchemyGasPolicy } from "../config/Config";
 import { ChainConfig } from "./ChainConfig";
 import { Erc20Abi } from "../abi/Erc20Abi";
-import { RegistryAbiV020 } from "../abi/RegistryAbiV020";
 import { RegistryAbiV030 } from "../abi/RegistryAbiV030";
+import { RegistryAbiV040 } from "../abi/RegistryAbiV040";
 
 export const ChainList: ChainConfig[] = [
   // localhost
@@ -46,8 +46,8 @@ export const ChainList: ChainConfig[] = [
     alchemyRpcEndpoint: ArbitrumSepoliaAlchemyRpcEndpoint,
     contracts: {
       Registry: [
-        { abi: RegistryAbiV020, address: "0xB89BbEd0467cb27C310bedc002733116289Bb63F", symbol: "USDC", latest: false },
-        { abi: RegistryAbiV030, address: "0x9632185d3851Fd06304C09BA6F1c1308189BE12b", symbol: "USDC", latest: true },
+        { abi: RegistryAbiV030, address: "0x9632185d3851Fd06304C09BA6F1c1308189BE12b", symbol: "USDC", latest: false },
+        { abi: RegistryAbiV040, address: "0x2fe8873afD3728C1cED0329b450d617FC235b4dB", symbol: "USDC", latest: true },
       ],
     },
     tokens: {

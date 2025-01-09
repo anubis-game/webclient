@@ -26,7 +26,7 @@ export const SymbolWithRegistry = (add: Address): string => {
   const chn = ChainStore.getState().getActive();
 
   const con = chn.contracts["Registry"].find((x: ContractConfig) => {
-    return x.address === add && x.latest === true;
+    return x.address === add;
   });
 
   // We should not throw an error here because we use SymbolWithRegistry based

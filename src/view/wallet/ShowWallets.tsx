@@ -1,7 +1,7 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
 
-import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
+import { BalanceStatus } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { BlockExplorerAddress } from "../../func/address/BlockExplorerAddress";
 import { DollarIcon } from "../icon/DollarIcon";
@@ -9,8 +9,7 @@ import { InfoCircleIcon } from "../icon/InfoCircleIcon";
 import { LogoutIcon } from "../icon/LogoutIcon";
 import { OpenLinkIcon } from "../icon/OpenLinkIcon";
 import { Tooltip } from "../tooltip/Tooltip";
-import { TransferActionDeposit } from "../../func/transfer/TransferAction";
-import { TransferActionWithdraw } from "../../func/transfer/TransferAction";
+import { TransferAction } from "../../func/transfer/TransferAction";
 import { TransferStore } from "../../func/transfer/TransferStore";
 import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 import { useDisconnect } from "wagmi";
@@ -72,7 +71,7 @@ export const ShowWallets = () => {
           <DropdownMenu.Item
             className="button ghost p-2"
             onSelect={() => {
-              TransferStore.getState().updateAction(TransferActionDeposit);
+              TransferStore.getState().updateAction(TransferAction.Deposit);
               TransferStore.getState().updateDialog(true);
             }}
           >
@@ -86,9 +85,9 @@ export const ShowWallets = () => {
 
           <DropdownMenu.Item
             className="button ghost p-2"
-            disabled={status !== BalanceStatusFunded}
+            disabled={status !== BalanceStatus.Funded}
             onSelect={() => {
-              TransferStore.getState().updateAction(TransferActionWithdraw);
+              TransferStore.getState().updateAction(TransferAction.Withdraw);
               TransferStore.getState().updateDialog(true);
             }}
           >

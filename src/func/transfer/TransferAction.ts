@@ -1,4 +1,5 @@
-export const TransferActionDeposit = "deposit";
-export const TransferActionWithdraw = "withdraw";
-
-export type TransferAction = typeof TransferActionDeposit | typeof TransferActionWithdraw;
+//
+export enum TransferAction {
+  Deposit = "deposit",
+  Withdraw = "withdraw",
+}

@@ -9,10 +9,12 @@ import { WalletStore } from "../../wallet/WalletStore";
 export const Encode = (ctx: SignatureContext, sym: string): TransactionObject => {
   const con = RegistryWithSymbol(sym);
 
+  const enc = encPar(ctx, con);
+
   return {
-    name: "Request",
+    name: enc.functionName,
     target: con.address,
-    data: encodeFunctionData(encPar(ctx, con)),
+    data: encodeFunctionData(enc),
   };
 };
 
@@ -34,7 +36,7 @@ const encPar = (ctx: SignatureContext, con: ContractConfig): Required<EncodeFunc
     abi: [
       ...con.abi, //            the Registry contract ABI
     ],
-    functionName: "request", // function request(address grd, uint64 tim, address wal, bytes memory sgn) public
+    functionName: "Request", // function Request(address grd, uint64 tim, address wal, bytes memory sgn) public
     args: [
       ctx.grd, //               the Guardian address selected by the user
       ctx.tim, //               the threshold timestamp in unix seconds

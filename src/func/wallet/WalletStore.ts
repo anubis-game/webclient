@@ -1,13 +1,12 @@
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { Hex } from "viem";
+import { LightAccount } from "@account-kit/smart-contracts";
 import { LocalAccountSigner } from "@aa-sdk/core";
 import { PrivateKeyAccount } from "viem";
 import { PublicClient } from "viem";
 import { WalletClient } from "viem";
-import { LightAccount } from "@account-kit/smart-contracts";
-import { WalletStatus } from "./WalletStatus";
-import { WalletStatusLoading } from "./WalletStatus";
+import { WalletStatus } from "../../func/wallet/WalletStatus";
 
 export interface WalletMessage {
   wallet: { address: Hex; client: WalletClient };
@@ -20,17 +19,17 @@ export interface WalletMessage {
 // newWalletMessage ensures that we have an initialized loading status so that
 // we do not have to work with any undefined state during the first component
 // renderings.
-const newWalletMessage = (): WalletMessage => {
+const newWalletMessage = (sta: WalletStatus = WalletStatus.Loading): WalletMessage => {
   return {
-    status: WalletStatusLoading,
+    status: sta,
   } as WalletMessage;
 };
 
 export const WalletStore = create(
   combine(newWalletMessage(), (set) => ({
-    delete: () => {
+    delete: (sta: WalletStatus) => {
       set(() => {
-        return newWalletMessage();
+        return newWalletMessage(sta);
       });
     },
 

@@ -1,7 +1,7 @@
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { EnabledSubmitStatus } from "../submit/SubmitStatus";
 import { SubmitStatus } from "../submit/SubmitStatus";
+import { SubmitStatusEnabled } from "../submit/SubmitStatus";
 
 export interface RequestMessage {
   status: SubmitStatus;
@@ -10,7 +10,7 @@ export interface RequestMessage {
 
 const newRequestMessage = (): RequestMessage => {
   return {
-    status: EnabledSubmitStatus("Play"),
+    status: SubmitStatusEnabled("Play Now"),
     submit: false,
   };
 };

@@ -5,6 +5,7 @@ import { GuardianSetup } from "../guardian/GuardianSetup";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { QueryStore } from "../../func/query/QueryStore";
 import { RequestBar } from "../request/RequestBar";
+import { StreamSetup } from "../stream/StreamSetup";
 import { ToastSetup } from "../toast/ToastSetup";
 import { TransferDialog } from "../transfer/TransferDialog";
 import { WagmiConfig } from "../../func/wagmi/WagmiConfig";
@@ -27,6 +28,7 @@ export const App = () => {
       <RequestBar />
 
       <GuardianSetup />
+      <StreamSetup />
       <ToastSetup />
 
       <GuardianDialog />

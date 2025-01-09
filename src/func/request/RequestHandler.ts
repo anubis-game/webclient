@@ -2,57 +2,77 @@ import * as React from "react";
 import * as Request from "../transaction/registry/Request";
 
 import { BalanceStore } from "../balance/BalanceStore";
+import { ConnectSignature } from "../signature/CreateSignature";
 import { GuardianStore } from "../guardian/GuardianStore";
+import { GuardianWebsocketProtocol } from "../config/Config";
 import { RequestSignature } from "../signature/CreateSignature";
 import { RequestStore } from "./RequestStore";
-import { Sleep } from "../sleep/Sleep";
 import { SendUserOperation } from "../transaction/SendUserOperation";
 import { SignatureTimestamp } from "../../func/signature/CreateSignature";
-import { SubmitStatusEnabled } from "../submit/SubmitStatus";
-import { SubmitStatusFailure } from "../submit/SubmitStatus";
-import { SubmitStatusLoading } from "../submit/SubmitStatus";
-import { SubmitStatusSuccess } from "../submit/SubmitStatus";
+import { Sleep } from "../sleep/Sleep";
+import { StreamStore } from "../stream/StreamStore";
+import { SubmitLifecycle } from "../submit/SubmitStatus";
 
 export const RequestHandler = async () => {
   {
     RequestStore.getState().updateStatus({
-      lifecycle: SubmitStatusLoading,
+      lifecycle: SubmitLifecycle.Loading,
       container: React.createElement("div", null, "Signing Transaction"),
     });
 
     RequestStore.getState().updateSubmit(true);
   }
 
-  const grd = GuardianStore.getState().active;
+  const grd = GuardianStore.getState().getActive();
   const sym = BalanceStore.getState().active;
   const tim = SignatureTimestamp();
-  const ctx = await RequestSignature(grd, tim);
+  const req = await RequestSignature(grd.address, tim);
+  const con = await ConnectSignature(grd.address, tim);
 
   try {
-    await Request.Simulate(ctx, sym);
+    await Request.Simulate(req, sym);
   } catch (err) {
     return await failure("Simulation Failed", err);
   }
 
   {
     RequestStore.getState().updateStatus({
-      lifecycle: SubmitStatusLoading,
+      lifecycle: SubmitLifecycle.Loading,
       container: React.createElement("div", null, "Confirming Onchain"),
     });
   }
 
   const res = await SendUserOperation([
-    Request.Encode(ctx, sym), //
+    Request.Encode(req, sym), //
   ]);
 
-  // TODO handle connect after successful request
-  //
-  //     https://sepolia.arbiscan.io/tx/0x310843e119e6c8d574a0ecf591fb5dc92ae3823f2ef5f135fac970e7a1678274
-  //
-  if (res.success) {
-    return await success();
-  } else {
+  if (!res.success) {
     return await failure(res.rejected ? "User Rejected Transaction" : "Something Went Wrong", res.message);
+  }
+
+  {
+    RequestStore.getState().updateStatus({
+      lifecycle: SubmitLifecycle.Loading,
+      container: React.createElement("div", null, "Connecting Guardian"),
+    });
+  }
+
+  // TODO store the Registry-timestamp relationship in localstorage so that
+  // users can Escape() from faulty Guardians
+
+  try {
+    const cli = new WebSocket(
+      `${GuardianWebsocketProtocol}://${grd.endpoint}/connect`, //
+      ["dual-handshake", res.hash, con.sgn], //
+    );
+
+    {
+      StreamStore.getState().updateClient(cli);
+    }
+
+    return await success();
+  } catch (err) {
+    return await failure("Guardian Connection Failed", res.message);
   }
 };
 
@@ -62,7 +82,7 @@ const failure = async (tit: string, err: any) => {
   }
 
   RequestStore.getState().updateStatus({
-    lifecycle: SubmitStatusFailure,
+    lifecycle: SubmitLifecycle.Failure,
     container: React.createElement("div", null, tit),
   });
 
@@ -72,7 +92,7 @@ const failure = async (tit: string, err: any) => {
 
   {
     RequestStore.getState().updateStatus({
-      lifecycle: SubmitStatusEnabled,
+      lifecycle: SubmitLifecycle.Enabled,
       container: React.createElement("div", null, "Try Again"),
     });
   }
@@ -87,20 +107,20 @@ const failure = async (tit: string, err: any) => {
 
   {
     RequestStore.getState().updateStatus({
-      lifecycle: SubmitStatusEnabled,
-      container: React.createElement("div", null, "Play"),
+      lifecycle: SubmitLifecycle.Enabled,
+      container: React.createElement("div", null, "Play Now"),
     });
   }
 };
 
 const success = async () => {
   RequestStore.getState().updateStatus({
-    lifecycle: SubmitStatusSuccess,
+    lifecycle: SubmitLifecycle.Success,
     container: React.createElement("div", null, "Let's Go"),
   });
 
   {
-    await Sleep(5_000);
+    await Sleep(3_000);
   }
 
   {

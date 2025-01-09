@@ -1,33 +1,30 @@
 import * as React from "react";
 
-export const SubmitStatusDefault = "default";
-export const SubmitStatusEnabled = "enabled";
-export const SubmitStatusFailure = "failure";
-export const SubmitStatusInvalid = "invalid";
-export const SubmitStatusLoading = "loading";
-export const SubmitStatusSuccess = "success";
+//
+export enum SubmitLifecycle {
+  Default = "default",
+  Enabled = "enabled",
+  Failure = "failure",
+  Invalid = "invalid",
+  Loading = "loading",
+  Success = "success",
+}
 
 export interface SubmitStatus {
-  lifecycle:
-    | typeof SubmitStatusDefault
-    | typeof SubmitStatusEnabled
-    | typeof SubmitStatusFailure
-    | typeof SubmitStatusInvalid
-    | typeof SubmitStatusLoading
-    | typeof SubmitStatusSuccess;
+  lifecycle: SubmitLifecycle;
   container: JSX.Element;
 }
 
-export const DefaultSubmitStatus = (): SubmitStatus => {
+export const SubmitStatusDefault = (): SubmitStatus => {
   return {
-    lifecycle: SubmitStatusDefault,
+    lifecycle: SubmitLifecycle.Default,
     container: React.createElement("div", null, ""),
   };
 };
 
-export const EnabledSubmitStatus = (tit: string): SubmitStatus => {
+export const SubmitStatusEnabled = (tit: string): SubmitStatus => {
   return {
-    lifecycle: SubmitStatusEnabled,
+    lifecycle: SubmitLifecycle.Enabled,
     container: React.createElement("div", null, tit),
   };
 };

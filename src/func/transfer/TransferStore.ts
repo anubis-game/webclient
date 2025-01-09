@@ -1,10 +1,9 @@
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
-import { DefaultSubmitStatus } from "../submit/SubmitStatus";
 import { DefaultTokenSymcol } from "../config/Config";
 import { SubmitStatus } from "../submit/SubmitStatus";
+import { SubmitStatusDefault } from "../submit/SubmitStatus";
 import { TransferAction } from "./TransferAction";
-import { TransferActionDeposit } from "./TransferAction";
 
 export interface TransferMessage {
   action: TransferAction;
@@ -23,10 +22,10 @@ export interface TransferMessage {
 // components.
 const newTransferMessage = (sym: string = DefaultTokenSymcol): TransferMessage => {
   return {
-    action: TransferActionDeposit,
+    action: TransferAction.Deposit,
     amount: "",
     dialog: false,
-    status: DefaultSubmitStatus(),
+    status: SubmitStatusDefault(),
     submit: false,
     symbol: sym,
   };
