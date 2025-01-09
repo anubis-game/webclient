@@ -1,9 +1,9 @@
-export const RegistryAbiV020 = [
+export const RegistryAbiV040 = [
   {
     inputs: [
       {
         internalType: "address",
-        name: "own",
+        name: "ben",
         type: "address",
       },
       {
@@ -19,27 +19,6 @@ export const RegistryAbiV020 = [
     ],
     stateMutability: "nonpayable",
     type: "constructor",
-  },
-  {
-    inputs: [],
-    name: "AccessControlBadConfirmation",
-    type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        internalType: "bytes32",
-        name: "neededRole",
-        type: "bytes32",
-      },
-    ],
-    name: "AccessControlUnauthorizedAccount",
-    type: "error",
   },
   {
     inputs: [
@@ -128,6 +107,49 @@ export const RegistryAbiV020 = [
       {
         indexed: true,
         internalType: "address",
+        name: "grd",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "kil",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "win",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "los",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "dep",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "buy",
+        type: "uint256",
+      },
+    ],
+    name: "GuardianResolve",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
         name: "pla",
         type: "address",
       },
@@ -156,125 +178,7 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "Report",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "grd",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "kil",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "win",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "los",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "avl",
-        type: "uint256",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "bin",
-        type: "uint256",
-      },
-    ],
-    name: "Resolve",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "previousAdminRole",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "newAdminRole",
-        type: "bytes32",
-      },
-    ],
-    name: "RoleAdminChanged",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-    ],
-    name: "RoleGranted",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "sender",
-        type: "address",
-      },
-    ],
-    name: "RoleRevoked",
+    name: "WitnessPublish",
     type: "event",
   },
   {
@@ -343,69 +247,6 @@ export const RegistryAbiV020 = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "DEFAULT_ADMIN_ROLE",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "VERSION",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "wal",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "grd",
-        type: "address",
-      },
-    ],
-    name: "balHash",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "buyin",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "uint256",
@@ -428,7 +269,7 @@ export const RegistryAbiV020 = [
         type: "bytes",
       },
     ],
-    name: "deposit",
+    name: "Deposit",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -446,7 +287,7 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "depositMessage",
+    name: "DepositMessage",
     outputs: [
       {
         internalType: "bytes",
@@ -455,208 +296,6 @@ export const RegistryAbiV020 = [
       },
     ],
     stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-    ],
-    name: "getRoleAdmin",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "uint256",
-        name: "index",
-        type: "uint256",
-      },
-    ],
-    name: "getRoleMember",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-    ],
-    name: "getRoleMemberCount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-    ],
-    name: "getRoleMembers",
-    outputs: [
-      {
-        internalType: "address[]",
-        name: "",
-        type: "address[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "grantRole",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "hasRole",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "wog",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "kil",
-        type: "uint256",
-      },
-    ],
-    name: "keyHash",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "owner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes",
-        name: "mes",
-        type: "bytes",
-      },
-      {
-        internalType: "bytes",
-        name: "sgn",
-        type: "bytes",
-      },
-    ],
-    name: "recoverSigner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "callerConfirmation",
-        type: "address",
-      },
-    ],
-    name: "renounceRole",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -666,6 +305,40 @@ export const RegistryAbiV020 = [
         name: "grd",
         type: "address",
       },
+    ],
+    name: "Escape",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "KILL_STATE_ESCAPE",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "KILL_STATE_RELEASE",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
       {
         internalType: "uint256",
         name: "kil",
@@ -682,7 +355,44 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "report",
+    name: "Publish",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "mes",
+        type: "bytes",
+      },
+      {
+        internalType: "bytes",
+        name: "sgn",
+        type: "bytes",
+      },
+    ],
+    name: "RecoverSigner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "los",
+        type: "address",
+      },
+    ],
+    name: "Release",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -710,7 +420,7 @@ export const RegistryAbiV020 = [
         type: "bytes",
       },
     ],
-    name: "request",
+    name: "Request",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -733,7 +443,7 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "requestMessage",
+    name: "RequestMessage",
     outputs: [
       {
         internalType: "bytes",
@@ -762,25 +472,7 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "resolve",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "role",
-        type: "bytes32",
-      },
-      {
-        internalType: "address",
-        name: "account",
-        type: "address",
-      },
-    ],
-    name: "revokeRole",
+    name: "Resolve",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -793,7 +485,7 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "searchBalance",
+    name: "SearchBalance",
     outputs: [
       {
         internalType: "uint256",
@@ -822,7 +514,7 @@ export const RegistryAbiV020 = [
         type: "address",
       },
     ],
-    name: "searchSigner",
+    name: "SearchSigner",
     outputs: [
       {
         internalType: "address",
@@ -841,17 +533,63 @@ export const RegistryAbiV020 = [
   {
     inputs: [
       {
-        internalType: "bytes4",
-        name: "interfaceId",
-        type: "bytes4",
+        internalType: "address",
+        name: "ben",
+        type: "address",
       },
     ],
-    name: "supportsInterface",
+    name: "UpdateBeneficiary",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "VERSION",
     outputs: [
       {
-        internalType: "bool",
+        internalType: "string",
         name: "",
-        type: "bool",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "bal",
+        type: "uint256",
+      },
+    ],
+    name: "Withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "beneficiary",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "buyin",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -868,43 +606,6 @@ export const RegistryAbiV020 = [
       },
     ],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "win",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "los",
-        type: "address",
-      },
-    ],
-    name: "valHash",
-    outputs: [
-      {
-        internalType: "bytes32",
-        name: "",
-        type: "bytes32",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "bal",
-        type: "uint256",
-      },
-    ],
-    name: "withdraw",
-    outputs: [],
-    stateMutability: "nonpayable",
     type: "function",
   },
 ];

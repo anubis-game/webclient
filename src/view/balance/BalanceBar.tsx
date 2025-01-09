@@ -1,10 +1,10 @@
 import { ActivityIcon } from "../icon/ActivityIcon";
-import { BalanceStatusLoading } from "../../func/balance/BalanceStatus";
+import { BalanceStatus } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DollarIcon } from "../icon/DollarIcon";
 import { Tooltip } from "../tooltip/Tooltip";
 import { useShallow } from "zustand/react/shallow";
-import { WalletStatusConnected } from "../../func/wallet/WalletStatus";
+import { WalletStatus } from "../../func/wallet/WalletStatus";
 import { WalletStore } from "../../func/wallet/WalletStore";
 
 export const BalanceBar = () => {
@@ -23,7 +23,7 @@ export const BalanceBar = () => {
     })),
   );
 
-  if (wallet.status !== WalletStatusConnected || balance.status === BalanceStatusLoading) {
+  if (wallet.status !== WalletStatus.Connected || balance.status === BalanceStatus.Loading) {
     return <></>;
   }
 

@@ -1,12 +1,11 @@
 import * as React from "react";
 
-import { BalanceStatusLoading } from "../../func/balance/BalanceStatus";
+import { BalanceStatus } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DepositStatus } from "../../func/deposit/DepositStatus";
 import { SubmitButton } from "../submit/SubmitButton";
 import { SubmitStatus } from "../../func/submit/SubmitStatus";
 import { TransferAction } from "../../func/transfer/TransferAction";
-import { TransferActionDeposit } from "../../func/transfer/TransferAction";
 import { TransferHandler } from "../../func/transfer/TransferHandler";
 import { TransferStore } from "../../func/transfer/TransferStore";
 import { useShallow } from "zustand/react/shallow";
@@ -33,7 +32,7 @@ export const TransferButton = () => {
   // balance store to finish loading, before we can start validating the user
   // input.
   React.useEffect(() => {
-    if (balance.status !== BalanceStatusLoading) {
+    if (balance.status !== BalanceStatus.Loading) {
       TransferStore.getState().updateStatus(verifyStatus(transfer.action, transfer.amount, transfer.symbol));
     }
   }, [balance.status, transfer.action, transfer.amount, transfer.symbol]);
@@ -47,7 +46,7 @@ export const TransferButton = () => {
 };
 
 const verifyStatus = (act: TransferAction, amo: string, sym: string): SubmitStatus => {
-  if (act === TransferActionDeposit) {
+  if (act === TransferAction.Deposit) {
     return DepositStatus(amo, sym);
   } else {
     return WithdrawStatus(amo, sym);

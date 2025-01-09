@@ -13,7 +13,7 @@ export const SearchBalance = async (con: ContractConfig, tok: TokenConfig): Prom
   const res = (await WalletStore.getState().public.readContract({
     address: con.address,
     abi: con.abi,
-    functionName: "searchBalance",
+    functionName: "SearchBalance",
     args: [WalletStore.getState().wallet.address],
   })) as unknown as [bigint, bigint, bigint];
 

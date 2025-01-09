@@ -5,7 +5,7 @@ import { AllTokenSymbols } from "../../func/token/TokenConfig";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { DepositAmount } from "../deposit/DepositAmount";
 import { DepositDescription } from "../deposit/DepositDescription";
-import { TransferActionDeposit } from "../../func/transfer/TransferAction";
+import { TransferAction } from "../../func/transfer/TransferAction";
 import { TransferButton } from "./TransferButton";
 import { TransferStore } from "../../func/transfer/TransferStore";
 import { TransferSymbol } from "./TransferSymbol";
@@ -51,7 +51,7 @@ export const TransferDialog = () => {
           onInteractOutside={(e) => e.preventDefault()}
         >
           <Dialog.Description className="mt-[50px] mb-4 text-sm">
-            {action === TransferActionDeposit ? (
+            {action === TransferAction.Deposit ? (
               <DepositDescription symbol={symbol} />
             ) : (
               <WithdrawDescription symbol={symbol} />
@@ -59,7 +59,7 @@ export const TransferDialog = () => {
           </Dialog.Description>
 
           <div className="grid gap-4 items-center">
-            {action === TransferActionDeposit ? (
+            {action === TransferAction.Deposit ? (
               <DepositAmount disabled={submit} />
             ) : (
               <WithdrawAmount disabled={submit} />

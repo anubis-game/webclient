@@ -16,10 +16,12 @@ export const Encode = (ctx: SignatureContext, amo: number, sym: string): Transac
   const tok = TokenWithSymbol(sym);
   const bal = parseUnits(String(amo), tok.decimals);
 
+  const enc = encPar(ctx, con, tok, bal);
+
   return {
-    name: "Deposit",
+    name: enc.functionName,
     target: con.address,
-    data: encodeFunctionData(encPar(ctx, con, tok, bal)),
+    data: encodeFunctionData(enc),
   };
 };
 
@@ -60,7 +62,7 @@ const encPar = (
       ...con.abi, //            the Registry contract ABI
       ...tok.abi, //            the Token contract ABI for error handling
     ],
-    functionName: "deposit", // function deposit(uint256 bal, uint64 tim, address sig, bytes memory sgn) public
+    functionName: "Deposit", // function Deposit(uint256 bal, uint64 tim, address sig, bytes memory sgn) public
     args: [
       bal, //                   the amount of tokens to deposit
       ctx.tim, //               the valid unix timestamp

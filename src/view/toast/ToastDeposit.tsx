@@ -1,10 +1,10 @@
 import * as React from "react";
 import * as Toast from "@radix-ui/react-toast";
 
+import { BalanceStatus } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
 import { useShallow } from "zustand/react/shallow";
-import { BalanceStatusEmpty } from "../../func/balance/BalanceStatus";
 
 export const ToastDeposit = () => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -18,7 +18,7 @@ export const ToastDeposit = () => {
   React.useEffect(() => {
     // We want to show this permanent toast if no balance got deposited. As soon
     // as some balance got deposited, the toast should disappear.
-    setOpen(balance.status === BalanceStatusEmpty);
+    setOpen(balance.status === BalanceStatus.Empty);
   }, [balance.status]);
 
   return (

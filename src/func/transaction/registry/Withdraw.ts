@@ -13,10 +13,12 @@ export const Encode = (amo: number, sym: string): TransactionObject => {
   const tok = TokenWithSymbol(sym);
   const bal = parseUnits(String(amo), tok.decimals);
 
+  const enc = encPar(con, tok, bal);
+
   return {
-    name: "Deposit",
+    name: enc.functionName,
     target: con.address,
-    data: encodeFunctionData(encPar(con, tok, bal)),
+    data: encodeFunctionData(enc),
   };
 };
 
@@ -41,7 +43,7 @@ const encPar = (con: ContractConfig, tok: TokenConfig, bal: bigint): Required<En
       ...con.abi, //             the Registry contract ABI
       ...tok.abi, //             the Token contract ABI for error handling
     ],
-    functionName: "withdraw", // function withdraw(uint256 bal) public
+    functionName: "Withdraw", // function Withdraw(uint256 bal) public
     args: [
       bal, //                    the amount of tokens to withdraw
     ],

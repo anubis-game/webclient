@@ -1,14 +1,11 @@
+import { BalanceOf } from "../transaction/erc20/BalanceOf";
 import { BalanceStatus } from "./BalanceStatus";
-import { BalanceStatusEmpty } from "./BalanceStatus";
-import { BalanceStatusFunded } from "./BalanceStatus";
-import { BalanceStatusLoading } from "./BalanceStatus";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { DefaultTokenSymcol } from "../config/Config";
 import { RegistryWithSymbol } from "../contract/ContractConfig";
 import { SearchBalance } from "../transaction/registry/SearchBalance";
 import { TokenWithSymbol } from "../token/TokenConfig";
-import { BalanceOf } from "../transaction/erc20/BalanceOf";
 
 export interface BalanceMessage {
   active: string;
@@ -26,7 +23,7 @@ const newBalanceMessage = (): BalanceMessage => {
     available: 0,
     deposited: 0,
     precision: 0,
-    status: BalanceStatusLoading,
+    status: BalanceStatus.Loading,
   };
 };
 
@@ -69,7 +66,7 @@ export const BalanceStore = create(
           available: erc,
           deposited: bal.dep,
           precision: tok.precision,
-          status: bal.dep > 0 ? BalanceStatusFunded : BalanceStatusEmpty,
+          status: bal.dep > 0 ? BalanceStatus.Funded : BalanceStatus.Empty,
         };
       });
     },

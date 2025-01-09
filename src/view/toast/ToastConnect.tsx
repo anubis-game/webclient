@@ -4,7 +4,7 @@ import * as Toast from "@radix-ui/react-toast";
 import { InfoCircleIcon } from "../icon/InfoCircleIcon";
 import { useShallow } from "zustand/react/shallow";
 import { WalletStore } from "../../func/wallet/WalletStore";
-import { WalletStatusDisconnected } from "../../func/wallet/WalletStatus";
+import { WalletStatus } from "../../func/wallet/WalletStatus";
 
 export const ToastConnect = () => {
   const [open, setOpen] = React.useState<boolean>(false);
@@ -21,7 +21,7 @@ export const ToastConnect = () => {
     // connections, and if we find no wallet to be connected, then we show the
     // toast below. Conversely, the toast should disappear when a wallet was
     // connected.
-    setOpen(wallet.status === WalletStatusDisconnected);
+    setOpen(wallet.status === WalletStatus.Disconnected);
   }, [wallet.status]);
 
   return (

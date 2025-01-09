@@ -6,16 +6,13 @@ import * as Withdraw from "../transaction/registry/Withdraw";
 import { BalanceStore } from "../balance/BalanceStore";
 import { ChainStore } from "../chain/ChainStore";
 import { DepositSignature } from "../signature/CreateSignature";
+import { SendTransaction } from "../transaction/SendTransaction";
 import { SignatureContext } from "../signature/SignatureContext";
 import { Sleep } from "../sleep/Sleep";
-import { SendTransaction } from "../transaction/SendTransaction";
-import { SubmitStatusEnabled } from "../submit/SubmitStatus";
-import { SubmitStatusFailure } from "../submit/SubmitStatus";
-import { SubmitStatusLoading } from "../submit/SubmitStatus";
-import { SubmitStatusSuccess } from "../submit/SubmitStatus";
+import { SubmitLifecycle } from "../submit/SubmitStatus";
+import { TitleString } from "../string/TitleString";
 import { TransactionResult } from "../transaction/TransactionResult";
 import { TransferAction } from "./TransferAction";
-import { TransferActionDeposit } from "./TransferAction";
 import { TransferStore } from "./TransferStore";
 import { WalletStore } from "../wallet/WalletStore";
 
@@ -25,7 +22,7 @@ export const TransferHandler = async () => {
   }
 
   TransferStore.getState().updateStatus({
-    lifecycle: SubmitStatusLoading,
+    lifecycle: SubmitLifecycle.Loading,
     container: React.createElement("div", null, "Signing Transaction"),
   });
 
@@ -39,18 +36,18 @@ export const TransferHandler = async () => {
   const ctx = await DepositSignature();
 
   try {
-    if (act === TransferActionDeposit) {
+    if (act === TransferAction.Deposit) {
       await Approve.Simulate(amo, sym);
       await Deposit.Simulate(ctx, amo, sym);
     } else {
       await Withdraw.Simulate(amo, sym);
     }
   } catch (err) {
-    return await failure("Simulation Failed", err);
+    return await failure(act, amo, sym, "Simulation Failed", err);
   }
 
   TransferStore.getState().updateStatus({
-    lifecycle: SubmitStatusLoading,
+    lifecycle: SubmitLifecycle.Loading,
     container: React.createElement("div", null, "Confirming Onchain"),
   });
 
@@ -59,7 +56,7 @@ export const TransferHandler = async () => {
   if (res.success) {
     return await success(amo, sym);
   } else {
-    return await failure(res.rejected ? "User Rejected Transaction" : "Something Went Wrong", res.message);
+    return await failure(act, amo, sym, title(res.rejected), res.message);
   }
 };
 
@@ -96,7 +93,7 @@ const sendTransaction = async (
   amo: number,
   sym: string,
 ): Promise<TransactionResult> => {
-  if (act === TransferActionDeposit) {
+  if (act === TransferAction.Deposit) {
     return await SendTransaction([
       Approve.Encode(amo, sym), //
       Deposit.Encode(ctx, amo, sym), //
@@ -108,13 +105,13 @@ const sendTransaction = async (
   }
 };
 
-const failure = async (tit: string, err: any) => {
+const failure = async (act: string, amo: number, sym: string, tit: string, err: any) => {
   {
     console.error(err);
   }
 
   TransferStore.getState().updateStatus({
-    lifecycle: SubmitStatusFailure,
+    lifecycle: SubmitLifecycle.Failure,
     container: React.createElement("div", null, tit),
   });
 
@@ -123,7 +120,7 @@ const failure = async (tit: string, err: any) => {
   }
 
   TransferStore.getState().updateStatus({
-    lifecycle: SubmitStatusEnabled,
+    lifecycle: SubmitLifecycle.Enabled,
     container: React.createElement("div", null, "Try Again"),
   });
 
@@ -132,11 +129,22 @@ const failure = async (tit: string, err: any) => {
   {
     TransferStore.getState().updateSubmit(false);
   }
+
+  {
+    await Sleep(5_000);
+  }
+
+  {
+    TransferStore.getState().updateStatus({
+      lifecycle: SubmitLifecycle.Enabled,
+      container: React.createElement("div", null, `${TitleString(act)} ${amo} ${sym}`),
+    });
+  }
 };
 
 const success = async (amo: number, sym: string) => {
   TransferStore.getState().updateStatus({
-    lifecycle: SubmitStatusSuccess,
+    lifecycle: SubmitLifecycle.Success,
     container: React.createElement("div", null, `Transferred ${amo} ${sym}`),
   });
 
@@ -153,4 +161,12 @@ const success = async (amo: number, sym: string) => {
   {
     TransferStore.getState().updateDialog(false);
   }
+};
+
+const title = (rej: boolean): string => {
+  if (rej) {
+    return "User Rejected Transaction";
+  }
+
+  return "Something Went Wrong";
 };

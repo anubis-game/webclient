@@ -1,7 +1,7 @@
-import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
+import { BalanceStatus } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
-import { useShallow } from "zustand/react/shallow";
 import { GuardianStore } from "../../func/guardian/GuardianStore";
+import { useShallow } from "zustand/react/shallow";
 
 export const GuardianBar = () => {
   const balance = BalanceStore(
@@ -10,7 +10,7 @@ export const GuardianBar = () => {
     })),
   );
 
-  if (balance.status !== BalanceStatusFunded) {
+  if (balance.status !== BalanceStatus.Funded) {
     return <></>;
   }
 

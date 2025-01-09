@@ -1,9 +1,10 @@
-import { BalanceStatusFunded } from "../../func/balance/BalanceStatus";
+import { BalanceStatus } from "../../func/balance/BalanceStatus";
 import { BalanceStore } from "../../func/balance/BalanceStore";
 import { RequestHandler } from "../../func/request/RequestHandler";
 import { RequestStore } from "../../func/request/RequestStore";
 import { SubmitButton } from "../submit/SubmitButton";
 import { useShallow } from "zustand/react/shallow";
+import { Test } from "./Test";
 
 export const RequestBar = () => {
   const balance = BalanceStore(
@@ -18,7 +19,7 @@ export const RequestBar = () => {
     })),
   );
 
-  if (balance.status !== BalanceStatusFunded) {
+  if (balance.status !== BalanceStatus.Funded) {
     return <></>;
   }
 
@@ -29,6 +30,7 @@ export const RequestBar = () => {
           status={request.status}
           action={RequestHandler}
         />
+        <Test />
       </div>
     </div>
   );

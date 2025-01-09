@@ -19,8 +19,6 @@ export const GuardianDialog = () => {
     return <></>;
   }
 
-  // TODO show a single simple "Play Now" button
-
   return (
     <Dialog.Root
       open={dialog}
