@@ -13,9 +13,16 @@ export interface StreamMessage {
 }
 
 const newStreamMessage = (): StreamMessage => {
+  const cli = new WebSocket("");
+
+  // All we want to begin with is an initialized websocket type. We create a
+  // fake one and close it immediately so that we do not run into timeout
+  // errors.
+  cli.close();
+
   return {
     auth: "f47ac10b-58cc-4372-a567-0e02b2c3d479", // TODO remove
-    client: new WebSocket(""),
+    client: cli,
     connected: false,
     ping: 0,
     pong: 0,
