@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { useShallow } from "zustand/react/shallow";
 import { SchemaAction } from "../../func/schema/SchemaAction";
-import { SchemaDecode } from "../../func/schema/SchemaDecode";
+import { SchemaDecode, SchemaDecodeAddress } from "../../func/schema/SchemaDecode";
 import { SchemaDecodeString } from "../../func/schema/SchemaDecode";
 import { StreamStore } from "../../func/stream/StreamStore";
 
@@ -49,9 +49,14 @@ export const StreamSetup = () => {
         case SchemaAction.Auth:
           StreamStore.getState().updateAuth(SchemaDecodeString(dec.message));
           break;
+        case SchemaAction.Join:
+          StreamStore.getState().createUser(SchemaDecodeAddress(dec.message, 0));
+          break;
         case SchemaAction.Cast:
         case SchemaAction.Move:
         case SchemaAction.Kill:
+          StreamStore.getState().deleteUser(SchemaDecodeAddress(dec.message, 1));
+          break;
       }
     };
   }, [stream.client]);

@@ -4,6 +4,9 @@ import { GuardianWebsocketProtocol } from "../../func/config/Config";
 import { GuardianStore } from "../../func/guardian/GuardianStore";
 import { StreamStore } from "../../func/stream/StreamStore";
 import { useShallow } from "zustand/react/shallow";
+import { WalletStore } from "../../func/wallet/WalletStore";
+import { isAddressEqual, zeroAddress } from "viem";
+import { TruncateSeparator } from "../../func/string/TruncateSeparator";
 
 export const Test = () => {
   GuardianStore(
@@ -19,6 +22,7 @@ export const Test = () => {
       connected: state.connected,
       ping: state.ping,
       pong: state.pong,
+      user: state.user,
     })),
   );
 
@@ -53,16 +57,6 @@ export const Test = () => {
         type="button"
         className="button solid p-3"
         onClick={() => {
-          StreamStore.getState().sendAuth();
-        }}
-      >
-        sendAuth
-      </button>
-
-      <button
-        type="button"
-        className="button solid p-3"
-        onClick={() => {
           StreamStore.getState().sendPing();
         }}
       >
@@ -70,12 +64,36 @@ export const Test = () => {
         {stream.ping && stream.pong ? " " + (stream.pong - stream.ping).toFixed(2) + "ms" : ""}
       </button>
 
-      <button
-        type="button"
-        className="button solid p-3"
-      >
-        Connected {stream.connected ? "True" : "False"}
-      </button>
+      {stream.connected && (
+        <button
+          type="button"
+          className="button solid p-3"
+          onClick={() => {
+            StreamStore.getState().sendJoin();
+          }}
+        >
+          Join
+        </button>
+      )}
+
+      {stream.user.map((x) => (
+        <button
+          key={x}
+          type="button"
+          className="button solid p-3"
+          onClick={() => {
+            const wal = WalletStore.getState().wallet.address;
+
+            if (isAddressEqual(x, wal)) {
+              StreamStore.getState().sendKill(zeroAddress, wal);
+            } else {
+              StreamStore.getState().sendKill(wal, x);
+            }
+          }}
+        >
+          Kill {TruncateSeparator(x)}
+        </button>
+      ))}
     </div>
   );
 };

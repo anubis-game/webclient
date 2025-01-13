@@ -1,3 +1,4 @@
+import { Address } from "viem";
 import { SchemaAction } from "./SchemaAction";
 
 //
@@ -5,6 +6,30 @@ export const SchemaEncodeAction = (act: SchemaAction): Uint8Array => {
   const buf = new Uint8Array(1);
 
   buf[0] = act;
+
+  return buf;
+};
+
+//
+export const SchemaEncodeAddress = (act: SchemaAction, ...add: Address[]): Uint8Array => {
+  const lis = add.map((x) => {
+    const hex = x.slice(2); // remove the 0x prefix
+    const byt = new Uint8Array(20); // 20 bytes for every Ethereum address
+
+    for (let i = 0; i < 20; i++) {
+      byt[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+    }
+
+    return byt;
+  });
+
+  const buf = new Uint8Array(1 + lis.length * 20);
+
+  buf[0] = act;
+
+  lis.forEach((x, i) => {
+    buf.set(x, 1 + i * 20);
+  });
 
   return buf;
 };
