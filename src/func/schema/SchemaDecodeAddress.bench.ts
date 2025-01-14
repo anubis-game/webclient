@@ -12,11 +12,13 @@ describe("SchemaDecodeAddress", () => {
     0x01,
   ]);
 
+  // ~1,450,000 samples
   bench("SchemaDecodeAddress", () => {
     SchemaDecodeAddress(byt, 0);
     SchemaDecodeAddress(byt, 1);
   });
 
+  // ~642,000 samples
   bench("withoutTable", () => {
     WithoutTable(byt, 0);
     WithoutTable(byt, 1);
