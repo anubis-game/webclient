@@ -10,13 +10,13 @@ const byt = new Uint8Array([
   0x01,
 ]);
 
-// ~1,455,000 samples
+// ~1,550,000 samples
 bench("SchemaDecodeAddress", () => {
   SchemaDecodeAddress(byt, 0);
   SchemaDecodeAddress(byt, 1);
 });
 
-// ~645,000 samples
+// ~690,000 samples
 bench("WithoutTable", () => {
   WithoutTable(byt, 0);
   WithoutTable(byt, 1);
