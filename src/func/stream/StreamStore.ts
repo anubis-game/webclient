@@ -1,7 +1,9 @@
+import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { SchemaAction } from "../schema/SchemaAction";
 import { SchemaEncodeAction } from "../schema/SchemaEncode";
+import { SchemaEncodeAddress } from "../schema/SchemaEncode";
 
 export interface StreamMessage {
   auth: string;
@@ -9,6 +11,7 @@ export interface StreamMessage {
   connected: boolean;
   ping: number;
   pong: number;
+  user: Address[];
   reader: (str: string) => void;
 }
 
@@ -26,6 +29,7 @@ const newStreamMessage = (): StreamMessage => {
     connected: false,
     ping: 0,
     pong: 0,
+    user: [],
     reader: () => {},
   };
 };
@@ -40,8 +44,34 @@ export const StreamStore = create(
       });
     },
 
+    createUser: (a: Address) => {
+      set((state) => {
+        return {
+          ...state,
+          user: [...state.user, a],
+        };
+      });
+    },
+
+    deleteUser: (a: Address) => {
+      set((state) => {
+        return {
+          ...state,
+          user: state.user.filter((x) => x !== a),
+        };
+      });
+    },
+
     sendAuth: () => {
       get().client.send(SchemaEncodeAction(SchemaAction.Auth));
+    },
+
+    sendJoin: () => {
+      get().client.send(SchemaEncodeAction(SchemaAction.Join));
+    },
+
+    sendKill: (w: Address, l: Address) => {
+      get().client.send(SchemaEncodeAddress(SchemaAction.Kill, w, l));
     },
 
     sendPing: () => {

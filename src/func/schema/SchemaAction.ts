@@ -3,7 +3,8 @@ export enum SchemaAction {
   Ping = 0x01,
   Pong = 0x02,
   Auth = 0x03,
-  Cast = 0x04,
-  Move = 0x05,
-  Kill = 0x06,
+  Join = 0x04,
+  Cast = 0x05,
+  Move = 0x06,
+  Kill = 0x07,
 }
