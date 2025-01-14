@@ -2,7 +2,8 @@ import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
 import { SchemaAction } from "../schema/SchemaAction";
-import { SchemaEncodeAction, SchemaEncodeAddress, SchemaEncodeString } from "../schema/SchemaEncode";
+import { SchemaEncodeAction } from "../schema/SchemaEncode";
+import { SchemaEncodeAddress } from "../schema/SchemaEncode";
 
 export interface StreamMessage {
   auth: string;
