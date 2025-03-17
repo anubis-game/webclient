@@ -1,6 +1,7 @@
 import { describe } from "vitest";
 import { expect } from "vitest";
 import { it } from "vitest";
+
 import { SchemaDecodeAddress } from "./SchemaDecodeAddress";
 import { WithoutTable } from "./SchemaDecodeAddress";
 

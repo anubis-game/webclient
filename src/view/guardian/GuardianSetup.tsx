@@ -35,7 +35,7 @@ export const GuardianSetup = () => {
     (async () => {
       while (mnt) {
         await updateGuardians();
-        await Sleep(10_000);
+        await Sleep(2_000); // TODO:infra increase refresh interval
       }
     })();
 

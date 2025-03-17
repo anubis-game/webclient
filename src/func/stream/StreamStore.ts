@@ -1,8 +1,10 @@
 import { Address } from "viem";
 import { combine } from "zustand/middleware";
 import { create } from "zustand";
+import { IncrementByte } from "../schema/SchemaBytes";
 import { SchemaAction } from "../schema/SchemaAction";
 import { SchemaEncodeAction } from "../schema/SchemaEncode";
+import { SchemaEncodeByte } from "../schema/SchemaEncode";
 import { SchemaEncodeAddress } from "../schema/SchemaEncode";
 
 export interface StreamMessage {
@@ -11,6 +13,7 @@ export interface StreamMessage {
   connected: boolean;
   ping: number;
   pong: number;
+  rtbt: number; // RoundTrip ByTe
   user: Address[];
   reader: (str: string) => void;
 }
@@ -29,6 +32,7 @@ const newStreamMessage = (): StreamMessage => {
     connected: false,
     ping: 0,
     pong: 0,
+    rtbt: 0,
     user: [],
     reader: () => {},
   };
@@ -76,13 +80,15 @@ export const StreamStore = create(
 
     sendPing: () => {
       const now = performance.now();
+      const rtb = get().rtbt;
 
-      get().client.send(SchemaEncodeAction(SchemaAction.Ping));
+      get().client.send(SchemaEncodeByte(SchemaAction.Ping, rtb));
 
       set((state) => {
         return {
           ...state,
           ping: now,
+          rtbt: IncrementByte(rtb),
         };
       });
     },

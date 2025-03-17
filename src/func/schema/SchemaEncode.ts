@@ -11,6 +11,16 @@ export const SchemaEncodeAction = (act: SchemaAction): Uint8Array => {
 };
 
 //
+export const SchemaEncodeByte = (act: SchemaAction, byt: number): Uint8Array => {
+  const buf = new Uint8Array(2);
+
+  buf[0] = act;
+  buf[1] = byt;
+
+  return buf;
+};
+
+//
 export const SchemaEncodeAddress = (act: SchemaAction, ...add: Address[]): Uint8Array => {
   const lis = add.map((x) => {
     const hex = x.slice(2); // remove the 0x prefix
